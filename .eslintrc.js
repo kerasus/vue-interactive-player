@@ -15,6 +15,7 @@ module.exports = {
     'vue',
   ],
   rules: {
+    'import/no-extraneous-dependencies': 'off',
     semi: [2, 'never'],
     quotes: [2, 'single'],
   },

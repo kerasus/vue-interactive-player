@@ -1,7 +1,22 @@
 {
   "name": "vue-interactive-player",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "main": "index.js",
+  "homepage": "https://github.com/kerasus/vue-interactive-player",
+  "keywords": [
+    "vue",
+    "player",
+    "interactive"
+  ],
+  "contributors": [
+    {
+      "name": "Ali Esmaeeli",
+      "email": "aliesmaeeli20@gmail.com",
+      "url": "https://github.com/kerasus/vue-interactive-player.git"
+    }
+  ],
+  "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -23,6 +38,8 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-vue": "^9.1.1",
+    "sass": "^1.52.3",
+    "sass-loader": "^13.0.0",
     "vue": "^2.6.14",
     "vue-template-compiler": "^2.6.14"
   },

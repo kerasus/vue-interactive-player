@@ -3,6 +3,9 @@
     <video ref="videoPlayer" class="video-js vjs-default-skin" controls preload="none">
       <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
     </video>
+    <div class="over-player-wrapper" :class="{'show': overPlayer, 'hide': !overPlayer}">
+      <slot name="overPlayer" />
+    </div>
   </div>
 </template>
 
@@ -72,6 +75,10 @@ export default {
         return []
       },
     },
+    overPlayer: {
+      type: Boolean,
+      default: false,
+    },
     poster: {
       type: String,
       default: '',
@@ -131,8 +138,24 @@ export default {
 }
 </script>
 
-<style scoped>
-.video-js {
-  width: 100%;
+<style lang="scss" scoped>
+.InteractivePlayer {
+  position: relative;
+  .video-js {
+    width: 100%;
+  }
+  .over-player-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    &.show {
+      display: block;
+    }
+    &.hide {
+      display: none;
+    }
+  }
 }
 </style>

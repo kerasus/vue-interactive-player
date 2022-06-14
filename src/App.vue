@@ -5,10 +5,15 @@
           ref="interactivePlayer"
           :sources="sources"
           :poster="poster"
+          :over-player="overPlayer"
           @ready="onPlayerReady"
           @ended="onPlayerEnded"
           @timeupdate="onPlayerTimeUpdate"
-      />
+      >
+        <template #overPlayer>
+          <over-player />
+        </template>
+      </interactive-player>
     </div>
     <div style="text-align: center; padding: 50px">
       <button @click="changeSources(sampleSources1, samplePoster1)">
@@ -32,17 +37,24 @@
         go to time 200
       </button>
     </div>
+    <div style="text-align: center; padding: 50px">
+      <button @click="overPlayer = !overPlayer">
+        toggle overPlayer
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
 import InteractivePlayer from './components/InteractivePlayer.vue'
+import OverPlayer from './components/OverPlayer.vue'
 
 export default {
   name: 'App',
-  components: { InteractivePlayer },
+  components: { InteractivePlayer, OverPlayer },
   data() {
     return {
+      overPlayer: false,
       samplePoster1: 'https://nodes.alaatv.com/media/thumbnails/969/969007kbnt.jpg',
       sampleSources1: [
         {
