@@ -1,17 +1,6 @@
 <template>
   <div class="InteractivePlayer">
     <video ref="videoPlayer" class="video-js vjs-default-skin" controls preload="none">
-<!--      <source v-for="(source, index) in sources"-->
-<!--              :key="index"-->
-<!--              :src="source.src"-->
-<!--              :type="source.src"-->
-<!--              :res="source.res"-->
-<!--              :label="source.label"-->
-<!--      >-->
-
-<!--      <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4">-->
-<!--      <source src="http://vjs.zencdn.net/v/oceans.webm" type="video/webm">-->
-<!--      <source src="http://vjs.zencdn.net/v/oceans.ogv" type="video/ogg">-->
       <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
     </video>
   </div>
@@ -21,7 +10,7 @@
 import videojs from 'video.js'
 import fa from 'video.js/dist/lang/fa.json'
 import 'video.js/dist/video-js.css'
-import 'videojs-hotkeys';
+import 'videojs-hotkeys'
 
 require('@silvermine/videojs-quality-selector')(videojs)
 require('@silvermine/videojs-quality-selector/dist/css/quality-selector.css')
@@ -85,33 +74,34 @@ export default {
     },
     poster: {
       type: String,
-      default: ''
+      default: '',
     },
   },
   watch: {
-    sources () {
+    sources() {
       this.playerInstance.src(this.sources)
     },
-    poster () {
+    poster() {
       this.playerInstance.poster(this.poster)
-    }
+    },
   },
+
   mounted() {
     this.initPlayer()
   },
-  beforeUnmount() {
-    if (this.playerInstance) {
-      this.playerInstance.dispose()
-    }
-  },
   methods: {
-    goToTime (time) {
+    goToTime(time) {
       this.playerInstance.currentTime(time)
     },
-    play () {
+    dispose() {
+      if (this.playerInstance) {
+        this.playerInstance.dispose()
+      }
+    },
+    play() {
       this.playerInstance.play()
     },
-    focus () {
+    focus() {
       this.playerInstance.focus()
     },
     initPlayer() {
@@ -131,7 +121,6 @@ export default {
           // } else if (!that.player.paused()) {
           //   that.videoStatus(true)
           // }
-
         })
       })
 

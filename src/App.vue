@@ -62,7 +62,7 @@ export default {
           type: 'video/mp4',
           res: '240p',
           label: 'کیفیت متوسط',
-          selected: true
+          selected: true,
         },
       ],
       samplePoster2: 'https://nodes.alaatv.com/media/thumbnails/769/769001zone.jpg',
@@ -84,7 +84,7 @@ export default {
           type: 'video/mp4',
           res: '240p',
           label: 'کیفیت متوسط',
-          selected: true
+          selected: true,
         },
       ],
       samplePoster3: 'https://nodes.alaatv.com/media/thumbnails/1374/1374000asdf.jpg',
@@ -106,11 +106,11 @@ export default {
           type: 'video/mp4',
           res: '240p',
           label: 'کیفیت متوسط',
-          selected: true
+          selected: true,
         },
       ],
       sources: [],
-      poster: ''
+      poster: '',
     }
   },
   created() {
@@ -137,11 +137,10 @@ export default {
     focus() {
       this.$refs.interactivePlayer.focus()
     },
-    changeSources (sources, poster) {
+    changeSources(sources, poster) {
       this.sources = sources
       this.poster = poster
-    }
+    },
   },
 }
 </script>
-
