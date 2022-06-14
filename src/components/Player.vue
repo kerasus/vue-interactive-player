@@ -1,5 +1,5 @@
 <template>
-  <div class="InteractivePlayer">
+  <div class="player">
     <video ref="videoPlayer" class="video-js vjs-default-skin" controls preload="none">
       <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
     </video>
@@ -14,12 +14,13 @@ import videojs from 'video.js'
 import fa from 'video.js/dist/lang/fa.json'
 import 'video.js/dist/video-js.css'
 import 'videojs-hotkeys'
+import { PlayerSourceList } from '../models/PlayerSource'
 
 require('@silvermine/videojs-quality-selector')(videojs)
 require('@silvermine/videojs-quality-selector/dist/css/quality-selector.css')
 
 export default {
-  name: 'InteractivePlayer',
+  name: 'Player',
   data() {
     return {
       playerInstance: null,
@@ -70,9 +71,9 @@ export default {
   },
   props: {
     sources: {
-      type: Array,
+      type: PlayerSourceList,
       default() {
-        return []
+        return new PlayerSourceList()
       },
     },
     overPlayer: {
@@ -86,7 +87,7 @@ export default {
   },
   watch: {
     sources() {
-      this.playerInstance.src(this.sources)
+      this.playerInstance.src(this.sources.list)
     },
     poster() {
       this.playerInstance.poster(this.poster)
@@ -131,7 +132,7 @@ export default {
         })
       })
 
-      this.playerInstance.src(this.sources)
+      this.playerInstance.src(this.sources.list)
       this.playerInstance.poster(this.poster)
     },
   },
@@ -139,7 +140,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.InteractivePlayer {
+.player {
   position: relative;
   .video-js {
     width: 100%;

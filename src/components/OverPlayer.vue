@@ -1,14 +1,24 @@
 <template>
   <div class="OverPlayerWrapper">
     <div class="OverPlayer">
-      OverPlayer
+      <component :is="overPlayComponent" :data="data"  />
     </div>
   </div>
 </template>
 
 <script>
+
 export default {
   name: 'OverPlayer',
+  props: {
+    overPlayComponent: {
+      type: String,
+      default: '',
+    },
+    data: {
+      default: null,
+    },
+  },
 }
 </script>
 

@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@silvermine/videojs-quality-selector": "^1.2.5",
+    "js-abstract-model": "^0.1.31",
     "video.js": "^7.19.2",
     "videojs-hotkeys": "^0.2.27"
   },
