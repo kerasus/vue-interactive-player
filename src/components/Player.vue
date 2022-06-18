@@ -1,5 +1,5 @@
 <template>
-  <div class="player">
+  <div class="player" ref="videoPlayerWrapper" :style="{height: playerHeight}">
     <video ref="videoPlayer" class="video-js vjs-default-skin" controls preload="none">
       <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
     </video>
@@ -23,6 +23,7 @@ export default {
   name: 'Player',
   data() {
     return {
+      playerHeight: '200px',
       playerInstance: null,
       playerOptions: {
         controlBar: {
@@ -69,6 +70,11 @@ export default {
       },
     }
   },
+  computed: {
+    hasSources (){
+      return this.sources.list.length > 0
+    },
+  },
   props: {
     sources: {
       type: PlayerSourceList,
@@ -87,9 +93,15 @@ export default {
   },
   watch: {
     sources() {
+      if (this.playerInstance === null) {
+        this.initPlayer()
+      }
       this.playerInstance.src(this.sources.list)
     },
     poster() {
+      if (this.playerInstance === null) {
+        this.initPlayer()
+      }
       this.playerInstance.poster(this.poster)
     },
   },
@@ -98,6 +110,10 @@ export default {
     this.initPlayer()
   },
   methods: {
+    updatePlayerHeight () {
+      const playerWidth = this.$refs.videoPlayerWrapper.clientWidth
+      this.playerHeight = (playerWidth * 9) / 16 + 'px'
+    },
     goToTime(time) {
       this.playerInstance.currentTime(time)
     },
@@ -113,6 +129,10 @@ export default {
       this.playerInstance.focus()
     },
     initPlayer() {
+      this.updatePlayerHeight()
+      if (!this.hasSources) {
+        return
+      }
       this.playerInstance = videojs(this.$refs.videoPlayer, this.playerOptions, () => {
         this.$emit('ready')
         this.playerInstance.on('ended', () => {
@@ -142,8 +162,10 @@ export default {
 <style lang="scss" scoped>
 .player {
   position: relative;
+  max-height: 100vh;
   .video-js {
     width: 100%;
+    height: 100%;
   }
   .over-player-wrapper {
     position: absolute;
