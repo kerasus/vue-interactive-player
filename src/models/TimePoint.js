@@ -20,14 +20,14 @@ class TimePoint extends Model {
         default: 0,
       },
       {
-        key: 'preShowTasks',
+        key: 'tasks',
         relatedModel: TaskList,
-      },
-      {
-        key: 'postShowTasks',
-        relatedModel: TaskList,
-      },
+      }
     ])
+  }
+
+  hesTasks () {
+    return this.tasks.list.length > 0
   }
 }
 
