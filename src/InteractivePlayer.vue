@@ -11,7 +11,7 @@
           @timeupdate="onPlayerTimeUpdate"
       >
         <template #overPlayer>
-          <over-player :data="overPlayData" :over-play-component="overPlayComponent"/>
+          <over-player :data="overPlayData" :over-play-component="overPlayComponent" @action="onAction"/>
         </template>
       </player>
     </div>
@@ -46,23 +46,44 @@
 </template>
 
 <script>
-import Player from './components/Player.vue'
-import OverPlayer from './components/OverPlayer.vue'
-import { TimePointList } from './models/TimePoint'
+import Player from './components/Player'
+import OverPlayer from './components/OverPlayer'
+import { Task } from './models/Task'
+import { TimePointList, TimePoint } from './models/TimePoint'
+import { PlayerSourceList } from './models/PlayerSource'
+import { mixinQuestionOfKnowingSubject, mixinGoToTime, mixinGoToTimePoint } from './mixins/Mixins'
 
 export default {
   name: 'InteractivePlayer',
   components: { Player, OverPlayer },
+  mixins: [mixinQuestionOfKnowingSubject, mixinGoToTime, mixinGoToTimePoint],
   props: {
     timePoints: {
-      type: TimePointList,
+      type: Array,
       default() {
-        return new TimePointList()
+        return []
       },
     },
   },
+  watch: {
+    playerCurrentTime (newValue) {
+      if (this.watchingEndTime <= newValue) {
+        if (!this.currentTimePoint.tasks.hasPostShow()) {
+          return
+        }
+
+        const postShowTask = this.currentTimePoint.tasks.getPostShow()
+        this.doTask(postShowTask)
+      }
+    }
+  },
   data() {
     return {
+      watchingEndTime: 0,
+      playerCurrentTime: 0,
+      currentTimePoint: new TimePoint(),
+      currentTask: new Task(),
+      localTimePoints : new TimePointList(),
       overPlayData: null,
       overPlayComponent: '',
       overPlayer: false,
@@ -132,41 +153,77 @@ export default {
           selected: true,
         },
       ],
-      sources: [],
+      sources: new PlayerSourceList(),
       poster: '',
     }
   },
   created() {
-    this.runTimePoints()
+    this.localTimePoints = new TimePointList(this.timePoints)
+    const firstTimePoint = this.getFirstTimePont()
+    this.runTimePoint(firstTimePoint)
   },
   methods: {
-    runTimePoints() {
-      const firstTimePint = this.timePoints.list[0]
-      this.changeSources(firstTimePint.sources, firstTimePint.poster)
+    loadNewTimePoint () {
+
     },
-    do(taskType, data) {
-      switch (taskType) {
+    onAction (data) {
+      this.doTaskAction(this.currentTask, data)
+    },
+    getFirstTimePont() {
+      return this.localTimePoints.list[0]
+    },
+    runTimePoint(timePoint) {
+      this.currentTimePoint = timePoint
+      if (timePoint.hesTasks() && timePoint.tasks.hasPreShow()) {
+        const preShowTask = timePoint.tasks.getPreShow()
+        this.doTask(preShowTask)
+        return
+      }
+
+      this.changeSources(timePoint.sources, timePoint.poster)
+    },
+    doTaskAction(task, actionData) {
+      switch (task.type) {
         case 'QuestionOfKnowingSubject':
-          this.doQuestionOfKnowingSubject(data)
+          this.doActionOfQuestionOfKnowingSubject(actionData)
           break
         case 'StabilizationTest':
-          this.doStabilizationTest(data)
+          this.doStabilizationTest(task.data)
           break
         case 'SpecialTest':
-          this.doSpecialTest(data)
+          this.doSpecialTest(task.data)
           break
         case 'ShowTimePint':
-          this.doSpecialTest(data)
+          this.doSpecialTest(task.data)
           break
         default:
           break
       }
     },
-    doQuestionOfKnowingSubject(data) {
-      this.overPlayData = data
-      this.overPlayComponent = 'question-of-knowing-subject'
-      this.showOverPlayer()
+    doTask(task) {
+      this.currentTask = task
+      switch (task.type) {
+        case 'QuestionOfKnowingSubject':
+          this.doQuestionOfKnowingSubject(task)
+          break
+        case 'gotToTime':
+          this.doGoToTime(task)
+          break
+        case 'StabilizationTest':
+          this.doStabilizationTest(task.data)
+          break
+        case 'SpecialTest':
+          this.doSpecialTest(task.data)
+          break
+        case 'ShowTimePint':
+          this.doSpecialTest(task.data)
+          break
+        default:
+          break
+      }
     },
+
+
     doStabilizationTest() {
       // show dialog for QuestionOfKnowingSubject
       // new Question(data.questoin)
@@ -180,7 +237,7 @@ export default {
       this.overPlayer = true
     },
     hideOverPlayer() {
-      this.overPlayer = true
+      this.overPlayer = false
     },
     toggleOverPlayer() {
       if (this.overPlayer) {
@@ -200,6 +257,7 @@ export default {
     onPlayerTimeUpdate(data) {
       // eslint-disable-next-line
       console.log('onPlayerTimeUpdate', data)
+      this.playerCurrentTime = data.currentTime
     },
     goToTime(time) {
       this.$refs.interactivePlayer.goToTime(time)
@@ -221,4 +279,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.InteractivePlayer {
+  direction: rtl;
+}
 </style>
