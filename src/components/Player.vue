@@ -21,6 +21,7 @@ require('@silvermine/videojs-quality-selector/dist/css/quality-selector.css')
 
 export default {
   name: 'Player',
+
   data() {
     return {
       playerInstance: null,
@@ -69,6 +70,7 @@ export default {
       },
     }
   },
+
   props: {
     sources: {
       type: PlayerSourceList,
@@ -85,6 +87,7 @@ export default {
       default: '',
     },
   },
+
   watch: {
     sources() {
       this.playerInstance.src(this.sources.list)
@@ -97,6 +100,7 @@ export default {
   mounted() {
     this.initPlayer()
   },
+
   methods: {
     goToTime(time) {
       this.playerInstance.currentTime(time)
@@ -111,6 +115,9 @@ export default {
     },
     focus() {
       this.playerInstance.focus()
+    },
+    pause() {
+      this.playerInstance.pause()
     },
     initPlayer() {
       this.playerInstance = videojs(this.$refs.videoPlayer, this.playerOptions, () => {
