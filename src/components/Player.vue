@@ -1,5 +1,8 @@
 <template>
-  <div class="player">
+  <div
+      class="player"
+      :class="{'fullscreen-player': fullscreen, 'none-fullscreen-player': !fullscreen}"
+  >
     <video ref="videoPlayer" class="video-js vjs-default-skin" controls preload="none">
       <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
     </video>
@@ -101,6 +104,12 @@ export default {
     this.initPlayer()
   },
 
+  computed: {
+    fullscreen() {
+      return this.isFullscreen()
+    },
+  },
+
   methods: {
     goToTime(time) {
       this.playerInstance.currentTime(time)
@@ -119,6 +128,11 @@ export default {
     pause() {
       this.playerInstance.pause()
     },
+
+    isFullscreen() {
+      return this.playerInstance ? this.playerInstance.isFullscreen() : false
+    },
+
     initPlayer() {
       this.playerInstance = videojs(this.$refs.videoPlayer, this.playerOptions, () => {
         this.$emit('ready')
@@ -148,7 +162,24 @@ export default {
 
 <style lang="scss" scoped>
 .player {
-  position: relative;
+  &.none-fullscreen-player {
+    position: relative;
+
+  }
+
+  &.fullscreen-player {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    .video-js {
+      display: contents
+
+    }
+  }
+
   .video-js {
     width: 100%;
   }
