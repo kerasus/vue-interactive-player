@@ -179,53 +179,9 @@ export default {
   },
 
   methods: {
-    // setSequenceListOfTimesPoints() {
-    //   this.timePointsSequence = this.timePoints.list
-    // },
-
-    // setCurrentTimePoint() {
-    //   console.log('before', this.currentTimePoint)
-    //   if (!this.currentTimePoint) {
-    //     // eslint-disable-next-line prefer-destructuring
-    //     this.currentTimePoint = this.timePointsSequence[0]
-    //   } else {
-    //     console.log('else', this.findTimePointWithStartTime(this.currentTimePoint.start))
-    //     this.currentTimePoint = this.findTimePointWithStartTime(this.currentTimePoint.start)
-    //   }
-    //   console.log('after', this.currentTimePoint)
-    // },
-
-    // findTimePointWithStartTime(startTime) {
-    //   if (!startTime) {
-    //     return
-    //   }
-    //   // eslint-disable-next-line consistent-return
-    //   console.log('this.timePointsSequence', this.timePointsSequence)
-    //   return this.timePointsSequence.find((timePoint) => timePoint.start > startTime)
-    // },
-    //
-    // setPostTasks() {
-    //   console.log('hi, Im from post')
-    // },
-    //
-    // setPreTasks() {
-    //   console.log('hi, Im from pre')
-    // },
-
     pause() {
       this.$refs.interactivePlayer.pause()
     },
-
-    // runTimePoints() {
-    //   const firstTimePint = this.timePoints.list[0]
-    //   this.setSequenceListOfTimesPoints()
-    //   this.setCurrentTimePoint()
-    //   this.changeSources(firstTimePint.sources, firstTimePint.poster)
-    // },
-    //
-    // loadNewTimePoint () {
-    //
-    // },
 
     onAction (data) {
       this.doTaskAction(this.currentTask, data)
@@ -288,7 +244,6 @@ export default {
       }
     },
 
-
     doStabilizationTest() {
       // show dialog for QuestionOfKnowingSubject
       // new Question(data.questoin)
@@ -324,21 +279,6 @@ export default {
       // eslint-disable-next-line
       console.log('onPlayerEnded')
     },
-
-    // onPlayerTimeUpdate(data) {
-    //   console.log('onPlayerTimeUpdate', this.currentTimePoint)
-    //   if (Math.ceil(data.currentTime) === this.currentTimePoint.start + 1) {
-    //     if (this.currentTimePoint.postShowTasks.length) {
-    //       this.setPostTasks()
-    //     }
-    //   }
-    //   if (Math.ceil(data.currentTime) === this.currentTimePoint.end + 1) {
-    //     if (this.currentTimePoint.preShowTasks.length) {
-    //       this.setPreTasks()
-    //     }
-    //   }
-    //   this.setCurrentTimePoint()
-    // },
 
     onPlayerTimeUpdate(data) {
       // eslint-disable-next-line
