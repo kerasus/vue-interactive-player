@@ -99,7 +99,7 @@ export default {
                   },
                   {
                     id: 1,
-                    task_id: 5,
+                    task_id: 6,
                     statement: '۲-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
                     choices: [
                       {
@@ -122,7 +122,7 @@ export default {
                   },
                   {
                     id: 2,
-                    task_id: 5,
+                    task_id: 7,
                     statement: '۳-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
                     choices: [
                       {
@@ -145,7 +145,7 @@ export default {
                   },
                   {
                     id: 3,
-                    task_id: 5,
+                    task_id: 8,
                     statement: '۴-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
                     choices: [
                       {
@@ -168,7 +168,7 @@ export default {
                   },
                   {
                     id: 4,
-                    task_id: 5,
+                    task_id: 9,
                     statement: '۵-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
                     choices: [
                       {
@@ -278,11 +278,44 @@ export default {
               type: 'gotToTime',
               data: {
                 start: 50,
-                end: 55,
+                end: 52,
               },
             },
             {
               id: 6,
+              type: 'gotToTime',
+              data: {
+                start: 62,
+                end: 64,
+              },
+            },
+            {
+              id: 7,
+              type: 'gotToTime',
+              data: {
+                start: 94,
+                end: 96,
+              },
+            },
+            {
+              id: 8,
+              type: 'gotToTime',
+              data: {
+                start: 102,
+                end: 104,
+              },
+            },
+            {
+              id: 9,
+              type: 'gotToTime',
+              data: {
+                start: 120,
+                end: 122,
+              },
+            },
+
+            {
+              id: 10,
               type: 'gotToTimePoint',
               data: {
                 timePoint_id: 0
