@@ -7,9 +7,9 @@
            :key="choiceIndex"
            class="choice-col"
       >
-        <input type="checkbox" :id="choice.selected" :name="'answer'+choiceIndex" :value="choice.value">
+        <input type="checkbox" :id="choice.selected" :name="'answer'+choiceIndex" :value="choice.value" @change="answer(choice)">
         <span>{{ choiceIndex + 1 }}.</span>
-        <div class="choice" v-html="choice.label" @click="answer(choice)" />
+        <div class="choice" v-html="choice.label" />
       </div>
     </div>
   </div>
