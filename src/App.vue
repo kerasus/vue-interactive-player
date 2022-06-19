@@ -6,13 +6,14 @@
 
 <script>
 import InteractivePlayer from './InteractivePlayer.vue'
+import { TimePointList } from './models/TimePoint'
 
 export default {
   name: 'App',
   components: { InteractivePlayer },
   data() {
     return {
-      timePoints: [
+      timePoints: new TimePointList([
         {
           id: 0,
           poster: 'https://nodes.alaatv.com/media/thumbnails/969/969007kbnt.jpg',
@@ -517,7 +518,7 @@ export default {
             },
           ],
         },
-      ],
+      ]),
     }
   },
   created() {

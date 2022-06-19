@@ -1,7 +1,6 @@
 <template>
   <div class="InteractivePlayer">
-    <div>
-      <player
+    <player
           ref="interactivePlayer"
           :sources="sources"
           :poster="poster"
@@ -14,7 +13,6 @@
           <over-player :data="overPlayData" :over-play-component="overPlayComponent" @action="onAction"/>
         </template>
       </player>
-    </div>
     <div style="text-align: center; padding: 50px">
       <button @click="changeSources(sampleSources1, samplePoster1)">
         source 1
