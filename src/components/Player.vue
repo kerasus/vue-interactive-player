@@ -78,6 +78,10 @@ export default {
     hasSources (){
       return this.sources.list.length > 0
     },
+
+    fullscreen() {
+      return this.isFullscreen()
+    },
   },
   props: {
     sources: {
