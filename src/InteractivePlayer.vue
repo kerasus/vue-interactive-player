@@ -1,7 +1,6 @@
 <template>
   <div class="InteractivePlayer">
-    <div>
-      <player
+    <player
           ref="interactivePlayer"
           :sources="sources"
           :poster="poster"
@@ -14,7 +13,6 @@
           <over-player :data="overPlayData" :over-play-component="overPlayComponent" @action="onAction"/>
         </template>
       </player>
-    </div>
     <div style="text-align: center; padding: 50px">
       <button @click="changeSources(sampleSources1, samplePoster1)">
         source 1
@@ -48,15 +46,15 @@
 <script>
 import Player from './components/Player'
 import OverPlayer from './components/OverPlayer'
-import { Task } from './models/Task'
+import {Task, TaskList} from './models/Task'
 import { TimePointList, TimePoint } from './models/TimePoint'
 import { PlayerSourceList } from './models/PlayerSource'
-import { mixinQuestionOfKnowingSubject, mixinGoToTime, mixinGoToTimePoint } from './mixins/Mixins'
+import { mixinQuestionOfKnowingSubject, mixinStabilizationTest, mixinGoToTime, mixinGoToTimePoint, mixinPlayer, mixinOverPlayer } from './mixins/Mixins'
 
 export default {
   name: 'InteractivePlayer',
   components: { Player, OverPlayer },
-  mixins: [mixinQuestionOfKnowingSubject, mixinGoToTime, mixinGoToTimePoint],
+  mixins: [mixinQuestionOfKnowingSubject, mixinGoToTime, mixinGoToTimePoint, mixinPlayer, mixinOverPlayer, mixinStabilizationTest],
   props: {
     timePoints: {
       type: Array,
@@ -67,14 +65,26 @@ export default {
   },
   watch: {
     playerCurrentTime (newValue) {
-      if (this.watchingEndTime <= newValue) {
-        if (!this.currentTimePoint.tasks.hasPostShow()) {
+      if (this.watchingEndTime > newValue) {
+        return
+      }
+
+      const nextTaskOfCurrentTaskId = this.currentTask?.data?.next_task_id
+      const nextTaskOfCurrentTaskAutoPlay = this.currentTask?.data?.next_task_auto_play
+      if (typeof nextTaskOfCurrentTaskId !== 'undefined' && nextTaskOfCurrentTaskId !== null && nextTaskOfCurrentTaskAutoPlay) {
+        const nextTaskOfCurrentTask = this.getTaskOfTimePoint(nextTaskOfCurrentTaskId)
+        if (nextTaskOfCurrentTask) {
+          this.doTask(nextTaskOfCurrentTask)
           return
         }
-
-        const postShowTask = this.currentTimePoint.tasks.getPostShow()
-        this.doTask(postShowTask)
       }
+
+      if (!this.currentTimePoint.tasks.hasPostShow()) {
+        return
+      }
+
+      const postShowTask = this.currentTimePoint.tasks.getPostShow()
+      this.doTask(postShowTask)
     }
   },
   data() {
@@ -159,28 +169,50 @@ export default {
   },
   created() {
     this.localTimePoints = new TimePointList(this.timePoints)
-    const firstTimePoint = this.getFirstTimePont()
-    this.runTimePoint(firstTimePoint)
+    this.loadFirstTimePont()
   },
   methods: {
-    loadNewTimePoint () {
-
+    getTaskOfTimePoint (taskId) {
+      return this.currentTimePoint.tasks.getItem('id', taskId)
     },
     onAction (data) {
       this.doTaskAction(this.currentTask, data)
     },
+    setCurrentTask (task) {
+      this.currentTask = task
+    },
     getFirstTimePont() {
       return this.localTimePoints.list[0]
     },
+    loadFirstTimePont() {
+      const firstTimePoint = this.getFirstTimePont()
+      this.runTimePoint(firstTimePoint)
+    },
+    getNextTimePont() {
+      const currentTimePointIndex = this.localTimePoints.getIndex('id', this.currentTimePoint.id)
+      const nextTimePoint = this.localTimePoints.list[currentTimePointIndex+1]
+      if (typeof nextTimePoint === 'undefined') {
+        return null
+      }
+
+      return nextTimePoint
+    },
+    loadNextTimePont() {
+      const nextTimePoint = this.getNextTimePont()
+      if (!nextTimePoint) {
+        this.pause()
+        return
+      }
+      this.runTimePoint(nextTimePoint)
+    },
     runTimePoint(timePoint) {
       this.currentTimePoint = timePoint
+      this.setWatchingEndTime(this.currentTimePoint.end)
+      this.changeSources(timePoint.sources, timePoint.poster)
       if (timePoint.hesTasks() && timePoint.tasks.hasPreShow()) {
         const preShowTask = timePoint.tasks.getPreShow()
         this.doTask(preShowTask)
-        return
       }
-
-      this.changeSources(timePoint.sources, timePoint.poster)
     },
     doTaskAction(task, actionData) {
       switch (task.type) {
@@ -188,7 +220,7 @@ export default {
           this.doActionOfQuestionOfKnowingSubject(actionData)
           break
         case 'StabilizationTest':
-          this.doStabilizationTest(task.data)
+          this.doActionOfStabilizationTest(actionData)
           break
         case 'SpecialTest':
           this.doSpecialTest(task.data)
@@ -201,7 +233,7 @@ export default {
       }
     },
     doTask(task) {
-      this.currentTask = task
+      this.setCurrentTask(task)
       switch (task.type) {
         case 'QuestionOfKnowingSubject':
           this.doQuestionOfKnowingSubject(task)
@@ -210,7 +242,7 @@ export default {
           this.doGoToTime(task)
           break
         case 'StabilizationTest':
-          this.doStabilizationTest(task.data)
+          this.doStabilizationTest(task)
           break
         case 'SpecialTest':
           this.doSpecialTest(task.data)
@@ -222,57 +254,60 @@ export default {
           break
       }
     },
+    doTaskSequence (taskIds) {
+      this.loadTaskSequence(taskIds)
+      const firstTaskOfSequence = this.taskSequence.list[0]
+      if (typeof firstTaskOfSequence === 'undefined') {
+        return
+      }
 
-
-    doStabilizationTest() {
-      // show dialog for QuestionOfKnowingSubject
-      // new Question(data.questoin)
+      this.doTask(firstTaskOfSequence)
     },
+    loadTaskSequence (taskIds) {
+      this.taskSequence = this.getNewTaskSequence(taskIds)
+    },
+    clearTaskSequence () {
+      this.taskSequence = new TaskList()
+    },
+    getNewTaskSequence (taskIds) {
+      const taskSequence = new TaskList()
+      taskIds.forEach( taskId => {
+        const task = this.currentTimePoint.tasks.getItem('id', taskId)
+        if (!task) {
+          return
+        }
+
+        taskSequence.addItem(task)
+      })
+
+      taskSequence.list.forEach( (task, taskIndex) => {
+        if (typeof taskSequence.list[taskIndex + 1] === 'undefined') {
+          this.setNextTaskId (taskSequence.list[taskIndex], null, false)
+          return
+        }
+
+        this.setNextTaskId (taskSequence.list[taskIndex], taskSequence.list[(taskIndex + 1)].id)
+      })
+
+      return taskSequence
+    },
+    setNextTaskId (task, nextTaskId, autoPlay) {
+      if (typeof task.data === 'undefined') {
+        task.data = {}
+      }
+      if (typeof autoPlay === 'undefined') {
+        autoPlay = true
+      }
+      task.data.next_task_id = nextTaskId
+      task.data.next_task_auto_play = true
+    },
+    setWatchingEndTime (endTime) {
+      this.watchingEndTime = endTime
+    },
+
     doSpecialTest() {
       // show dialog for QuestionOfKnowingSubject
       // new Question(data.questoin)
-    },
-
-    showOverPlayer() {
-      this.overPlayer = true
-    },
-    hideOverPlayer() {
-      this.overPlayer = false
-    },
-    toggleOverPlayer() {
-      if (this.overPlayer) {
-        this.hideOverPlayer()
-      } else {
-        this.showOverPlayer()
-      }
-    },
-    onPlayerReady() {
-      // eslint-disable-next-line
-      console.log('onPlayerReady')
-    },
-    onPlayerEnded() {
-      // eslint-disable-next-line
-      console.log('onPlayerEnded')
-    },
-    onPlayerTimeUpdate(data) {
-      // eslint-disable-next-line
-      console.log('onPlayerTimeUpdate', data)
-      this.playerCurrentTime = data.currentTime
-    },
-    goToTime(time) {
-      this.$refs.interactivePlayer.goToTime(time)
-      this.play()
-      this.focus()
-    },
-    play() {
-      this.$refs.interactivePlayer.play()
-    },
-    focus() {
-      this.$refs.interactivePlayer.focus()
-    },
-    changeSources(sources, poster) {
-      this.sources = sources
-      this.poster = poster
     },
   },
 }
