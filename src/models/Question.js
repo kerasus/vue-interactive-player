@@ -7,6 +7,7 @@ class Question extends Model {
       { key: 'id' },
       { key: 'type' }, // question of knowing subject
       { key: 'statement' },
+      { key: 'task_id' },
       {
         key: 'choices',
         relatedModel: ChoiceList,

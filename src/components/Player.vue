@@ -122,6 +122,9 @@ export default {
         this.playerInstance.dispose()
       }
     },
+    pause() {
+      this.playerInstance.pause()
+    },
     play() {
       this.playerInstance.play()
     },

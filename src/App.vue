@@ -38,7 +38,7 @@ export default {
             },
           ],
           start: 0,
-          end: 20,
+          end: 2,
           tasks: [
             {
               id: 0,
@@ -69,113 +69,128 @@ export default {
               id: 1,
               type: 'StabilizationTest',
               postShow: true,
-              data: [
-                {
-                  statement: '۱-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
-                  choices: [
-                    {
-                      label: 'گزینه های یکپارچه',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه های درهم',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه های متفرقه',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه درست',
-                      value: true,
-                    },
-                  ],
-                },
-                {
-                  statement: '۲-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
-                  choices: [
-                    {
-                      label: 'گزینه های یکپارچه',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه های درهم',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه های متفرقه',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه درست',
-                      value: true,
-                    },
-                  ],
-                },
-                {
-                  statement: '۳-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
-                  choices: [
-                    {
-                      label: 'گزینه های یکپارچه',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه های درهم',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه های متفرقه',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه درست',
-                      value: true,
-                    },
-                  ],
-                },
-                {
-                  statement: '۴-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
-                  choices: [
-                    {
-                      label: 'گزینه های یکپارچه',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه های درهم',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه های متفرقه',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه درست',
-                      value: true,
-                    },
-                  ],
-                },
-                {
-                  statement: '۵-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
-                  choices: [
-                    {
-                      label: 'گزینه های یکپارچه',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه های درهم',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه های متفرقه',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه درست',
-                      value: true,
-                    },
-                  ],
-                },
-              ],
+              data: {
+                legalTime: 50,
+                next_task_id: 2,
+                next_task_auto_play: false,
+                questions: [
+                  {
+                    id: 0,
+                    task_id: 5,
+                    statement: '۱-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    choices: [
+                      {
+                        label: 'گزینه های یکپارچه',
+                        value: false
+                      },
+                      {
+                        label: 'گزینه های درهم',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه های متفرقه',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه درست',
+                        value: true,
+                      },
+                    ],
+                  },
+                  {
+                    id: 1,
+                    task_id: 5,
+                    statement: '۲-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    choices: [
+                      {
+                        label: 'گزینه های یکپارچه',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه های درهم',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه های متفرقه',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه درست',
+                        value: true,
+                      },
+                    ],
+                  },
+                  {
+                    id: 2,
+                    task_id: 5,
+                    statement: '۳-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    choices: [
+                      {
+                        label: 'گزینه های یکپارچه',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه های درهم',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه های متفرقه',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه درست',
+                        value: true,
+                      },
+                    ],
+                  },
+                  {
+                    id: 3,
+                    task_id: 5,
+                    statement: '۴-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    choices: [
+                      {
+                        label: 'گزینه های یکپارچه',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه های درهم',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه های متفرقه',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه درست',
+                        value: true,
+                      },
+                    ],
+                  },
+                  {
+                    id: 4,
+                    task_id: 5,
+                    statement: '۵-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    choices: [
+                      {
+                        label: 'گزینه های یکپارچه',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه های درهم',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه های متفرقه',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه درست',
+                        value: true,
+                      },
+                    ],
+                  },
+                ]
+              },
             },
             {
               id: 2,
@@ -255,6 +270,22 @@ export default {
               type: 'gotToTimePoint',
               data: {
                 timePoint_id: 1
+              },
+            },
+
+            {
+              id: 5,
+              type: 'gotToTime',
+              data: {
+                start: 50,
+                end: 55,
+              },
+            },
+            {
+              id: 6,
+              type: 'gotToTimePoint',
+              data: {
+                timePoint_id: 0
               },
             },
           ],

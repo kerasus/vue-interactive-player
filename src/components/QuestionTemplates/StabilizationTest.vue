@@ -19,9 +19,13 @@ export default {
   name: 'StabilizationTest',
   props: {
     data: {
-      type: Array,
+      type: Object,
       default() {
-        return new QuestionList()
+        return {
+          legalTime: null,
+          task_id: null,
+          questions: []
+        }
       },
     },
   },
@@ -32,6 +36,8 @@ export default {
     }
   },
   created() {
+    this.questions = new QuestionList(this.data?.questions)
+
     if (!this.hasQuestions()) {
       return
     }
@@ -46,8 +52,25 @@ export default {
       const firstQuestion = this.getFirstQuestion()
       this.loadCurrentQuestion(firstQuestion)
     },
+    getCurrentQuestionIndex () {
+      return this.questions.getIndex('id', this.currentQuestion.id)
+    },
     getNextQuestion () {
-      const currentQuestionIndex = this.questions.getIndex('id', this.currentQuestion.id)
+      const currentQuestionIndex = this.getCurrentQuestionIndex()
+      if (currentQuestionIndex < 0) {
+        return null
+      }
+
+      const nextQuestion = this.questions.list[currentQuestionIndex + 1]
+
+      if (typeof nextQuestion === 'undefined') {
+        return null
+      }
+
+      return nextQuestion
+    },
+    getThisQuestion () {
+      const currentQuestionIndex = this.getCurrentQuestionIndex()
       if (currentQuestionIndex < 0) {
         return null
       }
@@ -56,8 +79,11 @@ export default {
     },
     loadNextQuestion () {
       const nextQuestion = this.getNextQuestion()
-      
-      this.loadCurrentQuestion(firstQuestion)
+      if (!nextQuestion) {
+        this.$emit('action', this.questions)
+        return
+      }
+      this.loadCurrentQuestion(nextQuestion)
     },
     loadCurrentQuestion (question) {
       this.currentQuestion = question
@@ -66,7 +92,10 @@ export default {
       return this.questions.list[0]
     },
     answer(choice) {
-      this.$emit('action', choice)
+      const thisQuestion = this.getThisQuestion()
+      thisQuestion.choices.clearSelected()
+      choice.selected = true
+      this.loadNextQuestion()
     },
   },
 }

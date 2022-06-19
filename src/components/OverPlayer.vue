@@ -8,11 +8,12 @@
 
 <script>
 
-import QuestionOfKnowingSubject from './QuestionTemplates/QuestionOfKnowingSubject'
+import QuestionOfKnowingSubject from './QuestionTemplates/QuestionOfKnowingSubject.vue'
+import StabilizationTest from './QuestionTemplates/StabilizationTest.vue'
 
 export default {
   name: 'OverPlayer',
-  components: { QuestionOfKnowingSubject },
+  components: { QuestionOfKnowingSubject, StabilizationTest },
   props: {
     overPlayComponent: {
       type: String,
