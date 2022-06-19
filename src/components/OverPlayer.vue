@@ -39,11 +39,8 @@ export default {
   align-items: center;
   justify-content: center;
   .OverPlayer {
-    border: solid 3px gray;
     background-color: white;
-    border-radius: 5px;
-    width: 70%;
-    height: 70%;
+    border-radius: 30px;
   }
 }
 </style>

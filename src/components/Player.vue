@@ -1,5 +1,6 @@
 <template>
   <div
+      ref="videoPlayerWrapper"
       class="player"
       :class="{'fullscreen-player': fullscreen, 'none-fullscreen-player': !fullscreen}"
   >
@@ -27,7 +28,7 @@ export default {
 
   data() {
     return {
-      playerHeight: '200px',
+      // playerHeight: '200px',
       playerInstance: null,
       playerOptions: {
         controlBar: {
@@ -74,6 +75,7 @@ export default {
       },
     }
   },
+
   computed: {
     hasSources (){
       return this.sources.list.length > 0
@@ -82,6 +84,7 @@ export default {
       return this.isFullscreen()
     },
   },
+
   props: {
     sources: {
       type: PlayerSourceList,
@@ -119,24 +122,29 @@ export default {
   },
 
   methods: {
-    updatePlayerHeight () {
-      const playerWidth = this.$refs.videoPlayerWrapper.clientWidth
-      this.playerHeight = (playerWidth * 9) / 16 + 'px'
-    },
+    // updatePlayerHeight () {
+    //   const playerWidth = this.$refs.videoPlayerWrapper.clientWidth
+    //   this.playerHeight = (playerWidth * 9) / 16 + 'px'
+    // },
+
     goToTime(time) {
       this.playerInstance.currentTime(time)
     },
+
     dispose() {
       if (this.playerInstance) {
         this.playerInstance.dispose()
       }
     },
+
     play() {
       this.playerInstance.play()
     },
+
     focus() {
       this.playerInstance.focus()
     },
+
     pause() {
       this.playerInstance.pause()
     },
@@ -146,7 +154,7 @@ export default {
     },
 
     initPlayer() {
-      this.updatePlayerHeight()
+      // this.updatePlayerHeight()
       if (!this.hasSources) {
         return
       }
@@ -198,7 +206,9 @@ export default {
 
   .video-js {
     width: 100%;
+    height: 500px;
   }
+
   .over-player-wrapper {
     position: absolute;
     top: 0;
@@ -207,6 +217,7 @@ export default {
     height: 100%;
     &.show {
       display: block;
+      background: rgba(0,0,0,0.5);
     }
     &.hide {
       display: none;

@@ -57,12 +57,13 @@ export default {
   mixins: [mixinQuestionOfKnowingSubject, mixinGoToTime, mixinGoToTimePoint],
   props: {
     timePoints: {
-      type: Array,
+      type: TimePointList,
       default() {
-        return []
+        return new TimePointList()
       },
     },
   },
+
   watch: {
     playerCurrentTime (newValue) {
       if (this.watchingEndTime <= newValue) {
@@ -75,6 +76,7 @@ export default {
       }
     }
   },
+
   data() {
     return {
       // timePointsSequence: [],
@@ -224,12 +226,15 @@ export default {
     // loadNewTimePoint () {
     //
     // },
+
     onAction (data) {
       this.doTaskAction(this.currentTask, data)
     },
+
     getFirstTimePont() {
       return this.localTimePoints.list[0]
     },
+
     runTimePoint(timePoint) {
       this.currentTimePoint = timePoint
       if (timePoint.hesTasks() && timePoint.tasks.hasPreShow()) {
@@ -240,6 +245,7 @@ export default {
 
       this.changeSources(timePoint.sources, timePoint.poster)
     },
+
     doTaskAction(task, actionData) {
       switch (task.type) {
         case 'QuestionOfKnowingSubject':
@@ -258,6 +264,7 @@ export default {
           break
       }
     },
+
     doTask(task) {
       this.currentTask = task
       switch (task.type) {
