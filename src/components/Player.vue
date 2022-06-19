@@ -78,6 +78,10 @@ export default {
     hasSources (){
       return this.sources.list.length > 0
     },
+
+    fullscreen() {
+      return this.isFullscreen()
+    },
   },
   props: {
     sources: {
@@ -128,6 +132,10 @@ export default {
     },
     pause() {
       this.playerInstance.pause()
+    },
+
+    isFullscreen() {
+      return this.playerInstance ? this.playerInstance.isFullscreen() : false
     },
     play() {
       this.playerInstance.play()
