@@ -27,6 +27,7 @@ export default {
 
   data() {
     return {
+      playerHeight: '200px',
       playerInstance: null,
       playerOptions: {
         controlBar: {
@@ -73,7 +74,14 @@ export default {
       },
     }
   },
-
+  computed: {
+    hasSources (){
+      return this.sources.list.length > 0
+    },
+    fullscreen() {
+      return this.isFullscreen()
+    },
+  },
   props: {
     sources: {
       type: PlayerSourceList,
@@ -93,9 +101,15 @@ export default {
 
   watch: {
     sources() {
+      if (this.playerInstance === null) {
+        this.initPlayer()
+      }
       this.playerInstance.src(this.sources.list)
     },
     poster() {
+      if (this.playerInstance === null) {
+        this.initPlayer()
+      }
       this.playerInstance.poster(this.poster)
     },
   },
@@ -104,13 +118,11 @@ export default {
     this.initPlayer()
   },
 
-  computed: {
-    fullscreen() {
-      return this.isFullscreen()
-    },
-  },
-
   methods: {
+    updatePlayerHeight () {
+      const playerWidth = this.$refs.videoPlayerWrapper.clientWidth
+      this.playerHeight = (playerWidth * 9) / 16 + 'px'
+    },
     goToTime(time) {
       this.playerInstance.currentTime(time)
     },
@@ -134,6 +146,10 @@ export default {
     },
 
     initPlayer() {
+      this.updatePlayerHeight()
+      if (!this.hasSources) {
+        return
+      }
       this.playerInstance = videojs(this.$refs.videoPlayer, this.playerOptions, () => {
         this.$emit('ready')
         this.playerInstance.on('ended', () => {

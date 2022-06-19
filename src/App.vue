@@ -38,33 +38,38 @@ export default {
               selected: true,
             },
           ],
-          start: 10,
-          end: 15,
-          preShowTasks: [
+          start: 0,
+          end: 20,
+          tasks: [
             {
+              id: 0,
               type: 'QuestionOfKnowingSubject',
+              preShow: true,
               data: {
                 statement: 'می خوایم مبحث فیلان رو تدریس کنیم، می خوای ببینی؟',
                 choices: [
                   {
                     label: 'بلدم و می خوام ببینم',
                     value: 0,
+                    task_id: 3
                   },
                   {
                     label: 'بلدم و نمی خوام ببینم',
                     value: 1,
+                    task_id: 4
                   },
                   {
                     label: 'بلد نیستم و می خوام ببینم',
                     value: 2,
+                    task_id: 3
                   },
                 ],
               },
             },
-          ],
-          postShowTasks: [
             {
+              id: 1,
               type: 'StabilizationTest',
+              postShow: true,
               data: [
                 {
                   statement: '۱-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
@@ -174,6 +179,7 @@ export default {
               ],
             },
             {
+              id: 2,
               type: 'SpecialTest',
               data: [
                 {
@@ -241,10 +247,21 @@ export default {
                 },
               ],
             },
+            {
+              id: 3,
+              type: 'gotToTime'
+            },
+            {
+              id: 4,
+              type: 'gotToTimePoint',
+              data: {
+                timePoint_id: 1
+              },
+            },
           ],
         },
         {
-          id: 0,
+          id: 1,
           poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374000asdf.jpg',
           sources: [
             {
@@ -267,9 +284,9 @@ export default {
               selected: true,
             },
           ],
-          start: 30,
-          end: 40,
-          preShowTasks: [
+          start: 90,
+          end: 100,
+          tasks: [
             {
               type: 'QuestionOfKnowingSubject',
               data: {
@@ -290,8 +307,6 @@ export default {
                 ],
               },
             },
-          ],
-          postShowTasks: [
             {
               type: 'StabilizationTest',
               data: [

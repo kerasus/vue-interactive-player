@@ -6,6 +6,15 @@ class Task extends Model {
       { key: 'id' },
       { key: 'type' }, // question of knowing subject
       { key: 'data' },
+      { key: 'done' },
+      {
+        key: 'preShow',
+        default: false
+      },
+      {
+        key: 'postShow',
+        default: false
+      },
     ])
   }
 }
@@ -13,6 +22,22 @@ class Task extends Model {
 class TaskList extends Collection {
   model() {
     return Task
+  }
+
+  getPreShow () {
+    return this.list.find( task => task.preShow)
+  }
+
+  getPostShow () {
+    return this.list.find( task => task.postShow)
+  }
+
+  hasPreShow () {
+    return !!this.getPreShow()
+  }
+
+  hasPostShow () {
+    return !!this.getPostShow()
   }
 }
 export { Task, TaskList }

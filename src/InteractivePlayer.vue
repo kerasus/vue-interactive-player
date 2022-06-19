@@ -10,7 +10,7 @@
           @timeupdate="onPlayerTimeUpdate"
       >
         <template #overPlayer>
-          <over-player :data="overPlayData" :over-play-component="overPlayComponent"/>
+          <over-player :data="overPlayData" :over-play-component="overPlayComponent" @action="onAction"/>
         </template>
       </player>
     <div style="text-align: center; padding: 50px">
@@ -44,29 +44,47 @@
 </template>
 
 <script>
-import Player from './components/Player.vue'
-import OverPlayer from './components/OverPlayer.vue'
-import { TimePointList } from './models/TimePoint'
+import Player from './components/Player'
+import OverPlayer from './components/OverPlayer'
+import { Task } from './models/Task'
+import { TimePointList, TimePoint } from './models/TimePoint'
 import { PlayerSourceList } from './models/PlayerSource'
+import { mixinQuestionOfKnowingSubject, mixinGoToTime, mixinGoToTimePoint } from './mixins/Mixins'
 
 export default {
   name: 'InteractivePlayer',
   components: { Player, OverPlayer },
-
+  mixins: [mixinQuestionOfKnowingSubject, mixinGoToTime, mixinGoToTimePoint],
   props: {
     timePoints: {
-      type: TimePointList,
+      type: Array,
       default() {
-        return new TimePointList()
+        return []
       },
     },
   },
+  watch: {
+    playerCurrentTime (newValue) {
+      if (this.watchingEndTime <= newValue) {
+        if (!this.currentTimePoint.tasks.hasPostShow()) {
+          return
+        }
 
+        const postShowTask = this.currentTimePoint.tasks.getPostShow()
+        this.doTask(postShowTask)
+      }
+    }
+  },
   data() {
     return {
-      timePointsSequence: [],
-      currentTimePoint: null,
+      // timePointsSequence: [],
+      // currentTimePoint: null,
 
+      watchingEndTime: 0,
+      playerCurrentTime: 0,
+      currentTimePoint: new TimePoint(),
+      currentTask: new Task(),
+      localTimePoints : new TimePointList(),
       overPlayData: null,
       overPlayComponent: '',
       overPlayer: false,
@@ -142,13 +160,15 @@ export default {
   },
 
   created() {
-    this.runTimePoints()
+    this.localTimePoints = new TimePointList(this.timePoints)
+    const firstTimePoint = this.getFirstTimePont()
+    this.runTimePoint(firstTimePoint)
   },
 
   computed: {
-    currentTimeOfPlayer() {
-      return this.onPlayerTimeUpdate()
-    },
+    // currentTimeOfPlayer() {
+    //   return this.onPlayerTimeUpdate()
+    // },
     // LoadCurrentTimePoint() {
     //   return this.timePointsSequence.find(
     //     (timePoint) => timePoint.start === Math.ceil(this.currentTimeOfPlayer.currentTime),
@@ -157,74 +177,110 @@ export default {
   },
 
   methods: {
-    setSequenceListOfTimesPoints() {
-      this.timePointsSequence = this.timePoints.list
-    },
+    // setSequenceListOfTimesPoints() {
+    //   this.timePointsSequence = this.timePoints.list
+    // },
 
-    setCurrentTimePoint() {
-      console.log('before', this.currentTimePoint)
-      if (!this.currentTimePoint) {
-        // eslint-disable-next-line prefer-destructuring
-        this.currentTimePoint = this.timePointsSequence[0]
-      } else {
-        console.log('else', this.findTimePointWithStartTime(this.currentTimePoint.start))
-        this.currentTimePoint = this.findTimePointWithStartTime(this.currentTimePoint.start)
-      }
-      console.log('after', this.currentTimePoint)
-    },
+    // setCurrentTimePoint() {
+    //   console.log('before', this.currentTimePoint)
+    //   if (!this.currentTimePoint) {
+    //     // eslint-disable-next-line prefer-destructuring
+    //     this.currentTimePoint = this.timePointsSequence[0]
+    //   } else {
+    //     console.log('else', this.findTimePointWithStartTime(this.currentTimePoint.start))
+    //     this.currentTimePoint = this.findTimePointWithStartTime(this.currentTimePoint.start)
+    //   }
+    //   console.log('after', this.currentTimePoint)
+    // },
 
-    findTimePointWithStartTime(startTime) {
-      if (!startTime) {
-        return
-      }
-      // eslint-disable-next-line consistent-return
-      console.log('this.timePointsSequence', this.timePointsSequence)
-      return this.timePointsSequence.find((timePoint) => timePoint.start > startTime)
-    },
-
-    setPostTasks() {
-      console.log('hi, Im from post')
-    },
-
-    setPreTasks() {
-      console.log('hi, Im from pre')
-    },
+    // findTimePointWithStartTime(startTime) {
+    //   if (!startTime) {
+    //     return
+    //   }
+    //   // eslint-disable-next-line consistent-return
+    //   console.log('this.timePointsSequence', this.timePointsSequence)
+    //   return this.timePointsSequence.find((timePoint) => timePoint.start > startTime)
+    // },
+    //
+    // setPostTasks() {
+    //   console.log('hi, Im from post')
+    // },
+    //
+    // setPreTasks() {
+    //   console.log('hi, Im from pre')
+    // },
 
     pause() {
       this.$refs.interactivePlayer.pause()
     },
 
-    runTimePoints() {
-      const firstTimePint = this.timePoints.list[0]
-      this.setSequenceListOfTimesPoints()
-      this.setCurrentTimePoint()
-      this.changeSources(firstTimePint.sources, firstTimePint.poster)
+    // runTimePoints() {
+    //   const firstTimePint = this.timePoints.list[0]
+    //   this.setSequenceListOfTimesPoints()
+    //   this.setCurrentTimePoint()
+    //   this.changeSources(firstTimePint.sources, firstTimePint.poster)
+    // },
+    //
+    // loadNewTimePoint () {
+    //
+    // },
+    onAction (data) {
+      this.doTaskAction(this.currentTask, data)
     },
+    getFirstTimePont() {
+      return this.localTimePoints.list[0]
+    },
+    runTimePoint(timePoint) {
+      this.currentTimePoint = timePoint
+      if (timePoint.hesTasks() && timePoint.tasks.hasPreShow()) {
+        const preShowTask = timePoint.tasks.getPreShow()
+        this.doTask(preShowTask)
+        return
+      }
 
-    do(taskType, data) {
-      switch (taskType) {
+      this.changeSources(timePoint.sources, timePoint.poster)
+    },
+    doTaskAction(task, actionData) {
+      switch (task.type) {
         case 'QuestionOfKnowingSubject':
-          this.doQuestionOfKnowingSubject(data)
+          this.doActionOfQuestionOfKnowingSubject(actionData)
           break
         case 'StabilizationTest':
-          this.doStabilizationTest(data)
+          this.doStabilizationTest(task.data)
           break
         case 'SpecialTest':
-          this.doSpecialTest(data)
+          this.doSpecialTest(task.data)
           break
         case 'ShowTimePint':
-          this.doSpecialTest(data)
+          this.doSpecialTest(task.data)
+          break
+        default:
+          break
+      }
+    },
+    doTask(task) {
+      this.currentTask = task
+      switch (task.type) {
+        case 'QuestionOfKnowingSubject':
+          this.doQuestionOfKnowingSubject(task)
+          break
+        case 'gotToTime':
+          this.doGoToTime(task)
+          break
+        case 'StabilizationTest':
+          this.doStabilizationTest(task.data)
+          break
+        case 'SpecialTest':
+          this.doSpecialTest(task.data)
+          break
+        case 'ShowTimePint':
+          this.doSpecialTest(task.data)
           break
         default:
           break
       }
     },
 
-    doQuestionOfKnowingSubject(data) {
-      this.overPlayData = data
-      this.overPlayComponent = 'question-of-knowing-subject'
-      this.showOverPlayer()
-    },
 
     doStabilizationTest() {
       // show dialog for QuestionOfKnowingSubject
@@ -241,7 +297,7 @@ export default {
     },
 
     hideOverPlayer() {
-      this.overPlayer = true
+      this.overPlayer = false
     },
 
     toggleOverPlayer() {
@@ -262,24 +318,28 @@ export default {
       console.log('onPlayerEnded')
     },
 
+    // onPlayerTimeUpdate(data) {
+    //   console.log('onPlayerTimeUpdate', this.currentTimePoint)
+    //   if (Math.ceil(data.currentTime) === this.currentTimePoint.start + 1) {
+    //     if (this.currentTimePoint.postShowTasks.length) {
+    //       this.setPostTasks()
+    //     }
+    //   }
+    //   if (Math.ceil(data.currentTime) === this.currentTimePoint.end + 1) {
+    //     if (this.currentTimePoint.preShowTasks.length) {
+    //       this.setPreTasks()
+    //     }
+    //   }
+    //   this.setCurrentTimePoint()
+    // },
+
     onPlayerTimeUpdate(data) {
-      console.log('onPlayerTimeUpdate', this.currentTimePoint)
-      if (Math.ceil(data.currentTime) === this.currentTimePoint.start + 1) {
-        if (this.currentTimePoint.postShowTasks.length) {
-          this.setPostTasks()
-        }
-      }
-      if (Math.ceil(data.currentTime) === this.currentTimePoint.end + 1) {
-        if (this.currentTimePoint.preShowTasks.length) {
-          this.setPreTasks()
-        }
-      }
-      this.setCurrentTimePoint()
+      // eslint-disable-next-line
+      console.log('onPlayerTimeUpdate', data)
+      this.playerCurrentTime = data.currentTime
     },
 
     goToTime(time) {
-      this.$refs.interactivePlayer.goToTime(time)
-
       this.$refs.interactivePlayer.goToTime(time)
       this.play()
       this.focus()
@@ -302,4 +362,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.InteractivePlayer {
+  direction: rtl;
+}
 </style>
