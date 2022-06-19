@@ -1,5 +1,9 @@
 <template>
-  <div class="player" ref="videoPlayerWrapper" :style="{height: playerHeight}">
+  <div
+      ref="videoPlayerWrapper"
+      class="player"
+      :class="{'fullscreen-player': fullscreen, 'none-fullscreen-player': !fullscreen}"
+  >
     <video ref="videoPlayer" class="video-js vjs-default-skin" controls preload="none">
       <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
     </video>
@@ -21,9 +25,10 @@ require('@silvermine/videojs-quality-selector/dist/css/quality-selector.css')
 
 export default {
   name: 'Player',
+
   data() {
     return {
-      playerHeight: '200px',
+      // playerHeight: '200px',
       playerInstance: null,
       playerOptions: {
         controlBar: {
@@ -70,11 +75,16 @@ export default {
       },
     }
   },
+
   computed: {
     hasSources (){
       return this.sources.list.length > 0
     },
+    fullscreen() {
+      return this.isFullscreen()
+    },
   },
+
   props: {
     sources: {
       type: PlayerSourceList,
@@ -91,6 +101,7 @@ export default {
       default: '',
     },
   },
+
   watch: {
     sources() {
       if (this.playerInstance === null) {
@@ -109,27 +120,41 @@ export default {
   mounted() {
     this.initPlayer()
   },
+
   methods: {
-    updatePlayerHeight () {
-      const playerWidth = this.$refs.videoPlayerWrapper.clientWidth
-      this.playerHeight = (playerWidth * 9) / 16 + 'px'
-    },
+    // updatePlayerHeight () {
+    //   const playerWidth = this.$refs.videoPlayerWrapper.clientWidth
+    //   this.playerHeight = (playerWidth * 9) / 16 + 'px'
+    // },
+
     goToTime(time) {
       this.playerInstance.currentTime(time)
     },
+
     dispose() {
       if (this.playerInstance) {
         this.playerInstance.dispose()
       }
     },
+
     play() {
       this.playerInstance.play()
     },
+
     focus() {
       this.playerInstance.focus()
     },
+
+    pause() {
+      this.playerInstance.pause()
+    },
+
+    isFullscreen() {
+      return this.playerInstance ? this.playerInstance.isFullscreen() : false
+    },
+
     initPlayer() {
-      this.updatePlayerHeight()
+      // this.updatePlayerHeight()
       if (!this.hasSources) {
         return
       }
@@ -161,12 +186,29 @@ export default {
 
 <style lang="scss" scoped>
 .player {
-  position: relative;
-  max-height: 100vh;
+  &.none-fullscreen-player {
+    position: relative;
+
+  }
+
+  &.fullscreen-player {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    .video-js {
+      display: contents
+
+    }
+  }
+
   .video-js {
     width: 100%;
-    height: 100%;
+    height: 500px;
   }
+
   .over-player-wrapper {
     position: absolute;
     top: 0;
@@ -175,6 +217,7 @@ export default {
     height: 100%;
     &.show {
       display: block;
+      background: rgba(0,0,0,0.5);
     }
     &.hide {
       display: none;

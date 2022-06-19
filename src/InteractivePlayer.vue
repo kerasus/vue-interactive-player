@@ -1,7 +1,6 @@
 <template>
   <div class="InteractivePlayer">
-    <div>
-      <player
+    <player
           ref="interactivePlayer"
           :sources="sources"
           :poster="poster"
@@ -14,7 +13,6 @@
           <over-player :data="overPlayData" :over-play-component="overPlayComponent" @action="onAction"/>
         </template>
       </player>
-    </div>
     <div style="text-align: center; padding: 50px">
       <button @click="changeSources(sampleSources1, samplePoster1)">
         source 1
@@ -59,12 +57,13 @@ export default {
   mixins: [mixinQuestionOfKnowingSubject, mixinGoToTime, mixinGoToTimePoint],
   props: {
     timePoints: {
-      type: Array,
+      type: TimePointList,
       default() {
-        return []
+        return new TimePointList()
       },
     },
   },
+
   watch: {
     playerCurrentTime (newValue) {
       if (this.watchingEndTime <= newValue) {
@@ -77,8 +76,12 @@ export default {
       }
     }
   },
+
   data() {
     return {
+      // timePointsSequence: [],
+      // currentTimePoint: null,
+
       watchingEndTime: 0,
       playerCurrentTime: 0,
       currentTimePoint: new TimePoint(),
@@ -157,21 +160,37 @@ export default {
       poster: '',
     }
   },
+
   created() {
     this.localTimePoints = new TimePointList(this.timePoints)
     const firstTimePoint = this.getFirstTimePont()
     this.runTimePoint(firstTimePoint)
   },
-  methods: {
-    loadNewTimePoint () {
 
+  computed: {
+    // currentTimeOfPlayer() {
+    //   return this.onPlayerTimeUpdate()
+    // },
+    // LoadCurrentTimePoint() {
+    //   return this.timePointsSequence.find(
+    //     (timePoint) => timePoint.start === Math.ceil(this.currentTimeOfPlayer.currentTime),
+    //   )
+    // },
+  },
+
+  methods: {
+    pause() {
+      this.$refs.interactivePlayer.pause()
     },
+
     onAction (data) {
       this.doTaskAction(this.currentTask, data)
     },
+
     getFirstTimePont() {
       return this.localTimePoints.list[0]
     },
+
     runTimePoint(timePoint) {
       this.currentTimePoint = timePoint
       if (timePoint.hesTasks() && timePoint.tasks.hasPreShow()) {
@@ -182,6 +201,7 @@ export default {
 
       this.changeSources(timePoint.sources, timePoint.poster)
     },
+
     doTaskAction(task, actionData) {
       switch (task.type) {
         case 'QuestionOfKnowingSubject':
@@ -200,6 +220,7 @@ export default {
           break
       }
     },
+
     doTask(task) {
       this.currentTask = task
       switch (task.type) {
@@ -223,11 +244,11 @@ export default {
       }
     },
 
-
     doStabilizationTest() {
       // show dialog for QuestionOfKnowingSubject
       // new Question(data.questoin)
     },
+
     doSpecialTest() {
       // show dialog for QuestionOfKnowingSubject
       // new Question(data.questoin)
@@ -236,9 +257,11 @@ export default {
     showOverPlayer() {
       this.overPlayer = true
     },
+
     hideOverPlayer() {
       this.overPlayer = false
     },
+
     toggleOverPlayer() {
       if (this.overPlayer) {
         this.hideOverPlayer()
@@ -246,32 +269,39 @@ export default {
         this.showOverPlayer()
       }
     },
+
     onPlayerReady() {
       // eslint-disable-next-line
       console.log('onPlayerReady')
     },
+
     onPlayerEnded() {
       // eslint-disable-next-line
       console.log('onPlayerEnded')
     },
+
     onPlayerTimeUpdate(data) {
       // eslint-disable-next-line
       console.log('onPlayerTimeUpdate', data)
       this.playerCurrentTime = data.currentTime
     },
+
     goToTime(time) {
       this.$refs.interactivePlayer.goToTime(time)
       this.play()
       this.focus()
     },
+
     play() {
       this.$refs.interactivePlayer.play()
     },
+
     focus() {
       this.$refs.interactivePlayer.focus()
     },
+
     changeSources(sources, poster) {
-      this.sources = sources
+      this.sources = new PlayerSourceList(sources)
       this.poster = poster
     },
   },
