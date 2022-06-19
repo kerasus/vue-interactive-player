@@ -1,7 +1,6 @@
 <template>
   <div class="InteractivePlayer">
-    <div>
-      <player
+    <player
           ref="interactivePlayer"
           :sources="sources"
           :poster="poster"
@@ -14,7 +13,6 @@
           <over-player :data="overPlayData" :over-play-component="overPlayComponent"/>
         </template>
       </player>
-    </div>
     <div style="text-align: center; padding: 50px">
       <button @click="changeSources(sampleSources1, samplePoster1)">
         source 1
@@ -49,10 +47,12 @@
 import Player from './components/Player.vue'
 import OverPlayer from './components/OverPlayer.vue'
 import { TimePointList } from './models/TimePoint'
+import { PlayerSourceList } from './models/PlayerSource'
 
 export default {
   name: 'InteractivePlayer',
   components: { Player, OverPlayer },
+
   props: {
     timePoints: {
       type: TimePointList,
@@ -61,8 +61,12 @@ export default {
       },
     },
   },
+
   data() {
     return {
+      timePointsSequence: [],
+      currentTimePoint: null,
+
       overPlayData: null,
       overPlayComponent: '',
       overPlayer: false,
@@ -132,18 +136,71 @@ export default {
           selected: true,
         },
       ],
-      sources: [],
+      sources: new PlayerSourceList(),
       poster: '',
     }
   },
+
   created() {
     this.runTimePoints()
   },
+
+  computed: {
+    currentTimeOfPlayer() {
+      return this.onPlayerTimeUpdate()
+    },
+    // LoadCurrentTimePoint() {
+    //   return this.timePointsSequence.find(
+    //     (timePoint) => timePoint.start === Math.ceil(this.currentTimeOfPlayer.currentTime),
+    //   )
+    // },
+  },
+
   methods: {
+    setSequenceListOfTimesPoints() {
+      this.timePointsSequence = this.timePoints.list
+    },
+
+    setCurrentTimePoint() {
+      console.log('before', this.currentTimePoint)
+      if (!this.currentTimePoint) {
+        // eslint-disable-next-line prefer-destructuring
+        this.currentTimePoint = this.timePointsSequence[0]
+      } else {
+        console.log('else', this.findTimePointWithStartTime(this.currentTimePoint.start))
+        this.currentTimePoint = this.findTimePointWithStartTime(this.currentTimePoint.start)
+      }
+      console.log('after', this.currentTimePoint)
+    },
+
+    findTimePointWithStartTime(startTime) {
+      if (!startTime) {
+        return
+      }
+      // eslint-disable-next-line consistent-return
+      console.log('this.timePointsSequence', this.timePointsSequence)
+      return this.timePointsSequence.find((timePoint) => timePoint.start > startTime)
+    },
+
+    setPostTasks() {
+      console.log('hi, Im from post')
+    },
+
+    setPreTasks() {
+      console.log('hi, Im from pre')
+    },
+
+    pause() {
+      this.$refs.interactivePlayer.pause()
+    },
+
     runTimePoints() {
       const firstTimePint = this.timePoints.list[0]
+      this.setSequenceListOfTimesPoints()
+      this.setCurrentTimePoint()
       this.changeSources(firstTimePint.sources, firstTimePint.poster)
     },
+
     do(taskType, data) {
       switch (taskType) {
         case 'QuestionOfKnowingSubject':
@@ -162,15 +219,18 @@ export default {
           break
       }
     },
+
     doQuestionOfKnowingSubject(data) {
       this.overPlayData = data
       this.overPlayComponent = 'question-of-knowing-subject'
       this.showOverPlayer()
     },
+
     doStabilizationTest() {
       // show dialog for QuestionOfKnowingSubject
       // new Question(data.questoin)
     },
+
     doSpecialTest() {
       // show dialog for QuestionOfKnowingSubject
       // new Question(data.questoin)
@@ -179,9 +239,11 @@ export default {
     showOverPlayer() {
       this.overPlayer = true
     },
+
     hideOverPlayer() {
       this.overPlayer = true
     },
+
     toggleOverPlayer() {
       if (this.overPlayer) {
         this.hideOverPlayer()
@@ -189,31 +251,50 @@ export default {
         this.showOverPlayer()
       }
     },
+
     onPlayerReady() {
       // eslint-disable-next-line
       console.log('onPlayerReady')
     },
+
     onPlayerEnded() {
       // eslint-disable-next-line
       console.log('onPlayerEnded')
     },
+
     onPlayerTimeUpdate(data) {
-      // eslint-disable-next-line
-      console.log('onPlayerTimeUpdate', data)
+      console.log('onPlayerTimeUpdate', this.currentTimePoint)
+      if (Math.ceil(data.currentTime) === this.currentTimePoint.start + 1) {
+        if (this.currentTimePoint.postShowTasks.length) {
+          this.setPostTasks()
+        }
+      }
+      if (Math.ceil(data.currentTime) === this.currentTimePoint.end + 1) {
+        if (this.currentTimePoint.preShowTasks.length) {
+          this.setPreTasks()
+        }
+      }
+      this.setCurrentTimePoint()
     },
+
     goToTime(time) {
+      this.$refs.interactivePlayer.goToTime(time)
+
       this.$refs.interactivePlayer.goToTime(time)
       this.play()
       this.focus()
     },
+
     play() {
       this.$refs.interactivePlayer.play()
     },
+
     focus() {
       this.$refs.interactivePlayer.focus()
     },
+
     changeSources(sources, poster) {
-      this.sources = sources
+      this.sources = new PlayerSourceList(sources)
       this.poster = poster
     },
   },

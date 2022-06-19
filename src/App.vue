@@ -267,8 +267,8 @@ export default {
               selected: true,
             },
           ],
-          start: 10,
-          end: 15,
+          start: 30,
+          end: 40,
           preShowTasks: [
             {
               type: 'QuestionOfKnowingSubject',
