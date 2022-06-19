@@ -1,11 +1,14 @@
 <template>
   <div class="StabilizationTest">
+    <div class="title"> تست های تسلط</div>
     <div v-html="currentQuestion.statement" class="statement" />
     <div class="choices">
       <div v-for="(choice, choiceIndex) in currentQuestion.choices.list"
            :key="choiceIndex"
            class="choice-col"
       >
+        <input type="checkbox" :id="choice.selected" :name="'answer'+choiceIndex" :value="choice.value">
+        <span>{{ choiceIndex + 1 }}.</span>
         <div class="choice" v-html="choice.label" @click="answer(choice)" />
       </div>
     </div>
@@ -103,9 +106,16 @@ export default {
 
 <style scoped lang="scss">
 .StabilizationTest {
-  padding: 10px;
+  padding: 30px;
+  .title{
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 20px;
+    font-weight: bold;
+  }
   .statement {
-
+    margin-bottom: 30px;
+    font-size: 18px;
   }
   .choices {
     display: flex;
@@ -115,15 +125,15 @@ export default {
     justify-content: center;
     .choice-col {
       width: 50%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      align-content: center;
       .choice {
-        background-color: gray;
-        color: white;
-        border-radius: 10px;
-        text-align: center;
-        cursor: pointer;
+        color: black;
         padding: 10px;
         width: 80%;
-        margin-top: 10px;
       }
     }
   }
