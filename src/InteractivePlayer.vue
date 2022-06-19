@@ -255,41 +255,42 @@ export default {
       }
     },
     doTaskSequence (taskIds) {
-      this.loadTaskSequence(taskIds)
-      const firstTaskOfSequence = this.taskSequence.list[0]
-      if (typeof firstTaskOfSequence === 'undefined') {
+      const firstTaskIdOfSequence = taskIds[0]
+      if (typeof firstTaskIdOfSequence === 'undefined') {
         return
       }
 
-      this.doTask(firstTaskOfSequence)
+      this.loadTaskSequence(taskIds)
+
+      const firstTask = this.currentTimePoint.tasks.getItem('id', firstTaskIdOfSequence)
+
+      this.doTask(firstTask)
     },
     loadTaskSequence (taskIds) {
-      this.taskSequence = this.getNewTaskSequence(taskIds)
-    },
-    clearTaskSequence () {
-      this.taskSequence = new TaskList()
-    },
-    getNewTaskSequence (taskIds) {
-      const taskSequence = new TaskList()
-      taskIds.forEach( taskId => {
-        const task = this.currentTimePoint.tasks.getItem('id', taskId)
-        if (!task) {
+      taskIds.forEach( (taskId, taskIdIndex) => {
+        const taskIndex = this.currentTimePoint.tasks.getIndex('id', taskId)
+        if (taskIndex === -1) {
+          return
+        }
+        if (!this.currentTimePoint.tasks.list[taskIndex].data) {
+          this.currentTimePoint.tasks.list[taskIndex].data = {}
+        }
+
+        const nextTaskId = taskIds[taskIdIndex + 1]
+        if (typeof nextTaskId === 'undefined') {
+          this.currentTimePoint.tasks.list[taskIndex].data.next_task_id = null
+          this.currentTimePoint.tasks.list[taskIndex].data.next_task_auto_play = false
           return
         }
 
-        taskSequence.addItem(task)
-      })
-
-      taskSequence.list.forEach( (task, taskIndex) => {
-        if (typeof taskSequence.list[taskIndex + 1] === 'undefined') {
-          this.setNextTaskId (taskSequence.list[taskIndex], null, false)
+        const nextTaskIndex = this.currentTimePoint.tasks.getIndex('id', nextTaskId)
+        if (typeof nextTaskIndex === 'undefined') {
           return
         }
 
-        this.setNextTaskId (taskSequence.list[taskIndex], taskSequence.list[(taskIndex + 1)].id)
+        this.currentTimePoint.tasks.list[taskIndex].data.next_task_id = this.currentTimePoint.tasks.list[nextTaskIndex].id
+        this.currentTimePoint.tasks.list[taskIndex].data.next_task_auto_play = true
       })
-
-      return taskSequence
     },
     setNextTaskId (task, nextTaskId, autoPlay) {
       if (typeof task.data === 'undefined') {
@@ -299,7 +300,7 @@ export default {
         autoPlay = true
       }
       task.data.next_task_id = nextTaskId
-      task.data.next_task_auto_play = true
+      task.data.next_task_auto_play = autoPlay
     },
     setWatchingEndTime (endTime) {
       this.watchingEndTime = endTime
