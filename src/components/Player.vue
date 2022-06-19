@@ -133,6 +133,10 @@ export default {
     pause() {
       this.playerInstance.pause()
     },
+
+    isFullscreen() {
+      return this.playerInstance ? this.playerInstance.isFullscreen() : false
+    },
     play() {
       this.playerInstance.play()
     },
