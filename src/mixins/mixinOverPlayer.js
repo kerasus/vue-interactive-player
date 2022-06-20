@@ -1,6 +1,7 @@
 const mixinOverPlayer = {
   methods: {
     showOverPlayer() {
+      console.trace()
       this.overPlayer = true
     },
     hideOverPlayer() {
