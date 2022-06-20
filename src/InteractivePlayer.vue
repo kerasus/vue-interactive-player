@@ -142,9 +142,9 @@ export default {
   methods: {
     getNextTaskOfCurrentTask () {
       const taskId = this.currentTask?.data?.next_task_id
-      // const taskAutoPlay = this.currentTask?.data?.next_task_auto_play
-      // if (typeof taskId !== 'undefined' && taskId !== null && taskAutoPlay) {
-      if (typeof taskId !== 'undefined' && taskId !== null) {
+      const taskAutoPlay = this.currentTask?.data?.next_task_auto_play
+      if (typeof taskId !== 'undefined' && taskId !== null && taskAutoPlay) {
+      // if (typeof taskId !== 'undefined' && taskId !== null) {
         return this.getTaskOfTimePoint(taskId)
       }
 
@@ -219,11 +219,11 @@ export default {
         case 'gotToTime':
           this.doGoToTime(task)
           break
+        case 'gotToTimePoint':
+          this.doGoToTimePoint(task)
+          break
         case 'StabilizationTest':
           this.doStabilizationTest(task)
-          break
-        case 'SpecialTest':
-          this.doSpecialTest(task.data)
           break
         case 'ShowTimePint':
           this.doSpecialTest(task.data)
@@ -255,7 +255,7 @@ export default {
 
         const nextTaskId = taskIds[taskIdIndex + 1]
         if (typeof nextTaskId === 'undefined') {
-          this.setNextTaskId(this.currentTimePoint.tasks.list[taskIndex], taskAfterSequenceId, false)
+          this.setNextTaskId(this.currentTimePoint.tasks.list[taskIndex], taskAfterSequenceId)
           return
         }
 

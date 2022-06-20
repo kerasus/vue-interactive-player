@@ -1,12 +1,17 @@
 const mixinGoToTimePoint = {
   methods: {
     doGoToTimePoint(task) {
-      task.done = true
-      const start = (typeof task.start !== 'undefined') ? task.start : this.currentTimePoint.start
-      const end = (typeof task.end !== 'undefined') ? task.end : this.currentTimePoint.end
-      this.watchingEndTime = end
-      this.goToTime(start)
-      this.play()
+      const newTimePointId = task.data.timePoint_id
+      if (typeof newTimePointId === 'undefined' || newTimePointId === null) {
+        // ToDo: go to ?
+        return
+      }
+      const newTimePoint = this.localTimePoints.getItem('id', newTimePointId)
+      if (!newTimePoint) {
+        // ToDo: go to ?
+        return
+      }
+      this.runTimePoint(newTimePoint)
     }
   }
 }
