@@ -14,18 +14,15 @@
 
 <script>
 import { Question, QuestionList } from '../../models/Question'
+import { Task } from '../../models/Task'
 
 export default {
   name: 'StabilizationTest',
   props: {
     data: {
-      type: Object,
+      type: Task,
       default() {
-        return {
-          legalTime: null,
-          task_id: null,
-          questions: []
-        }
+        return new Task()
       },
     },
   },
@@ -36,7 +33,7 @@ export default {
     }
   },
   created() {
-    this.questions = new QuestionList(this.data?.questions)
+    this.questions = new QuestionList(this.data.data?.questions)
 
     if (!this.hasQuestions()) {
       return

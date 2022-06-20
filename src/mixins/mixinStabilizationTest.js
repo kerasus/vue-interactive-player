@@ -11,15 +11,16 @@ const mixinStabilizationTest = {
       console.log('doStabilizationTest (playerCurrentTime): ', this.playerCurrentTime)
       this.pause()
       task.done = true
-      this.overPlayData = task.data
+      this.overPlayData = task
       this.overPlayComponent = 'stabilization-test'
       this.changeSources(this.currentTimePoint.sources, this.currentTimePoint.poster)
       this.showOverPlayer()
     },
     doActionOfStabilizationTest(questions) {
       const taskIds = this.getTaskIdsOfSelectedChoices(questions)
+      const taskAfterSequence = this.currentTask
       this.hideOverPlayer()
-      this.doTaskSequence(taskIds)
+      this.doTaskSequence(taskIds, taskAfterSequence.data?.next_task_id)
 
 
 

@@ -194,72 +194,84 @@ export default {
             },
             {
               id: 2,
-              type: 'SpecialTest',
-              data: [
-                {
-                  statement: '۱-به عنوان یک سوال ویژه، جواب این سوال ساده کدام گزینه هست؟',
-                  choices: [
-                    {
-                      label: 'گزینه های یکپارچه',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه های درهم',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه های متفرقه',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه درست',
-                      value: true,
-                    },
-                  ],
-                },
-                {
-                  statement: '۲-به عنوان یک سوال ویژه، جواب این سوال ساده کدام گزینه هست؟',
-                  choices: [
-                    {
-                      label: 'گزینه های یکپارچه',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه های درهم',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه های متفرقه',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه درست',
-                      value: true,
-                    },
-                  ],
-                },
-                {
-                  statement: '۳-به عنوان یک سوال ویژه، جواب این سوال ساده کدام گزینه هست؟',
-                  choices: [
-                    {
-                      label: 'گزینه های یکپارچه',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه های درهم',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه های متفرقه',
-                      value: false,
-                    },
-                    {
-                      label: 'گزینه درست',
-                      value: true,
-                    },
-                  ],
-                },
-              ],
+              type: 'StabilizationTest',
+              postShow: true,
+              data: {
+                legalTime: 50,
+                next_task_id: 10,
+                next_task_auto_play: false,
+                questions: [
+                  {
+                    id: 0,
+                    task_id: 5,
+                    statement: '۱-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    choices: [
+                      {
+                        label: 'گزینه های یکپارچه',
+                        value: false
+                      },
+                      {
+                        label: 'گزینه های درهم',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه های متفرقه',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه درست',
+                        value: true,
+                      },
+                    ],
+                  },
+                  {
+                    id: 1,
+                    task_id: 6,
+                    statement: '۲-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    choices: [
+                      {
+                        label: 'گزینه های یکپارچه',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه های درهم',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه های متفرقه',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه درست',
+                        value: true,
+                      },
+                    ],
+                  },
+                  {
+                    id: 2,
+                    task_id: 7,
+                    statement: '۳-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    choices: [
+                      {
+                        label: 'گزینه های یکپارچه',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه های درهم',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه های متفرقه',
+                        value: false,
+                      },
+                      {
+                        label: 'گزینه درست',
+                        value: true,
+                      },
+                    ],
+                  },
+                ]
+              },
             },
             {
               id: 3,
