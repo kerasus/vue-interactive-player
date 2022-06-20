@@ -2,15 +2,12 @@ const mixinPlayer = {
   methods: {
     onPlayerReady() {
       // eslint-disable-next-line
-      // console.log('onPlayerReady')
     },
     onPlayerEnded() {
       // eslint-disable-next-line
-      // console.log('onPlayerEnded')
     },
     onPlayerTimeUpdate(data) {
       // eslint-disable-next-line
-      // console.log('onPlayerTimeUpdate', data)
       this.playerCurrentTime = data.currentTime
     },
     goToTime(time) {
@@ -22,7 +19,6 @@ const mixinPlayer = {
       this.$refs.interactivePlayer.play()
     },
     pause() {
-      console.trace('pause (playerCurrentTime): ', this.playerCurrentTime)
       this.$refs.interactivePlayer.pause()
     },
     focus() {

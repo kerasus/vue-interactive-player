@@ -48,8 +48,8 @@ export default {
                 statement: 'می خوایم مبحث فیلان رو تدریس کنیم، می خوای ببینی؟',
                 choices: [
                   {
-                    label: 'بلدم و می خوام ببینم',
-                    value: 0,
+                    label: 'بلد نیستم و می خوام ببینم',
+                    value: 2,
                     task_id: 3
                   },
                   {
@@ -58,8 +58,8 @@ export default {
                     task_id: 4
                   },
                   {
-                    label: 'بلد نیستم و می خوام ببینم',
-                    value: 2,
+                    label: 'بلدم و می خوام ببینم',
+                    value: 0,
                     task_id: 3
                   },
                 ],
@@ -76,22 +76,22 @@ export default {
                   {
                     id: 0,
                     task_id: 5,
-                    statement: '۱-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    statement: '۱-رزمنده ای گلوله ای با سرعت فیلان به طرف هدف شلیک می کند و ۶s پس از شلیک صدای انفجار را می شنود. گلر سرعت ۳۴۰ باشد، فاصله شخص از هدف چند متر است؟',
                     choices: [
                       {
-                        label: 'گزینه های یکپارچه',
+                        label: 'یک متر',
                         value: false
                       },
                       {
-                        label: 'گزینه های درهم',
+                        label: 'یک دو',
                         value: false,
                       },
                       {
-                        label: 'گزینه های متفرقه',
+                        label: 'یک سه',
                         value: false,
                       },
                       {
-                        label: 'گزینه درست',
+                        label: 'یک چهار',
                         value: true,
                       },
                     ],
@@ -99,22 +99,22 @@ export default {
                   {
                     id: 1,
                     task_id: 6,
-                    statement: '۲-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    statement: '۲-شخصی بین دو رشته کوه موازی گلوله ای را شلیک می کند و دو پزواک صوت با اختلاف ۵ ثانیه به وی می رسد. اگر سرعت صوت ۳۴۰ باشد اختلاف فاصله شخص از دو رشته کوه چند متر است؟',
                     choices: [
                       {
-                        label: 'گزینه های یکپارچه',
+                        label: 'ده متر',
+                        value: false
+                      },
+                      {
+                        label: 'دوازده دو',
                         value: false,
                       },
                       {
-                        label: 'گزینه های درهم',
+                        label: 'شانزده سه',
                         value: false,
                       },
                       {
-                        label: 'گزینه های متفرقه',
-                        value: false,
-                      },
-                      {
-                        label: 'گزینه درست',
+                        label: 'پانزده چهار',
                         value: true,
                       },
                     ],
@@ -122,22 +122,22 @@ export default {
                   {
                     id: 2,
                     task_id: 7,
-                    statement: '۳-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    statement: '۳-قایقی اگر در جهت آب پارو بزند، فاصله بین دو نقطه را در t ثانیه و اگر در خلاف جهت جریان آب پارو بزند، فاثله بین همان دو نقطه را در 5s طی می کند. سرعت قایق چقدر است؟',
                     choices: [
                       {
-                        label: 'گزینه های یکپارچه',
+                        label: 'یک متر بر ثانیه',
                         value: false,
                       },
                       {
-                        label: 'گزینه های درهم',
+                        label: 'دوازده متر بر ثانیه',
                         value: false,
                       },
                       {
-                        label: 'گزینه های متفرقه',
+                        label: 'شانزده متر بر ثانیه',
                         value: false,
                       },
                       {
-                        label: 'گزینه درست',
+                        label: 'پانزده متر بر ثانیه',
                         value: true,
                       },
                     ],
@@ -145,22 +145,22 @@ export default {
                   {
                     id: 3,
                     task_id: 8,
-                    statement: '۴-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    statement: '۴-رودخانه ای به عرض ۱۲۰ متر دارای جریان آب با سرعت ۳ می باشد. قایقی می خواهد با سرعت ثابت ۵ به نقطه مقابل در طرف دیگر برسد. حداقل زمان ممکن چقدر است؟',
                     choices: [
                       {
-                        label: 'گزینه های یکپارچه',
+                        label: 'یک ثانیه',
                         value: false,
                       },
                       {
-                        label: 'گزینه های درهم',
+                        label: 'دوازده ثانیه',
                         value: false,
                       },
                       {
-                        label: 'گزینه های متفرقه',
+                        label: 'شانزده ثانیه',
                         value: false,
                       },
                       {
-                        label: 'گزینه درست',
+                        label: 'پانزده ثانیه',
                         value: true,
                       },
                     ],
@@ -168,22 +168,22 @@ export default {
                   {
                     id: 4,
                     task_id: 9,
-                    statement: '۵-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    statement: '۵-رودخانه ای به عرض ۱۲۰ متر دارای جریان آب با سرعت ۳ می باشد. قایقی می خواهد با سرعت ثابت ۵ به طرف دیگر رودخانه برود. حداقل زمان ممکن چقدر است؟',
                     choices: [
                       {
-                        label: 'گزینه های یکپارچه',
+                        label: 'شانزده ثانیه',
                         value: false,
                       },
                       {
-                        label: 'گزینه های درهم',
+                        label: 'دوازده ثانیه',
                         value: false,
                       },
                       {
-                        label: 'گزینه های متفرقه',
+                        label: 'یک ثانیه',
                         value: false,
                       },
                       {
-                        label: 'گزینه درست',
+                        label: 'پانزده ثانیه',
                         value: true,
                       },
                     ],
@@ -202,22 +202,22 @@ export default {
                   {
                     id: 0,
                     task_id: 5,
-                    statement: '۱-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    statement: '۱-رزمنده ای گلوله ای با سرعت فیلان به طرف هدف شلیک می کند و ۶s پس از شلیک صدای انفجار را می شنود. گلر سرعت ۳۴۰ باشد، فاصله شخص از هدف چند متر است؟',
                     choices: [
                       {
-                        label: 'گزینه های یکپارچه',
+                        label: 'یک متر',
                         value: false
                       },
                       {
-                        label: 'گزینه های درهم',
+                        label: 'یک دو',
                         value: false,
                       },
                       {
-                        label: 'گزینه های متفرقه',
+                        label: 'یک سه',
                         value: false,
                       },
                       {
-                        label: 'گزینه درست',
+                        label: 'یک چهار',
                         value: true,
                       },
                     ],
@@ -225,22 +225,22 @@ export default {
                   {
                     id: 1,
                     task_id: 6,
-                    statement: '۲-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    statement: '۲-شخصی بین دو رشته کوه موازی گلوله ای را شلیک می کند و دو پزواک صوت با اختلاف ۵ ثانیه به وی می رسد. اگر سرعت صوت ۳۴۰ باشد اختلاف فاصله شخص از دو رشته کوه چند متر است؟',
                     choices: [
                       {
-                        label: 'گزینه های یکپارچه',
+                        label: 'ده متر',
+                        value: false
+                      },
+                      {
+                        label: 'دوازده دو',
                         value: false,
                       },
                       {
-                        label: 'گزینه های درهم',
+                        label: 'شانزده سه',
                         value: false,
                       },
                       {
-                        label: 'گزینه های متفرقه',
-                        value: false,
-                      },
-                      {
-                        label: 'گزینه درست',
+                        label: 'پانزده چهار',
                         value: true,
                       },
                     ],
@@ -248,22 +248,22 @@ export default {
                   {
                     id: 2,
                     task_id: 7,
-                    statement: '۳-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    statement: '۳-قایقی اگر در جهت آب پارو بزند، فاصله بین دو نقطه را در t ثانیه و اگر در خلاف جهت جریان آب پارو بزند، فاثله بین همان دو نقطه را در 5s طی می کند. سرعت قایق چقدر است؟',
                     choices: [
                       {
-                        label: 'گزینه های یکپارچه',
+                        label: 'یک متر بر ثانیه',
                         value: false,
                       },
                       {
-                        label: 'گزینه های درهم',
+                        label: 'دوازده متر بر ثانیه',
                         value: false,
                       },
                       {
-                        label: 'گزینه های متفرقه',
+                        label: 'شانزده متر بر ثانیه',
                         value: false,
                       },
                       {
-                        label: 'گزینه درست',
+                        label: 'پانزده متر بر ثانیه',
                         value: true,
                       },
                     ],
@@ -287,40 +287,150 @@ export default {
               id: 5,
               type: 'gotToTime',
               data: {
-                start: 50,
-                end: 52,
+                poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
+                sources: [
+                  {
+                    src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374008uhvf.mp4',
+                    type: 'video/mp4',
+                    res: '720p',
+                    label: 'کیفیت عالی',
+                  },
+                  {
+                    src: 'https://nodes.alaatv.com/media/1374/hq/1374008uhvf.mp4',
+                    type: 'video/mp4',
+                    res: '480p',
+                    label: 'کیفیت بالا',
+                  },
+                  {
+                    src: 'https://nodes.alaatv.com/media/1374/240p/1374008uhvf.mp4',
+                    type: 'video/mp4',
+                    res: '240p',
+                    label: 'کیفیت متوسط',
+                    selected: true,
+                  },
+                ],
+                start: 79,
+                end: 380,
               },
             },
             {
               id: 6,
               type: 'gotToTime',
               data: {
-                start: 62,
-                end: 64,
+                poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
+                sources: [
+                  {
+                    src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374008uhvf.mp4',
+                    type: 'video/mp4',
+                    res: '720p',
+                    label: 'کیفیت عالی',
+                  },
+                  {
+                    src: 'https://nodes.alaatv.com/media/1374/hq/1374008uhvf.mp4',
+                    type: 'video/mp4',
+                    res: '480p',
+                    label: 'کیفیت بالا',
+                  },
+                  {
+                    src: 'https://nodes.alaatv.com/media/1374/240p/1374008uhvf.mp4',
+                    type: 'video/mp4',
+                    res: '240p',
+                    label: 'کیفیت متوسط',
+                    selected: true,
+                  },
+                ],
+                start: 380,
+                end: 982,
               },
             },
             {
               id: 7,
               type: 'gotToTime',
               data: {
-                start: 94,
-                end: 96,
+                poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
+                sources: [
+                  {
+                    src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374008uhvf.mp4',
+                    type: 'video/mp4',
+                    res: '720p',
+                    label: 'کیفیت عالی',
+                  },
+                  {
+                    src: 'https://nodes.alaatv.com/media/1374/hq/1374008uhvf.mp4',
+                    type: 'video/mp4',
+                    res: '480p',
+                    label: 'کیفیت بالا',
+                  },
+                  {
+                    src: 'https://nodes.alaatv.com/media/1374/240p/1374008uhvf.mp4',
+                    type: 'video/mp4',
+                    res: '240p',
+                    label: 'کیفیت متوسط',
+                    selected: true,
+                  },
+                ],
+                start: 982,
+                end: 1231,
               },
             },
             {
               id: 8,
               type: 'gotToTime',
               data: {
-                start: 102,
-                end: 104,
+                poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
+                sources: [
+                  {
+                    src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374008uhvf.mp4',
+                    type: 'video/mp4',
+                    res: '720p',
+                    label: 'کیفیت عالی',
+                  },
+                  {
+                    src: 'https://nodes.alaatv.com/media/1374/hq/1374008uhvf.mp4',
+                    type: 'video/mp4',
+                    res: '480p',
+                    label: 'کیفیت بالا',
+                  },
+                  {
+                    src: 'https://nodes.alaatv.com/media/1374/240p/1374008uhvf.mp4',
+                    type: 'video/mp4',
+                    res: '240p',
+                    label: 'کیفیت متوسط',
+                    selected: true,
+                  },
+                ],
+                start: 1231,
+                end: 1435,
               },
             },
             {
               id: 9,
               type: 'gotToTime',
               data: {
-                start: 120,
-                end: 122,
+                poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
+                sources: [
+                  {
+                    src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374008uhvf.mp4',
+                    type: 'video/mp4',
+                    res: '720p',
+                    label: 'کیفیت عالی',
+                  },
+                  {
+                    src: 'https://nodes.alaatv.com/media/1374/hq/1374008uhvf.mp4',
+                    type: 'video/mp4',
+                    res: '480p',
+                    label: 'کیفیت بالا',
+                  },
+                  {
+                    src: 'https://nodes.alaatv.com/media/1374/240p/1374008uhvf.mp4',
+                    type: 'video/mp4',
+                    res: '240p',
+                    label: 'کیفیت متوسط',
+                    selected: true,
+                  },
+                ],
+                start: 1435,
+                end: 1627,
               },
             },
 
@@ -655,38 +765,6 @@ export default {
         },
       ],
     }
-  },
-  created() {
-    this.changeSources(this.sampleSources3, this.samplePoster3)
-  },
-  methods: {
-    onPlayerReady() {
-      // eslint-disable-next-line
-      console.log('onPlayerReady')
-    },
-    onPlayerEnded() {
-      // eslint-disable-next-line
-      console.log('onPlayerEnded')
-    },
-    onPlayerTimeUpdate(data) {
-      // eslint-disable-next-line
-      console.log('onPlayerTimeUpdate', data)
-    },
-    goToTime(time) {
-      this.$refs.interactivePlayer.goToTime(time)
-      this.play()
-      this.focus()
-    },
-    play() {
-      this.$refs.interactivePlayer.play()
-    },
-    focus() {
-      this.$refs.interactivePlayer.focus()
-    },
-    changeSources(sources, poster) {
-      this.sources = sources
-      this.poster = poster
-    },
-  },
+  }
 }
 </script>
