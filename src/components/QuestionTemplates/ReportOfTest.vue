@@ -1,7 +1,12 @@
 <template>
   <div class="reportOfTest">
-    <div class="title">نتیجه ی تست تسلط</div>
+    <div class="title">
+      <span>نتیجه ی </span>
+      <span> {{ title ? title : 'آزمون'}}</span>
+    </div>
+
     <div class="title-of-column"> دیدن فیلم</div>
+
     <div
         v-for="(question , index ) in customQuestions.list"
         :key="index"
@@ -39,16 +44,15 @@
               class="correct-answer"
               @click="wantToSeeVideo(question)"
           >
-            <span v-if="!opinionChange">میخوام ببینم</span>
-            <span v-else>بیخیال نمیبینم</span>
+            <span v-show="!question.haveToSee">میخوام ببینم</span>
+
+            <span
+                v-show="question.haveToSee"
+                class="change-opinion"
+            >
+            بیخیال نمیبینم
           </span>
-<!--          <span-->
-<!--              v-if="opinionChange && isAnswerCorrect(question)"-->
-<!--              class="change-opinion"-->
-<!--              @click="wantToSeeVideo(question)"-->
-<!--          >-->
-<!--            -->
-<!--          </span>-->
+          </span>
           <span
               v-if="!isAnswerCorrect(question)"
               class="wrong-answer"
@@ -77,6 +81,10 @@ import { QuestionList } from '../../models/Question'
 export default {
   name: 'ReportOfTest',
   props:{
+    title: {
+      type: String,
+      default: ''
+    },
     questions: {
       type: QuestionList,
       default () {
@@ -137,8 +145,10 @@ export default {
     },
 
     wantToSeeVideo (question) {
+      console.log(question.haveToSee)
       question.haveToSee = !question.haveToSee
-      this.opinionChange = !this.opinionChange
+      console.log(question.haveToSee)
+
     }
   }
 }

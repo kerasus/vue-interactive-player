@@ -1,7 +1,7 @@
 <template>
   <div class="StabilizationTest">
     <div v-show="questionPanelVisibility">
-      <div class="title"> تست های تسلط</div>
+      <div class="title"> {{ data.data.examTitle ? data.data.examTitle: 'آزمون'}}</div>
       <div v-html="currentQuestion.statement" class="statement" />
       <div class="choices">
         <div v-for="(choice, choiceIndex) in currentQuestion.choices.list"
@@ -19,7 +19,7 @@
         </div>
       </div>
     </div>
-    <report-of-test v-show="reportVisibility" :questions="questions" @showVideoAnswers="showVideoAnswers" />
+    <report-of-test v-show="reportVisibility" :title="data.data.examTitle" :questions="questions" @showVideoAnswers="showVideoAnswers" />
   </div>
 </template>
 
