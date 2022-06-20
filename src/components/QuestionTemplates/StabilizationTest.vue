@@ -1,60 +1,85 @@
 <template>
   <div class="StabilizationTest">
-    <div class="title"> تست های تسلط</div>
-    <div v-html="currentQuestion.statement" class="statement" />
-    <div class="choices">
-      <div v-for="(choice, choiceIndex) in currentQuestion.choices.list"
-           :key="choiceIndex"
-           class="choice-col"
-           @click="answer(choice)"
-      >
-        <input
-            v-model="choice.selected"
-            type="checkbox"
-            :name="'answer'+choiceIndex"
+    <div v-show="questionPanelVisibility">
+      <div class="title"> تست های تسلط</div>
+      <div v-html="currentQuestion.statement" class="statement" />
+      <div class="choices">
+        <div v-for="(choice, choiceIndex) in currentQuestion.choices.list"
+             :key="choiceIndex"
+             class="choice-col"
+             @click="answer(choice)"
         >
-        <span>{{ choiceIndex + 1 }}.</span>
-        <div class="choice" v-html="choice.label"/>
+          <input
+              v-model="choice.selected"
+              type="checkbox"
+              :name="'answer'+choiceIndex"
+          >
+          <span>{{ choiceIndex + 1 }}.</span>
+          <div class="choice" v-html="choice.label"/>
+        </div>
       </div>
     </div>
+    <report-of-test v-show="reportVisibility" :questions="questions" @showVideoAnswers="showVideoAnswers" />
   </div>
 </template>
 
 <script>
+import {Task} from '../../models/Task'
 import { Question, QuestionList } from '../../models/Question'
+import ReportOfTest from '../QuestionTemplates/ReportOfTest'
 
 export default {
   name: 'StabilizationTest',
   props: {
     data: {
-      type: Object,
+      type: Task,
       default() {
-        return {
-          legalTime: null,
-          task_id: null,
-          questions: []
-        }
+        return new Task()
       },
     },
   },
+  components: {
+    ReportOfTest
+  },
   data () {
     return {
+      reportVisibility: false,
+      questionPanelVisibility: true,
       currentQuestion: new Question(),
-      questions: new QuestionList()
+      examTask: new Task()
+    }
+  },
+  computed: {
+    questions () {
+      return this.examTask.data.questions
     }
   },
   created() {
     this.initialLoad()
   },
   methods: {
+    showQuestionPanel () {
+      this.reportVisibility = false
+      this.questionPanelVisibility = true
+    },
+    showReport () {
+      this.questionPanelVisibility = false
+      this.reportVisibility = true
+    },
     initialLoad() {
-      this.questions = new QuestionList(this.data?.questions)
+      this.showQuestionPanel()
+      this.loadExamTask()
 
       if (!this.hasQuestions()) {
         return
       }
 
       this.loadFirstQuestion()
+    },
+
+    loadExamTask () {
+      this.examTask = new Task(this.data)
+      this.examTask.data.questions = new QuestionList(this.examTask.data.questions)
     },
 
     hasQuestions () {
@@ -123,7 +148,6 @@ export default {
 
       if (!nextQuestion) {
         this.showReport()
-
         return
       }
 
@@ -143,8 +167,8 @@ export default {
       return taskIds
     },
 
-    showReport() {
-      this.$emit('showReport', this.questions)
+    showVideoAnswers (taskIds) {
+      console.log('showVideoAnswers')
     }
 
   },

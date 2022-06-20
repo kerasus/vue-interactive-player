@@ -10,7 +10,7 @@
           @timeupdate="onPlayerTimeUpdate"
       >
         <template #overPlayer>
-          <over-player :data="overPlayData" :over-play-component="overPlayComponent" @action="onAction" @showReport="loadReport"/>
+          <over-player :data="overPlayData" :over-play-component="overPlayComponent" @action="onAction"/>
         </template>
       </player>
     <div style="text-align: center; padding: 50px">
@@ -254,22 +254,24 @@ export default {
           break
       }
     },
-    doTaskSequence (taskIds) {
+    doTaskSequence (taskIds, examTask) {
       const firstTaskIdOfSequence = taskIds[0]
       if (typeof firstTaskIdOfSequence === 'undefined') {
+        // ToDo:go to next timePoint
         return
       }
 
-      this.loadTaskSequence(taskIds)
+      this.loadTaskSequence(taskIds, examTask)
 
       const firstTask = this.currentTimePoint.tasks.getItem('id', firstTaskIdOfSequence)
 
       this.doTask(firstTask)
     },
-    loadTaskSequence (taskIds) {
+    loadTaskSequence (taskIds, examTask) {
       taskIds.forEach( (taskId, taskIdIndex) => {
         const taskIndex = this.currentTimePoint.tasks.getIndex('id', taskId)
         if (taskIndex === -1) {
+          // ToDo:go to ?
           return
         }
         if (!this.currentTimePoint.tasks.list[taskIndex].data) {
@@ -278,8 +280,8 @@ export default {
 
         const nextTaskId = taskIds[taskIdIndex + 1]
         if (typeof nextTaskId === 'undefined') {
-          this.currentTimePoint.tasks.list[taskIndex].data.next_task_id = null
-          this.currentTimePoint.tasks.list[taskIndex].data.next_task_auto_play = false
+          this.currentTimePoint.tasks.list[taskIndex].data.next_task_id = examTask.id
+          this.currentTimePoint.tasks.list[taskIndex].data.next_task_auto_play = true
           return
         }
 
@@ -310,11 +312,6 @@ export default {
       // show dialog for QuestionOfKnowingSubject
       // new Question(data.questoin)
     },
-
-    loadReport (questions){
-      this.overPlayData = questions
-      this.overPlayComponent = 'ReportOfTest'
-    }
   },
 }
 </script>

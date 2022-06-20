@@ -3,7 +3,7 @@
     <div class="title">نتیجه ی تست تسلط</div>
     <div class="title-of-column"> دیدن فیلم</div>
     <div
-        v-for="(question , index ) in data.list"
+        v-for="(question , index ) in questions.list"
         :key="index"
         class="questions-answer"
     >
@@ -31,7 +31,7 @@ import { QuestionList } from '../../models/Question'
 export default {
   name: 'ReportOfTest',
   props:{
-    data: {
+    questions: {
       type: QuestionList,
       default () {
         return new QuestionList()
@@ -42,12 +42,15 @@ export default {
   },
   methods: {
     actionOfReport () {
-      const data = {}
-      this.$emit('action', this.data)
+      console.log('actionOfReport')
+      this.$emit('showVideoAnswers', {
+        task: this.questions,
+        questions: this.questions,
+      })
     },
     isAnswerCorrect (question) {
       const selectedChoice = question.choices.getSelected()
-      return selectedChoice === selectedChoice.value
+      return (selectedChoice && selectedChoice.value)
     }
   }
 }
