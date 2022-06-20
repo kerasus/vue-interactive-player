@@ -16,48 +16,14 @@ const mixinStabilizationTest = {
       this.changeSources(this.currentTimePoint.sources, this.currentTimePoint.poster)
       this.showOverPlayer()
     },
-    doActionOfStabilizationTest(questions) {
-      const taskIds = this.getTaskIdsOfSelectedChoices(questions)
-      const taskAfterSequence = this.currentTask
+
+    doActionOfStabilizationTest(data) {
+      const examTask = data.task
+      const taskIds = data.taskIds
+      // const questions = data.questions
       this.hideOverPlayer()
-      this.doTaskSequence(taskIds, taskAfterSequence.data?.next_task_id)
-
-
-
-
-
-      // const task_id = this.currentTask.data?.task_id
-      // if (typeof task_id === 'undefined') {
-      //   this.loadNextTimePont()
-      //   return
-      // }
-      // const nextTask = this.currentTimePoint.tasks.getItem('id', task_id)
-      //
-      // if (!nextTask) {
-      //   this.loadNextTimePont()
-      //   return
-      // }
-      //
-      // this.doTask(nextTask)
-      //
-      //
-      // this.changeSources(this.currentTimePoint.sources, this.currentTimePoint.poster)
-      // this.hideOverPlayer()
-      // this.goToTime(this.currentTimePoint.start)
-      // this.play()
+      this.doTaskSequence(taskIds, examTask)
     },
-    getTaskIdsOfSelectedChoices (questions) {
-      const taskIds = []
-      questions.list.forEach(question => {
-        const selectedChoice = question.choices.getSelected()
-        if (selectedChoice && selectedChoice.value) {
-          return
-        }
-        taskIds.push(question.task_id)
-      })
-
-      return taskIds
-    }
   }
 }
 

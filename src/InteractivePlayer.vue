@@ -235,6 +235,7 @@ export default {
     doTaskSequence (taskIds, taskAfterSequenceId) {
       const firstTaskIdOfSequence = taskIds[0]
       if (typeof firstTaskIdOfSequence === 'undefined') {
+        // ToDo:go to next timePoint
         return
       }
 
@@ -248,6 +249,7 @@ export default {
       taskIds.forEach( (taskId, taskIdIndex) => {
         const taskIndex = this.currentTimePoint.tasks.getIndex('id', taskId)
         if (taskIndex === -1) {
+          // ToDo:go to ?
           return
         }
 

@@ -1,7 +1,7 @@
 <template>
   <div class="OverPlayerWrapper">
     <div class="OverPlayer">
-      <component :is="overPlayComponent" :data="data" @action="onAction" />
+      <component :is="overPlayComponent" :data="data" @action="onAction" @showReport="showReport"/>
     </div>
   </div>
 </template>
@@ -10,10 +10,11 @@
 
 import QuestionOfKnowingSubject from './QuestionTemplates/QuestionOfKnowingSubject.vue'
 import StabilizationTest from './QuestionTemplates/StabilizationTest.vue'
+import ReportOfTest from './QuestionTemplates/ReportOfTest.vue'
 
 export default {
   name: 'OverPlayer',
-  components: { QuestionOfKnowingSubject, StabilizationTest },
+  components: { QuestionOfKnowingSubject, StabilizationTest, ReportOfTest },
   props: {
     overPlayComponent: {
       type: String,
@@ -26,6 +27,10 @@ export default {
   methods: {
     onAction (data) {
       this.$emit('action', data)
+    },
+
+    showReport(questions) {
+      this.$emit('showReport', questions)
     }
   }
 }
