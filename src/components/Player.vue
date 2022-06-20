@@ -27,6 +27,9 @@ export default {
   name: 'Player',
   data() {
     return {
+      // https://github.com/videojs/video.js/issues/7101
+      playerIsPaused: true, // Timeupdate keeps running after video is paused.
+
       playerHeight: '200px',
       playerInstance: null,
       playerOptions: {
@@ -132,6 +135,7 @@ export default {
     },
     pause() {
       this.playerInstance.pause()
+      this.playerIsPaused = true
     },
 
     isFullscreen() {
@@ -139,6 +143,7 @@ export default {
     },
     play() {
       this.playerInstance.play()
+      this.playerIsPaused = false
     },
     focus() {
       this.playerInstance.focus()
@@ -154,10 +159,12 @@ export default {
           this.$emit('ended')
         })
         this.playerInstance.on('timeupdate', () => {
-          this.$emit('timeupdate', {
-            currentTime: this.playerInstance.currentTime(),
-            duration: this.playerInstance.duration(),
-          })
+          if (!this.playerIsPaused) {
+            this.$emit('timeupdate', {
+              currentTime: this.playerInstance.currentTime(),
+              duration: this.playerInstance.duration(),
+            })
+          }
 
           // if (!that.player.paused() && !that.player.userActive()) {
           //   that.videoStatus(false)

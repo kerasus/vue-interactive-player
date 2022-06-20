@@ -13,33 +13,6 @@
           <over-player :data="overPlayData" :over-play-component="overPlayComponent" @action="onAction"/>
         </template>
       </player>
-    <div style="text-align: center; padding: 50px">
-      <button @click="changeSources(sampleSources1, samplePoster1)">
-        source 1
-      </button>
-      <button @click="changeSources(sampleSources2, samplePoster2)">
-        source 2
-      </button>
-      <button @click="changeSources(sampleSources3, samplePoster3)">
-        source 3
-      </button>
-    </div>
-    <div style="text-align: center; padding: 50px">
-      <button @click="goToTime(20)">
-        go to time 20
-      </button>
-      <button @click="goToTime(100)">
-        go to time 100
-      </button>
-      <button @click="goToTime(200)">
-        go to time 200
-      </button>
-    </div>
-    <div style="text-align: center; padding: 50px">
-      <button @click="overPlayer = !overPlayer">
-        toggle overPlayer
-      </button>
-    </div>
   </div>
 </template>
 
@@ -69,21 +42,16 @@ export default {
         return
       }
 
-      const nextTaskOfCurrentTaskId = this.currentTask?.data?.next_task_id
-      const nextTaskOfCurrentTaskAutoPlay = this.currentTask?.data?.next_task_auto_play
-      if (typeof nextTaskOfCurrentTaskId !== 'undefined' && nextTaskOfCurrentTaskId !== null && nextTaskOfCurrentTaskAutoPlay) {
-        const nextTaskOfCurrentTask = this.getTaskOfTimePoint(nextTaskOfCurrentTaskId)
-        if (nextTaskOfCurrentTask) {
-          this.doTask(nextTaskOfCurrentTask)
-          return
-        }
-      }
-
-      if (!this.currentTimePoint.tasks.hasPostShow()) {
+      const nextTaskOfCurrentTask = this.getNextTaskOfCurrentTask()
+      if (nextTaskOfCurrentTask) {
+        this.doTask(nextTaskOfCurrentTask)
         return
       }
 
       const postShowTask = this.currentTimePoint.tasks.getPostShow()
+      if (!postShowTask) {
+        return
+      }
       this.doTask(postShowTask)
     }
   },
@@ -172,6 +140,16 @@ export default {
     this.loadFirstTimePont()
   },
   methods: {
+    getNextTaskOfCurrentTask () {
+      const taskId = this.currentTask?.data?.next_task_id
+      const taskAutoPlay = this.currentTask?.data?.next_task_auto_play
+      if (typeof taskId !== 'undefined' && taskId !== null && taskAutoPlay) {
+      // if (typeof taskId !== 'undefined' && taskId !== null) {
+        return this.getTaskOfTimePoint(taskId)
+      }
+
+      return null
+    },
     getTaskOfTimePoint (taskId) {
       return this.currentTimePoint.tasks.getItem('id', taskId)
     },
@@ -188,23 +166,23 @@ export default {
       const firstTimePoint = this.getFirstTimePont()
       this.runTimePoint(firstTimePoint)
     },
-    getNextTimePont() {
-      const currentTimePointIndex = this.localTimePoints.getIndex('id', this.currentTimePoint.id)
-      const nextTimePoint = this.localTimePoints.list[currentTimePointIndex+1]
-      if (typeof nextTimePoint === 'undefined') {
-        return null
-      }
-
-      return nextTimePoint
-    },
-    loadNextTimePont() {
-      const nextTimePoint = this.getNextTimePont()
-      if (!nextTimePoint) {
-        this.pause()
-        return
-      }
-      this.runTimePoint(nextTimePoint)
-    },
+    // getNextTimePont() {
+    //   const currentTimePointIndex = this.localTimePoints.getIndex('id', this.currentTimePoint.id)
+    //   const nextTimePoint = this.localTimePoints.list[currentTimePointIndex+1]
+    //   if (typeof nextTimePoint === 'undefined') {
+    //     return null
+    //   }
+    //
+    //   return nextTimePoint
+    // },
+    // loadNextTimePont() {
+    //   const nextTimePoint = this.getNextTimePont()
+    //   if (!nextTimePoint) {
+    //     this.pause()
+    //     return
+    //   }
+    //   this.runTimePoint(nextTimePoint)
+    // },
     runTimePoint(timePoint) {
       this.currentTimePoint = timePoint
       this.setWatchingEndTime(this.currentTimePoint.end)
@@ -241,11 +219,11 @@ export default {
         case 'gotToTime':
           this.doGoToTime(task)
           break
+        case 'gotToTimePoint':
+          this.doGoToTimePoint(task)
+          break
         case 'StabilizationTest':
           this.doStabilizationTest(task)
-          break
-        case 'SpecialTest':
-          this.doSpecialTest(task.data)
           break
         case 'ShowTimePint':
           this.doSpecialTest(task.data)
@@ -254,32 +232,30 @@ export default {
           break
       }
     },
-    doTaskSequence (taskIds) {
+    doTaskSequence (taskIds, taskAfterSequenceId) {
       const firstTaskIdOfSequence = taskIds[0]
       if (typeof firstTaskIdOfSequence === 'undefined') {
+        // ToDo:go to next timePoint
         return
       }
 
-      this.loadTaskSequence(taskIds)
+      this.loadTaskSequence(taskIds, taskAfterSequenceId)
 
       const firstTask = this.currentTimePoint.tasks.getItem('id', firstTaskIdOfSequence)
 
       this.doTask(firstTask)
     },
-    loadTaskSequence (taskIds) {
+    loadTaskSequence (taskIds, taskAfterSequenceId) {
       taskIds.forEach( (taskId, taskIdIndex) => {
         const taskIndex = this.currentTimePoint.tasks.getIndex('id', taskId)
         if (taskIndex === -1) {
+          // ToDo:go to ?
           return
-        }
-        if (!this.currentTimePoint.tasks.list[taskIndex].data) {
-          this.currentTimePoint.tasks.list[taskIndex].data = {}
         }
 
         const nextTaskId = taskIds[taskIdIndex + 1]
         if (typeof nextTaskId === 'undefined') {
-          this.currentTimePoint.tasks.list[taskIndex].data.next_task_id = null
-          this.currentTimePoint.tasks.list[taskIndex].data.next_task_auto_play = false
+          this.setNextTaskId(this.currentTimePoint.tasks.list[taskIndex], taskAfterSequenceId)
           return
         }
 
@@ -288,8 +264,7 @@ export default {
           return
         }
 
-        this.currentTimePoint.tasks.list[taskIndex].data.next_task_id = this.currentTimePoint.tasks.list[nextTaskIndex].id
-        this.currentTimePoint.tasks.list[taskIndex].data.next_task_auto_play = true
+        this.setNextTaskId(this.currentTimePoint.tasks.list[taskIndex], this.currentTimePoint.tasks.list[nextTaskIndex].id)
       })
     },
     setNextTaskId (task, nextTaskId, autoPlay) {
