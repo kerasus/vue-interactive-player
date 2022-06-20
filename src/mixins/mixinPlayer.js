@@ -22,7 +22,7 @@ const mixinPlayer = {
       this.$refs.interactivePlayer.play()
     },
     pause() {
-      console.log('pause (playerCurrentTime): ', this.playerCurrentTime)
+      console.trace('pause (playerCurrentTime): ', this.playerCurrentTime)
       this.$refs.interactivePlayer.pause()
     },
     focus() {

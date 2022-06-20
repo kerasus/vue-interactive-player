@@ -52,11 +52,23 @@ export default {
       if (!postShowTask) {
         return
       }
-      this.doTask(postShowTask)
+
+      if (!postShowTask.done) {
+        this.doTask(postShowTask)
+        return
+      }
+
+      this.loadNextTimePont()
+    }
+  },
+  computed: {
+    elapsedTimeOfTimePoint () {
+      return (Date.now() - this.startTimePointTime) / 1000
     }
   },
   data() {
     return {
+      startTimePointTime: 0,
       watchingEndTime: 0,
       playerCurrentTime: 0,
       currentTimePoint: new TimePoint(),
@@ -140,6 +152,10 @@ export default {
     this.loadFirstTimePont()
   },
   methods: {
+    finish () {
+      this.hideOverPlayer()
+      this.pause()
+    },
     getNextTaskOfCurrentTask () {
       const taskId = this.currentTask?.data?.next_task_id
       const taskAutoPlay = this.currentTask?.data?.next_task_auto_play
@@ -166,25 +182,26 @@ export default {
       const firstTimePoint = this.getFirstTimePont()
       this.runTimePoint(firstTimePoint)
     },
-    // getNextTimePont() {
-    //   const currentTimePointIndex = this.localTimePoints.getIndex('id', this.currentTimePoint.id)
-    //   const nextTimePoint = this.localTimePoints.list[currentTimePointIndex+1]
-    //   if (typeof nextTimePoint === 'undefined') {
-    //     return null
-    //   }
-    //
-    //   return nextTimePoint
-    // },
-    // loadNextTimePont() {
-    //   const nextTimePoint = this.getNextTimePont()
-    //   if (!nextTimePoint) {
-    //     this.pause()
-    //     return
-    //   }
-    //   this.runTimePoint(nextTimePoint)
-    // },
+    getNextTimePont() {
+      const currentTimePointIndex = this.localTimePoints.getIndex('id', this.currentTimePoint.id)
+      const nextTimePoint = this.localTimePoints.list[currentTimePointIndex+1]
+      if (typeof nextTimePoint === 'undefined') {
+        return null
+      }
+
+      return nextTimePoint
+    },
+    loadNextTimePont() {
+      const nextTimePoint = this.getNextTimePont()
+      if (!nextTimePoint) {
+        this.finish()
+        return
+      }
+      this.runTimePoint(nextTimePoint)
+    },
     runTimePoint(timePoint) {
       this.currentTimePoint = timePoint
+      this.startTimePointTime = Date.now()
       this.setWatchingEndTime(this.currentTimePoint.end)
       this.changeSources(timePoint.sources, timePoint.poster)
       if (timePoint.hesTasks() && timePoint.tasks.hasPreShow()) {
@@ -235,7 +252,7 @@ export default {
     doTaskSequence (taskIds, taskAfterSequenceId) {
       const firstTaskIdOfSequence = taskIds[0]
       if (typeof firstTaskIdOfSequence === 'undefined') {
-        // ToDo:go to next timePoint
+        this.loadNextTimePont()
         return
       }
 
@@ -279,12 +296,7 @@ export default {
     },
     setWatchingEndTime (endTime) {
       this.watchingEndTime = endTime
-    },
-
-    doSpecialTest() {
-      // show dialog for QuestionOfKnowingSubject
-      // new Question(data.questoin)
-    },
+    }
   },
 }
 </script>
