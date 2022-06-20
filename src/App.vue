@@ -43,7 +43,7 @@ export default {
             {
               id: 0,
               type: 'QuestionOfKnowingSubject',
-              preShow: true,
+              pre_show: true,
               data: {
                 statement: 'می خوایم مبحث فیلان رو تدریس کنیم، می خوای ببینی؟',
                 choices: [
@@ -68,9 +68,8 @@ export default {
             {
               id: 1,
               type: 'StabilizationTest',
-              postShow: true,
+              post_show: true,
               data: {
-                legalTime: 50,
                 next_task_id: 2,
                 next_task_auto_play: false,
                 questions: [
@@ -196,7 +195,7 @@ export default {
               id: 2,
               type: 'StabilizationTest',
               data: {
-                legalTime: 50,
+                legal_time: 50,
                 next_task_id: 10,
                 next_task_auto_play: false,
                 questions: [
@@ -280,7 +279,7 @@ export default {
               id: 4,
               type: 'gotToTimePoint',
               data: {
-                timePoint_id: 1
+                time_point_id: 1
               },
             },
 
@@ -329,7 +328,7 @@ export default {
               id: 10,
               type: 'gotToTimePoint',
               data: {
-                timePoint_id: 1
+                time_point_id: 1
               },
             },
           ],
@@ -364,7 +363,7 @@ export default {
             {
               id: 0,
               type: 'QuestionOfKnowingSubject',
-              preShow: true,
+              pre_show: true,
               data: {
                 statement: 'می خوایم مبحث فیلان رو تدریس کنیم، می خوای ببینی؟',
                 choices: [
@@ -389,9 +388,8 @@ export default {
             {
               id: 1,
               type: 'StabilizationTest',
-              postShow: true,
+              post_show: true,
               data: {
-                legalTime: 50,
                 next_task_id: 2,
                 next_task_auto_play: false,
                 questions: [
@@ -517,7 +515,7 @@ export default {
               id: 2,
               type: 'StabilizationTest',
               data: {
-                legalTime: 50,
+                legal_time: 10,
                 next_task_id: 10,
                 next_task_auto_play: false,
                 questions: [
@@ -601,7 +599,7 @@ export default {
               id: 4,
               type: 'gotToTimePoint',
               data: {
-                timePoint_id: 1
+                time_point_id: 1
               },
             },
 
@@ -650,7 +648,7 @@ export default {
               id: 10,
               type: 'gotToTimePoint',
               data: {
-                timePoint_id: 1
+                time_point_id: 1
               },
             },
           ],

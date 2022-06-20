@@ -8,11 +8,11 @@ class Task extends Model {
       { key: 'data' },
       { key: 'done' },
       {
-        key: 'preShow',
+        key: 'pre_show',
         default: false
       },
       {
-        key: 'postShow',
+        key: 'post_show',
         default: false
       },
     ])
@@ -25,11 +25,11 @@ class TaskList extends Collection {
   }
 
   getPreShow () {
-    return this.list.find( task => task.preShow)
+    return this.list.find( task => task.pre_show)
   }
 
   getPostShow () {
-    return this.list.find( task => task.postShow)
+    return this.list.find( task => task.post_show)
   }
 
   hasPreShow () {

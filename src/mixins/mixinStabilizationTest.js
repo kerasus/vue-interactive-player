@@ -8,7 +8,9 @@ const mixinStabilizationTest = {
   },
   methods: {
     doStabilizationTest(task) {
-      console.log('doStabilizationTest (playerCurrentTime): ', this.playerCurrentTime)
+      if (task.data.legal_time && task.data.legal_time < this.elapsedTimeOfTimePoint) {
+        return
+      }
       this.pause()
       task.done = true
       this.overPlayData = task
