@@ -38,6 +38,12 @@ export default {
       },
     },
   },
+  watch: {
+    data (newData) {
+      console.log('StabilizationTest watch data', newData)
+      this.initialLoad()
+    }
+  },
   components: {
     ReportOfTest
   },
@@ -55,7 +61,14 @@ export default {
     }
   },
   created() {
+    console.log('StabilizationTest created')
     this.initialLoad()
+  },
+  mounted() {
+    console.log('StabilizationTest mounted')
+  },
+  updated() {
+    console.log('StabilizationTest updated')
   },
   methods: {
     showQuestionPanel () {
@@ -168,7 +181,13 @@ export default {
     },
 
     showVideoAnswers (taskIds) {
-      console.log('showVideoAnswers')
+      const data = {
+        examTask: this.examTask,
+        questions: this.questions,
+        taskIds: this.getTaskIdsOfSelectedChoices(this.questions)
+      }
+
+      this.$emit('action', data)
     }
 
   },

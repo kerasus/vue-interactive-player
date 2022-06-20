@@ -18,11 +18,11 @@ const mixinStabilizationTest = {
     },
 
     doActionOfStabilizationTest(data) {
-      const examTask = data.task
       const taskIds = data.taskIds
+      const examTask = data.examTask
       // const questions = data.questions
       this.hideOverPlayer()
-      this.doTaskSequence(taskIds, examTask)
+      this.doTaskSequence(taskIds, examTask.data.next_task_id)
     },
   }
 }
