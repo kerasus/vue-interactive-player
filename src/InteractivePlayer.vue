@@ -10,7 +10,7 @@
           @timeupdate="onPlayerTimeUpdate"
       >
         <template #overPlayer>
-          <over-player :data="overPlayData" :over-play-component="overPlayComponent" @action="onAction"/>
+          <over-player :data="overPlayData" :over-play-component="overPlayComponent" @action="onAction" @showReport="loadReport"/>
         </template>
       </player>
     <div style="text-align: center; padding: 50px">
@@ -310,6 +310,11 @@ export default {
       // show dialog for QuestionOfKnowingSubject
       // new Question(data.questoin)
     },
+
+    loadReport (questions){
+      this.overPlayData = questions
+      this.overPlayComponent = 'ReportOfTest'
+    }
   },
 }
 </script>

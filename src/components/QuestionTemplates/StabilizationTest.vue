@@ -6,10 +6,15 @@
       <div v-for="(choice, choiceIndex) in currentQuestion.choices.list"
            :key="choiceIndex"
            class="choice-col"
+           @click="answer(choice)"
       >
-        <input type="checkbox" :id="choice.selected" :name="'answer'+choiceIndex" :value="choice.value" @change="answer(choice)">
+        <input
+            v-model="choice.selected"
+            type="checkbox"
+            :name="'answer'+choiceIndex"
+        >
         <span>{{ choiceIndex + 1 }}.</span>
-        <div class="choice" v-html="choice.label" />
+        <div class="choice" v-html="choice.label"/>
       </div>
     </div>
   </div>
@@ -39,25 +44,32 @@ export default {
     }
   },
   created() {
-    this.questions = new QuestionList(this.data?.questions)
-
-    if (!this.hasQuestions()) {
-      return
-    }
-
-    this.loadFirstQuestion()
+    this.initialLoad()
   },
   methods: {
+    initialLoad() {
+      this.questions = new QuestionList(this.data?.questions)
+
+      if (!this.hasQuestions()) {
+        return
+      }
+
+      this.loadFirstQuestion()
+    },
+
     hasQuestions () {
       return this.questions.list.length > 0
     },
+
     loadFirstQuestion () {
       const firstQuestion = this.getFirstQuestion()
       this.loadCurrentQuestion(firstQuestion)
     },
+
     getCurrentQuestionIndex () {
       return this.questions.getIndex('id', this.currentQuestion.id)
     },
+
     getNextQuestion () {
       const currentQuestionIndex = this.getCurrentQuestionIndex()
       if (currentQuestionIndex < 0) {
@@ -72,6 +84,7 @@ export default {
 
       return nextQuestion
     },
+
     getThisQuestion () {
       const currentQuestionIndex = this.getCurrentQuestionIndex()
       if (currentQuestionIndex < 0) {
@@ -80,26 +93,60 @@ export default {
 
       return this.questions.list[currentQuestionIndex]
     },
-    loadNextQuestion () {
-      const nextQuestion = this.getNextQuestion()
-      if (!nextQuestion) {
-        this.$emit('action', this.questions)
-        return
-      }
-      this.loadCurrentQuestion(nextQuestion)
-    },
+
     loadCurrentQuestion (question) {
       this.currentQuestion = question
     },
+
     getFirstQuestion () {
       return this.questions.list[0]
     },
+
     answer(choice) {
       const thisQuestion = this.getThisQuestion()
       thisQuestion.choices.clearSelected()
       choice.selected = true
       this.loadNextQuestion()
     },
+
+    actionOfReport () {
+      const data = {
+        questions: this.questions,
+        taskIds: this.getTaskIdsOfSelectedChoices(this.questions)
+      }
+
+      this.$emit('action', data)
+    },
+
+    loadNextQuestion () {
+      const nextQuestion = this.getNextQuestion()
+
+      if (!nextQuestion) {
+        this.showReport()
+
+        return
+      }
+
+      this.loadCurrentQuestion(nextQuestion)
+    },
+
+    getTaskIdsOfSelectedChoices (questions) {
+      const taskIds = []
+      questions.list.forEach(question => {
+        const selectedChoice = question.choices.getSelected()
+        if (selectedChoice && selectedChoice.value) {
+          return
+        }
+        taskIds.push(question.task_id)
+      })
+
+      return taskIds
+    },
+
+    showReport() {
+      this.$emit('showReport', this.questions)
+    }
+
   },
 }
 </script>

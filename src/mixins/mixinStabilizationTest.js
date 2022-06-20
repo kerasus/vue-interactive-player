@@ -16,8 +16,12 @@ const mixinStabilizationTest = {
       this.changeSources(this.currentTimePoint.sources, this.currentTimePoint.poster)
       this.showOverPlayer()
     },
-    doActionOfStabilizationTest(questions) {
-      const taskIds = this.getTaskIdsOfSelectedChoices(questions)
+
+    doActionOfStabilizationTest(questions, taskIds) {
+      // const taskIds = this.getTaskIdsOfSelectedChoices(questions)
+
+      this.overPlayData = task.data
+      this.overPlayComponent = 'stabilization-test'
       this.hideOverPlayer()
       this.doTaskSequence(taskIds)
 
@@ -45,18 +49,6 @@ const mixinStabilizationTest = {
       // this.goToTime(this.currentTimePoint.start)
       // this.play()
     },
-    getTaskIdsOfSelectedChoices (questions) {
-      const taskIds = []
-      questions.list.forEach(question => {
-        const selectedChoice = question.choices.getSelected()
-        if (selectedChoice && selectedChoice.value) {
-          return
-        }
-        taskIds.push(question.task_id)
-      })
-
-      return taskIds
-    }
   }
 }
 
