@@ -9,12 +9,11 @@
 <script>
 
 import QuestionOfKnowingSubject from './QuestionTemplates/QuestionOfKnowingSubject.vue'
-import StabilizationTest from './QuestionTemplates/StabilizationTest.vue'
-import ReportOfTest from './QuestionTemplates/ReportOfTest.vue'
+import StabilizationTest from './QuestionTemplates/Quiz/ExamPannel.vue'
 
 export default {
   name: 'OverPlayer',
-  components: { QuestionOfKnowingSubject, StabilizationTest, ReportOfTest },
+  components: { QuestionOfKnowingSubject, StabilizationTest },
   props: {
     overPlayComponent: {
       type: String,

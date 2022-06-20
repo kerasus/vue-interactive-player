@@ -24,9 +24,9 @@
 </template>
 
 <script>
-import {Task} from '../../models/Task'
-import { Question, QuestionList } from '../../models/Question'
-import ReportOfTest from '../QuestionTemplates/ReportOfTest'
+import {Task} from '../../../models/Task'
+import { Question, QuestionList } from '../../../models/Question'
+import ReportOfTest from './ReportOfExam'
 
 export default {
   name: 'StabilizationTest',

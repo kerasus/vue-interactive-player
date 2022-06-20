@@ -76,7 +76,7 @@
 
 <script>
 
-import { QuestionList } from '../../models/Question'
+import { QuestionList } from '../../../models/Question'
 
 export default {
   name: 'ReportOfTest',
