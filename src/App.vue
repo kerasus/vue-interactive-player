@@ -195,7 +195,7 @@ export default {
               id: 2,
               type: 'StabilizationTest',
               data: {
-                legal_time: 50,
+                legal_time: 10,
                 next_task_id: 10,
                 next_task_auto_play: false,
                 questions: [
@@ -662,15 +662,12 @@ export default {
   methods: {
     onPlayerReady() {
       // eslint-disable-next-line
-      console.log('onPlayerReady')
     },
     onPlayerEnded() {
       // eslint-disable-next-line
-      console.log('onPlayerEnded')
     },
     onPlayerTimeUpdate(data) {
       // eslint-disable-next-line
-      console.log('onPlayerTimeUpdate', data)
     },
     goToTime(time) {
       this.$refs.interactivePlayer.goToTime(time)

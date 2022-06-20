@@ -35,19 +35,20 @@
 
         <span class="change-task">
           <span
-              v-if="isAnswerCorrect(question) && !opinionChange"
+              v-if="isAnswerCorrect(question)"
               class="correct-answer"
               @click="wantToSeeVideo(question)"
           >
-            میخوام ببینم
+            <span v-if="!opinionChange">میخوام ببینم</span>
+            <span v-else>بیخیال نمیبینم</span>
           </span>
-          <span
-              v-if="opinionChange && isAnswerCorrect(question)"
-              class="change-opinion"
-              @click="wantToSeeVideo(question)"
-          >
-            بیخیال نمیبینم
-          </span>
+<!--          <span-->
+<!--              v-if="opinionChange && isAnswerCorrect(question)"-->
+<!--              class="change-opinion"-->
+<!--              @click="wantToSeeVideo(question)"-->
+<!--          >-->
+<!--            -->
+<!--          </span>-->
           <span
               v-if="!isAnswerCorrect(question)"
               class="wrong-answer"
@@ -103,9 +104,7 @@ export default {
 
   methods: {
     actionOfReport () {
-      this.$emit('showVideoAnswers', {
-        taskIds: this.taskIds,
-      })
+      this.$emit('showVideoAnswers', this.taskIds)
     },
 
     getTaskIdsOfSelectedChoices (questions) {
