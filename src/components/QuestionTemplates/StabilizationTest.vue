@@ -40,7 +40,6 @@ export default {
   },
   watch: {
     data (newData) {
-      console.log('StabilizationTest watch data', newData)
       this.initialLoad()
     }
   },
@@ -49,6 +48,7 @@ export default {
   },
   data () {
     return {
+      inputValue: false,
       reportVisibility: false,
       questionPanelVisibility: true,
       currentQuestion: new Question(),
@@ -61,14 +61,7 @@ export default {
     }
   },
   created() {
-    console.log('StabilizationTest created')
     this.initialLoad()
-  },
-  mounted() {
-    console.log('StabilizationTest mounted')
-  },
-  updated() {
-    console.log('StabilizationTest updated')
   },
   methods: {
     showQuestionPanel () {
@@ -147,15 +140,6 @@ export default {
       this.loadNextQuestion()
     },
 
-    actionOfReport () {
-      const data = {
-        questions: this.questions,
-        taskIds: this.getTaskIdsOfSelectedChoices(this.questions)
-      }
-
-      this.$emit('action', data)
-    },
-
     loadNextQuestion () {
       const nextQuestion = this.getNextQuestion()
 
@@ -167,24 +151,11 @@ export default {
       this.loadCurrentQuestion(nextQuestion)
     },
 
-    getTaskIdsOfSelectedChoices (questions) {
-      const taskIds = []
-      questions.list.forEach(question => {
-        const selectedChoice = question.choices.getSelected()
-        if (selectedChoice && selectedChoice.value) {
-          return
-        }
-        taskIds.push(question.task_id)
-      })
-
-      return taskIds
-    },
-
     showVideoAnswers (taskIds) {
       const data = {
         examTask: this.examTask,
         questions: this.questions,
-        taskIds: this.getTaskIdsOfSelectedChoices(this.questions)
+        taskIds: taskIds
       }
 
       this.$emit('action', data)
@@ -215,6 +186,7 @@ export default {
     justify-content: center;
     .choice-col {
       width: 50%;
+      cursor: pointer;
       display: flex;
       flex-direction: row;
       justify-content: center;
