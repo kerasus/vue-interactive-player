@@ -15,8 +15,10 @@ const mixinQuestionOfKnowingSubject = {
 
       this.changeSources(this.currentTimePoint.sources, this.currentTimePoint.poster)
       this.hideOverPlayer()
-      this.goToTime(this.currentTimePoint.start)
-      this.play()
+      this.$nextTick(() => {
+        this.goToTime(this.currentTimePoint.start)
+        this.play()
+      })
     },
   }
 }
