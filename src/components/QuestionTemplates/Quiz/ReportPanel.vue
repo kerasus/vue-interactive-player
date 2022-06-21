@@ -57,7 +57,8 @@
           class="action-button"
           @click="actionOfReport"
       >
-      تماشا
+        <span>تماشا</span>
+<!--        <span v-if="playTimer">{{ timer }}</span>-->
     </span>
     </div>
   </div>
@@ -65,7 +66,7 @@
 
 <script>
 
-import { QuestionList } from '../../../models/Question'
+import {QuestionList} from '../../../models/Question'
 
 export default {
   name: 'ReportOfTest',
@@ -85,22 +86,66 @@ export default {
   data () {
     return {
       timestampKey: Date.now(),
-      opinionChange: {}
+      timeForWait: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0
     }
   },
 
-  created() {},
+  created() {
+    this.hoursDownCounter(5600)
+  },
 
   computed : {
     taskIds () {
       return this.getTaskIdsOfSelectedChoices(this.customQuestions)
     },
+
     customQuestions () {
       return this.loadQuestions(this.questions)
+    },
+
+    playTimer () {
+      return true
+    },
+
+    pauseTimer () {
+      return false
+    },
+
+    timer () {
+      return this.hours + ':' + this.minutes + ':' + this.seconds
     }
   },
 
   methods: {
+    calculateHours (seconds) {
+      const hours = seconds / 3600
+      if ( hours < 1) {
+        this.calculateMinutes(seconds)
+      } else {
+        const mod = seconds % 3600
+        this.hours = Math.floor(hours)
+        this.calculateMinutes(mod)
+      }
+    },
+
+    calculateMinutes (seconds) {
+      const minutes = seconds / 60
+      if ( minutes < 1) {
+        this.calculateSeconds(seconds)
+      } else {
+        const mod = seconds % 60
+        this.minutes = Math.floor(minutes)
+        this.calculateSeconds(mod)
+      }
+    },
+
+    calculateSeconds (seconds) {
+      this.seconds = seconds
+    },
+
     actionOfReport () {
       this.$emit('showVideoAnswers', this.taskIds)
     },
@@ -125,8 +170,13 @@ export default {
     },
 
     loadQuestions(questions) {
+      this.calculateWaitingTime()
       this.setHaveToSee(questions)
       return questions
+    },
+
+    calculateWaitingTime () {
+      this.timeForWait = this.questions.list.length
     },
 
     refreshList () {
