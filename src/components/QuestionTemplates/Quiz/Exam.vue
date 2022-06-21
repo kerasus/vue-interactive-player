@@ -8,7 +8,7 @@
 <script>
 import { Task } from '../../../models/Task'
 import { QuestionList } from '../../../models/Question'
-import ReportPanel from './ReportPannel'
+import ReportPanel from './ReportPanel'
 import ExamPanel from './ExamPanel'
 
 export default {
@@ -47,7 +47,6 @@ export default {
     showReport (data) {
       this.questions = data.questions
       this.examTask = data.examTask
-      console.log('get')
       this.questionPanelVisibility = false
       this.reportVisibility = true
     },
