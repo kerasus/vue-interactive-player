@@ -1,35 +1,32 @@
 <template>
-  <div class="StabilizationTest">
-    <div v-show="questionPanelVisibility">
-      <div class="title"> تست های تسلط</div>
-      <div v-html="currentQuestion.statement" class="statement" />
-      <div class="choices">
-        <div v-for="(choice, choiceIndex) in currentQuestion.choices.list"
-             :key="choiceIndex"
-             class="choice-col"
-             @click="answer(choice)"
+  <div class="exam-panel">
+    <div class="title"> {{ data.data.examTitle ? data.data.examTitle: 'آزمون'}}</div>
+    <div v-html="currentQuestion.statement" class="statement" />
+    <div class="choices">
+      <div v-for="(choice, choiceIndex) in currentQuestion.choices.list"
+           :key="choiceIndex"
+           class="choice-col"
+           @click="answer(choice)"
+      >
+        <input
+            v-model="choice.selected"
+            type="checkbox"
+            :name="'answer'+choiceIndex"
         >
-          <input
-              v-model="choice.selected"
-              type="checkbox"
-              :name="'answer'+choiceIndex"
-          >
-          <span>{{ choiceIndex + 1 }}.</span>
-          <div class="choice" v-html="choice.label"/>
-        </div>
+        <span>{{ choiceIndex + 1 }}.</span>
+        <div class="choice" v-html="choice.label"/>
       </div>
     </div>
-    <report-of-test v-show="reportVisibility" :questions="questions" @showVideoAnswers="showVideoAnswers" />
   </div>
 </template>
 
 <script>
-import {Task} from '../../models/Task'
-import { Question, QuestionList } from '../../models/Question'
-import ReportOfTest from '../QuestionTemplates/ReportOfTest'
+import {Task} from '../../../models/Task'
+import {Question, QuestionList} from '../../../models/Question'
 
 export default {
-  name: 'StabilizationTest',
+  name: 'ExamPanel',
+
   props: {
     data: {
       type: Task,
@@ -38,42 +35,33 @@ export default {
       },
     },
   },
+
   watch: {
     data (newData) {
       this.initialLoad()
     }
   },
-  components: {
-    ReportOfTest
-  },
+
   data () {
     return {
-      inputValue: false,
-      reportVisibility: false,
-      questionPanelVisibility: true,
       currentQuestion: new Question(),
       examTask: new Task()
     }
   },
+
   computed: {
     questions () {
       return this.examTask.data.questions
     }
   },
+
   created() {
     this.initialLoad()
   },
+
   methods: {
-    showQuestionPanel () {
-      this.reportVisibility = false
-      this.questionPanelVisibility = true
-    },
-    showReport () {
-      this.questionPanelVisibility = false
-      this.reportVisibility = true
-    },
     initialLoad() {
-      this.showQuestionPanel()
+
       this.loadExamTask()
 
       if (!this.hasQuestions()) {
@@ -83,25 +71,25 @@ export default {
       this.loadFirstQuestion()
     },
 
-    loadExamTask () {
+    loadExamTask() {
       this.examTask = new Task(this.data)
       this.examTask.data.questions = new QuestionList(this.examTask.data.questions)
     },
 
-    hasQuestions () {
+    hasQuestions() {
       return this.questions.list.length > 0
     },
 
-    loadFirstQuestion () {
+    loadFirstQuestion() {
       const firstQuestion = this.getFirstQuestion()
       this.loadCurrentQuestion(firstQuestion)
     },
 
-    getCurrentQuestionIndex () {
+    getCurrentQuestionIndex() {
       return this.questions.getIndex('id', this.currentQuestion.id)
     },
 
-    getNextQuestion () {
+    getNextQuestion() {
       const currentQuestionIndex = this.getCurrentQuestionIndex()
       if (currentQuestionIndex < 0) {
         return null
@@ -116,7 +104,7 @@ export default {
       return nextQuestion
     },
 
-    getThisQuestion () {
+    getThisQuestion() {
       const currentQuestionIndex = this.getCurrentQuestionIndex()
       if (currentQuestionIndex < 0) {
         return null
@@ -125,11 +113,11 @@ export default {
       return this.questions.list[currentQuestionIndex]
     },
 
-    loadCurrentQuestion (question) {
+    loadCurrentQuestion(question) {
       this.currentQuestion = question
     },
 
-    getFirstQuestion () {
+    getFirstQuestion() {
       return this.questions.list[0]
     },
 
@@ -140,33 +128,27 @@ export default {
       this.loadNextQuestion()
     },
 
-    loadNextQuestion () {
+    loadNextQuestion() {
       const nextQuestion = this.getNextQuestion()
 
       if (!nextQuestion) {
-        this.showReport()
+        const data = {
+          examTask: this.examTask,
+          questions: this.questions,
+        }
+
+        this.$emit('examDone', data)
         return
       }
 
       this.loadCurrentQuestion(nextQuestion)
     },
-
-    showVideoAnswers (taskIds) {
-      const data = {
-        examTask: this.examTask,
-        questions: this.questions,
-        taskIds: taskIds
-      }
-
-      this.$emit('action', data)
-    }
-
-  },
+  }
 }
 </script>
 
-<style scoped lang="scss">
-.StabilizationTest {
+<style lang="scss" scoped>
+.exam-panel {
   padding: 30px;
   .title{
     text-align: center;

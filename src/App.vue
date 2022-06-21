@@ -70,6 +70,7 @@ export default {
               type: 'StabilizationTest',
               post_show: true,
               data: {
+                examTitle:'تست های تسلط',
                 next_task_id: 2,
                 next_task_auto_play: false,
                 questions: [
@@ -195,6 +196,7 @@ export default {
               id: 2,
               type: 'StabilizationTest',
               data: {
+                examTitle:'تست های تسلط',
                 legal_time: 50,
                 next_task_id: 10,
                 next_task_auto_play: false,
@@ -500,6 +502,7 @@ export default {
               type: 'StabilizationTest',
               post_show: true,
               data: {
+                examTitle:'تست های تسلط',
                 next_task_id: 2,
                 next_task_auto_play: false,
                 questions: [
@@ -625,6 +628,7 @@ export default {
               id: 2,
               type: 'StabilizationTest',
               data: {
+                examTitle:'تست های تسلط',
                 legal_time: 10,
                 next_task_id: 10,
                 next_task_auto_play: false,
