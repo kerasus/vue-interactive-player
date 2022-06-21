@@ -1,20 +1,21 @@
 <template>
   <div class="exam-panel">
-    <div class="title"> {{ data.data.examTitle ? data.data.examTitle: 'آزمون'}}</div>
-    <div v-html="currentQuestion.statement" class="statement" />
+    <div class="title"> {{ data.data.examTitle ? data.data.examTitle : 'آزمون' }}</div>
+    <div v-html="currentQuestion.statement" class="statement"/>
     <div class="choices">
       <div v-for="(choice, choiceIndex) in currentQuestion.choices.list"
            :key="choiceIndex"
            class="choice-col"
-           @click="answer(choice)"
       >
-        <input
-            v-model="choice.selected"
-            type="checkbox"
-            :name="'answer'+choiceIndex"
-        >
-        <span>{{ choiceIndex + 1 }}.</span>
-        <div class="choice" v-html="choice.label"/>
+        <span @click="answer(choice)">
+          <input
+             v-model="choice.selected"
+             type="checkbox"
+             :name="'answer'+choiceIndex"
+          >
+          <span>{{ choiceIndex + 1 }}.</span>
+        <span class="choice" v-html="choice.label"/>
+        </span>
       </div>
     </div>
   </div>
@@ -37,12 +38,12 @@ export default {
   },
 
   watch: {
-    data (newData) {
+    data(newData) {
       this.initialLoad()
     }
   },
 
-  data () {
+  data() {
     return {
       currentQuestion: new Question(),
       examTask: new Task()
@@ -50,7 +51,7 @@ export default {
   },
 
   computed: {
-    questions () {
+    questions() {
       return this.examTask.data.questions
     }
   },
@@ -140,7 +141,7 @@ export default {
         this.$emit('examDone', data)
         return
       }
-
+      console.log('clicked on me')
       this.loadCurrentQuestion(nextQuestion)
     },
   }
@@ -150,22 +151,26 @@ export default {
 <style lang="scss" scoped>
 .exam-panel {
   padding: 30px;
-  .title{
+
+  .title {
     text-align: center;
     margin-bottom: 30px;
     font-size: 20px;
     font-weight: bold;
   }
+
   .statement {
     margin-bottom: 30px;
     font-size: 18px;
   }
+
   .choices {
     display: flex;
     flex-flow: row;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+
     .choice-col {
       width: 50%;
       cursor: pointer;
@@ -174,6 +179,8 @@ export default {
       justify-content: center;
       align-items: center;
       align-content: center;
+      margin: 10px 0;
+
       .choice {
         color: black;
         padding: 10px;

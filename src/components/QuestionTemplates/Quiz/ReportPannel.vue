@@ -9,46 +9,48 @@
 
     <div
         v-for="(question , index ) in customQuestions.list"
-        :key="index"
+        :key="index + timestampKey"
         class="questions-answer"
     >
-      <div class="right-column">
-        <span class="question-number"> {{index + 1 }}. </span>
-        <span class="selected-answer">  گزینه ی  {{ index + 1 }}</span>
+      <div class="choices-title-column">
+        <span class="question-number" v-text="(index + 1) + '. '" />
+        <span class="selected-answer" v-text="'گزینه ی ' + question.choices.getSelectedNumber()" />
         <span class="answer-icon">
-          <i v-if="isAnswerCorrect(question)" name="mdi-check"/>
+          <i v-if="question.choices.hasTrueSelected()" name="mdi-check"/>
           <i v-else name="mdi-close"/>
         </span>
       </div>
-
-      <div class="left-column">
+      <div class="action-column">
 
         <span
             class="assign-task"
-            :class="{'correct-answer': isAnswerCorrect(question), 'wrong-answer': !isAnswerCorrect(question)}"
+            :class="{'correct-answer': question.choices.hasTrueSelected(), 'wrong-answer': !question.choices.hasTrueSelected()}"
         >
-          <span v-if="isAnswerCorrect(question)"> لازم نیست </span>
+          <span v-if="question.choices.hasTrueSelected()"> لازم نیست </span>
           <span v-else>باید ببینی</span>
         </span>
 
         <span
-            class="change-task"
-            :class="{'correct-answer': isAnswerCorrect(question), 'wrong-answer': !isAnswerCorrect(question)}"
-            @click="wantToSeeVideo(question, index)"
+          class="change-task"
+          :class="{
+             'correct-answer': question.choices.hasTrueSelected() && !question.haveToSee,
+             'wrong-answer': !question.choices.hasTrueSelected(),
+             'change-opinion': question.choices.hasTrueSelected()&& question.haveToSee}"
+          @click="toggleHaveToSee(question)"
         >
-          <span v-if="isAnswerCorrect(question)">میخوام ببینم</span>
-<!--          <span-->
-<!--              v-if="isAnswerCorrect(question) &&`${opinionChange}.${index}`"-->
-<!--              class="change-opinion"-->
-<!--          >-->
-<!--            بیخیال نمیبینم-->
-<!--          </span>-->
-          <span v-if="!isAnswerCorrect(question)">
+          <span v-if="question.choices.hasTrueSelected() && !question.haveToSee">میخوام ببینم</span>
+          <span v-if="!question.choices.hasTrueSelected() && question.haveToSee">
             نه سوتی دادم
           </span>
+          <span
+              v-if="question.choices.hasTrueSelected() && question.haveToSee"
+              class="change-opinion"
+          >
+            بیخیال نمیبینم
+          </span>
+
         </span>
       </div>
-
     </div>
     <div>
       <span
@@ -82,6 +84,7 @@ export default {
 
   data () {
     return {
+      timestampKey: Date.now(),
       opinionChange: {}
     }
   },
@@ -115,14 +118,9 @@ export default {
       return taskIds
     },
 
-    isAnswerCorrect (question) {
-      const selectedChoice = question.choices.getSelected()
-      return (selectedChoice && selectedChoice.value)
-    },
-
     setHaveToSee (questions) {
      questions.list.forEach(question => {
-        question.haveToSee = !this.isAnswerCorrect(question)
+        question.haveToSee = !question.choices.hasTrueSelected()
       })
     },
 
@@ -131,7 +129,15 @@ export default {
       return questions
     },
 
-    wantToSeeVideo (question,index) {
+    refreshList () {
+      this.timestampKey = Date.now()
+    },
+
+    toggleHaveToSee (question) {
+      if (!question.choices.hasTrueSelected()) {
+        return
+      }
+      this.refreshList()
       question.haveToSee = !question.haveToSee
       // this.opinionChange[index] = !question.haveToSee
 
@@ -169,7 +175,7 @@ export default {
     margin: 0 30px 30px 30px;
   }
 
-  .right-column {
+  .choices-title-column {
     .question-number {
       font-weight: bold;
       font-size: 18px;
@@ -181,7 +187,7 @@ export default {
     }
   }
 
-  .left-column {
+  .action-column {
     .assign-task {
       margin: 0 10px;
       &.correct-answer {
@@ -202,10 +208,10 @@ export default {
       &.correct-answer {
         background-color: red;
         cursor: pointer;
-        .change-opinion {
-          background-color: dodgerblue;
-          cursor: pointer;
-        }
+      }
+      &.change-opinion {
+        background-color: dodgerblue;
+        cursor: pointer;
       }
       &.wrong-answer {
         background-color: green;

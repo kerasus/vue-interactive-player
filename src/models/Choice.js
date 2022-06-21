@@ -20,8 +20,34 @@ class ChoiceList extends Collection {
     return Choice
   }
 
+  hasTrueSelected () {
+    const selectedChoice = this.getSelected()
+
+    return selectedChoice && selectedChoice.value
+  }
+
   getSelected () {
     return this.list.find( choice => choice.selected)
+  }
+
+  getSelectedNumber () {
+    const selectedChoice = this.getSelected()
+    if (!selectedChoice) {
+      return null
+    }
+
+    return this.getNumber(selectedChoice.id)
+  }
+
+  getNumber (choiceId) {
+    if (typeof choiceId === 'undefined' || choiceId === null) {
+      return null
+    }
+    const index = this.getIndex('id', choiceId)
+    if (index === -1) {
+      return null
+    }
+    return (index + 1)
   }
 
   clearSelected () {

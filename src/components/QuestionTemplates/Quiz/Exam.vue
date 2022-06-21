@@ -47,7 +47,6 @@ export default {
     showReport (data) {
       this.questions = data.questions
       this.examTask = data.examTask
-      console.log('get')
       this.questionPanelVisibility = false
       this.reportVisibility = true
     },
