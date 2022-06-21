@@ -141,7 +141,6 @@ export default {
         this.$emit('examDone', data)
         return
       }
-      console.log('clicked on me')
       this.loadCurrentQuestion(nextQuestion)
     },
   }
