@@ -1,7 +1,12 @@
 <template>
   <div class="reportOfTest">
-    <div class="title">نتیجه ی تست تسلط</div>
+    <div class="title">
+      <span>نتیجه ی </span>
+      <span> {{ title ? title : 'آزمون'}}</span>
+    </div>
+
     <div class="title-of-column"> دیدن فیلم</div>
+
     <div
         v-for="(question , index ) in customQuestions.list"
         :key="index"
@@ -18,41 +23,27 @@
 
       <div class="left-column">
 
-        <span class="assign-task">
-          <span
-              v-if="isAnswerCorrect(question)"
-              class="correct-answer"
-          >
-            لازم نیست
-          </span>
-          <span
-              v-else
-              class="wrong-answer"
-          >
-            باید ببینی
-          </span>
+        <span
+            class="assign-task"
+            :class="{'correct-answer': isAnswerCorrect(question), 'wrong-answer': !isAnswerCorrect(question)}"
+        >
+          <span v-if="isAnswerCorrect(question)"> لازم نیست </span>
+          <span v-else>باید ببینی</span>
         </span>
 
-        <span class="change-task">
-          <span
-              v-if="isAnswerCorrect(question)"
-              class="correct-answer"
-              @click="wantToSeeVideo(question)"
-          >
-            <span v-if="!opinionChange">میخوام ببینم</span>
-            <span v-else>بیخیال نمیبینم</span>
-          </span>
+        <span
+            class="change-task"
+            :class="{'correct-answer': isAnswerCorrect(question), 'wrong-answer': !isAnswerCorrect(question)}"
+            @click="wantToSeeVideo(question, index)"
+        >
+          <span v-if="isAnswerCorrect(question)">میخوام ببینم</span>
 <!--          <span-->
-<!--              v-if="opinionChange && isAnswerCorrect(question)"-->
+<!--              v-if="isAnswerCorrect(question) &&`${opinionChange}.${index}`"-->
 <!--              class="change-opinion"-->
-<!--              @click="wantToSeeVideo(question)"-->
 <!--          >-->
-<!--            -->
+<!--            بیخیال نمیبینم-->
 <!--          </span>-->
-          <span
-              v-if="!isAnswerCorrect(question)"
-              class="wrong-answer"
-          >
+          <span v-if="!isAnswerCorrect(question)">
             نه سوتی دادم
           </span>
         </span>
@@ -72,11 +63,15 @@
 
 <script>
 
-import { QuestionList } from '../../models/Question'
+import { QuestionList } from '../../../models/Question'
 
 export default {
   name: 'ReportOfTest',
   props:{
+    title: {
+      type: String,
+      default: ''
+    },
     questions: {
       type: QuestionList,
       default () {
@@ -87,7 +82,7 @@ export default {
 
   data () {
     return {
-      opinionChange: false
+      opinionChange: {}
     }
   },
 
@@ -136,9 +131,10 @@ export default {
       return questions
     },
 
-    wantToSeeVideo (question) {
+    wantToSeeVideo (question,index) {
       question.haveToSee = !question.haveToSee
-      this.opinionChange = !this.opinionChange
+      // this.opinionChange[index] = !question.haveToSee
+
     }
   }
 }
@@ -188,42 +184,31 @@ export default {
   .left-column {
     .assign-task {
       margin: 0 10px;
-      .correct-answer {
+      &.correct-answer {
         color: green;
       }
-      .wrong-answer {
+      &.wrong-answer {
         color: red;
       }
     }
 
     .change-task {
       margin: 0 10px;
-      .correct-answer {
+      color: white;
+      border-radius: 20px;
+      padding: 4px 6px;
+      text-align: center;
+      font-size: 10px;
+      &.correct-answer {
         background-color: red;
         cursor: pointer;
-        color: white;
-        border-radius: 20px;
-        padding: 4px 6px;
-        text-align: center;
-        font-size: 10px;
+        .change-opinion {
+          background-color: dodgerblue;
+          cursor: pointer;
+        }
       }
-      .change-opinion {
-        background-color: dodgerblue;
-        cursor: pointer;
-        color: white;
-        border-radius: 20px;
-        padding: 4px 6px;
-        text-align: center;
-        font-size: 10px;
-      }
-      .wrong-answer {
+      &.wrong-answer {
         background-color: green;
-        color: white;
-        border-radius: 20px;
-        padding: 4px 6px;
-        text-align: center;
-        font-size: 10px;
-        font-style: normal;
       }
     }
   }
@@ -236,7 +221,6 @@ export default {
     border-radius: 10px;
     text-align: center;
     width: 10%;
-    float: left;
   }
 }
 </style>
