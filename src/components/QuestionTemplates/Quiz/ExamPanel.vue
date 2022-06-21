@@ -175,8 +175,6 @@ export default {
       cursor: pointer;
       display: flex;
       flex-direction: row;
-      justify-content: center;
-      align-items: center;
       align-content: center;
       margin: 10px 0;
 
