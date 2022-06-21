@@ -57,8 +57,8 @@
           class="action-button"
           @click="actionOfReport"
       >
-        <span>تماشا</span>
-<!--        <span v-if="playTimer">{{ timer }}</span>-->
+        <span v-if="pauseTimer">تماشا</span>
+        <span v-else>{{hours  + ':' +  minutes + ':' +  seconds }}</span>
     </span>
     </div>
   </div>
@@ -80,21 +80,27 @@ export default {
       default () {
         return new QuestionList()
       }
+    },
+    startTimer: {
+      type: Boolean,
+      default: false
     }
   },
 
   data () {
     return {
       timestampKey: Date.now(),
-      timeForWait: 0,
-      hours: 0,
-      minutes: 0,
-      seconds: 0
+      timeForWait: 0
     }
   },
 
-  created() {
-    this.hoursDownCounter(5600)
+  watch: {
+    startTimer() {
+      if(this.startTimer) {
+        this.calculateWaitingTime()
+        this.secondsDownCounter()
+      }
+    }
   },
 
   computed : {
@@ -106,46 +112,24 @@ export default {
       return this.loadQuestions(this.questions)
     },
 
-    playTimer () {
-      return true
-    },
-
     pauseTimer () {
-      return false
+      return !this.seconds
     },
 
-    timer () {
-      return this.hours + ':' + this.minutes + ':' + this.seconds
+    minutes () {
+      return parseInt(this.timeForWait / 60)
+    },
+
+    hours () {
+      return parseInt(this.minutes / 60)
+    },
+
+    seconds () {
+      return this.timeForWait - (this.hours * this.minutes)
     }
   },
 
   methods: {
-    calculateHours (seconds) {
-      const hours = seconds / 3600
-      if ( hours < 1) {
-        this.calculateMinutes(seconds)
-      } else {
-        const mod = seconds % 3600
-        this.hours = Math.floor(hours)
-        this.calculateMinutes(mod)
-      }
-    },
-
-    calculateMinutes (seconds) {
-      const minutes = seconds / 60
-      if ( minutes < 1) {
-        this.calculateSeconds(seconds)
-      } else {
-        const mod = seconds % 60
-        this.minutes = Math.floor(minutes)
-        this.calculateSeconds(mod)
-      }
-    },
-
-    calculateSeconds (seconds) {
-      this.seconds = seconds
-    },
-
     actionOfReport () {
       this.$emit('showVideoAnswers', this.taskIds)
     },
@@ -170,14 +154,25 @@ export default {
     },
 
     loadQuestions(questions) {
-      this.calculateWaitingTime()
       this.setHaveToSee(questions)
       return questions
     },
 
     calculateWaitingTime () {
-      this.timeForWait = this.questions.list.length
+      this.timeForWait = this.questions.list.length * 3
     },
+
+    secondsDownCounter () {
+        setTimeout(() => {
+          this.timeForWait--
+          if(this.timeForWait > 0) {
+            this.secondsDownCounter()
+          }
+          if(this.timeForWait === 0) {
+            this.actionOfReport()
+          }
+        }, 1000)
+      },
 
     refreshList () {
       this.timestampKey = Date.now()

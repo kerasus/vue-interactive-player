@@ -1,7 +1,7 @@
 <template>
   <div class="StabilizationTest">
     <exam-panel v-show="questionPanelVisibility" :data="data" @examDone="showReport"/>
-    <report-panel v-show="reportVisibility" :title="data.data.examTitle" :questions="questions" @showVideoAnswers="showVideoAnswers" />
+    <report-panel v-show="reportVisibility" :start-timer="reportVisibility" :title="data.data.examTitle" :questions="questions" @showVideoAnswers="showVideoAnswers" />
   </div>
 </template>
 
