@@ -18,6 +18,32 @@
         </span>
       </div>
     </div>
+
+    <div class="change-question-buttons-row">
+      <button
+          class="change-question-button"
+          :class="{'hide': hidePrevButton }"
+          @click="loadPrevQuestion"
+      >
+        قبل
+      </button>
+      <button
+          class="change-question-button"
+          :class="{'hide': hideNextButton }"
+          @click="loadNextQuestion"
+      >
+        بعد
+      </button>
+
+      <button
+          class="change-question-button see-report-button"
+          :class="{'hide': !hideNextButton }"
+          @click="seeReport"
+      >
+        دیدن کارنامه
+      </button>
+    </div>
+
   </div>
 </template>
 
@@ -46,7 +72,9 @@ export default {
   data() {
     return {
       currentQuestion: new Question(),
-      examTask: new Task()
+      examTask: new Task(),
+      hidePrevButton: true,
+      hideNextButton: false
     }
   },
 
@@ -96,6 +124,15 @@ export default {
         return null
       }
 
+      if (currentQuestionIndex > 0 ) {
+        this.hidePrevButton = false
+      }
+
+      if (currentQuestionIndex === (this.questions.list.length - 2)) {
+        this.hideNextButton = true
+      }
+
+
       const nextQuestion = this.questions.list[currentQuestionIndex + 1]
 
       if (typeof nextQuestion === 'undefined') {
@@ -103,6 +140,22 @@ export default {
       }
 
       return nextQuestion
+    },
+
+    getPrevQuestion() {
+      const currentQuestionIndex = this.getCurrentQuestionIndex()
+
+      const prevQuestion = this.questions.list[currentQuestionIndex - 1]
+
+      if (currentQuestionIndex === 1 ) {
+        this.hidePrevButton = true
+      }
+
+      if (typeof prevQuestion === 'undefined') {
+        return null
+      }
+
+      return prevQuestion
     },
 
     getThisQuestion() {
@@ -126,23 +179,40 @@ export default {
       const thisQuestion = this.getThisQuestion()
       thisQuestion.choices.clearSelected()
       choice.selected = true
-      this.loadNextQuestion()
+    },
+
+    loadPrevQuestion() {
+      const prevQuestion = this.getPrevQuestion()
+
+      if (!prevQuestion) {
+        return
+      }
+
+      this.loadCurrentQuestion(prevQuestion)
+      this.hideNextButton = false
     },
 
     loadNextQuestion() {
       const nextQuestion = this.getNextQuestion()
 
       if (!nextQuestion) {
-        const data = {
-          examTask: this.examTask,
-          questions: this.questions,
-        }
-
-        this.$emit('examDone', data)
         return
       }
+
       this.loadCurrentQuestion(nextQuestion)
+      this.hidePrevButton = false
     },
+
+    seeReport () {
+      const data = {
+        examTask: this.examTask,
+        questions: this.questions,
+      }
+
+      this.$emit('examDone', data)
+    }
+
+
   }
 }
 </script>
@@ -182,6 +252,28 @@ export default {
         color: black;
         padding: 10px;
         width: 80%;
+      }
+    }
+  }
+
+  .change-question-buttons-row {
+    display: flex;
+    justify-content: center;
+
+    .change-question-button {
+      width: 100px;
+      height: 30px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 30px 10px;
+
+      &.hide {
+        display: none;
+      }
+
+      &.see-report-button {
+        color: green;
       }
     }
   }
