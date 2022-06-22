@@ -52,7 +52,7 @@ import {Task} from '../../../models/Task'
 import {Question, QuestionList} from '../../../models/Question'
 
 export default {
-  name: 'ExamPanel',
+  name: 'QuestionPanel',
 
   props: {
     task: {

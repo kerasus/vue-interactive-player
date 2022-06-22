@@ -1,6 +1,6 @@
 <template>
   <div class="StabilizationTest">
-    <exam-panel v-show="questionPanelVisibility" ref="questionPanel" :task="examTask" @examDone="showReport"/>
+    <question-panel v-show="questionPanelVisibility" ref="questionPanel" :task="examTask" @examDone="showReport"/>
     <report-panel v-show="reportVisibility" :start-timer="reportVisibility" :title="examTask.data.examTitle" :questions="questions" @showVideoAnswers="showVideoAnswers" />
   </div>
 </template>
@@ -9,7 +9,7 @@
 import { Task } from '../../../models/Task'
 import { QuestionList } from '../../../models/Question'
 import ReportPanel from './ReportPanel'
-import ExamPanel from './ExamPanel'
+import QuestionPanel from './QuestionPanel'
 
 export default {
   name: 'Exam',
@@ -24,7 +24,7 @@ export default {
 
   components: {
     ReportPanel,
-    ExamPanel
+    QuestionPanel
   },
 
   watch: {
