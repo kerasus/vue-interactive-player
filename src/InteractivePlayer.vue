@@ -50,6 +50,7 @@ export default {
 
       const postShowTask = this.currentTimePoint.tasks.getPostShow()
       if (!postShowTask) {
+        this.loadNextTimePont()
         return
       }
 

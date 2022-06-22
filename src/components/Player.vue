@@ -165,6 +165,9 @@ export default {
         this.playerInstance.on('ended', () => {
           this.$emit('ended')
         })
+        this.playerInstance.on('play', () => {
+          this.playerIsPaused = false
+        })
         this.playerInstance.on('timeupdate', () => {
           if (!this.playerIsPaused) {
             this.$emit('timeupdate', {
