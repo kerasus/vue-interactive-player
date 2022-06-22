@@ -65,10 +65,14 @@ export default {
   computed: {
     elapsedTimeOfTimePoint () {
       return (Date.now() - this.startTimePointTime) / 1000
+    },
+    elapsedTimeOfPlan () {
+      return (Date.now() - this.startPlanTime) / 1000
     }
   },
   data() {
     return {
+      startPlanTime: 0,
       startTimePointTime: 0,
       watchingEndTime: 0,
       playerCurrentTime: 0,
@@ -78,72 +82,6 @@ export default {
       overPlayData: null,
       overPlayComponent: '',
       overPlayer: false,
-      samplePoster1: 'https://nodes.alaatv.com/media/thumbnails/969/969007kbnt.jpg',
-      sampleSources1: [
-        {
-          src: 'https://nodes.alaatv.com/media/969/HD_720p/969007kbnt.mp4',
-          type: 'video/mp4',
-          res: '720p',
-          label: 'کیفیت عالی',
-        },
-        {
-          src: 'https://nodes.alaatv.com/media/969/hq/969007kbnt.mp4',
-          type: 'video/mp4',
-          res: '480p',
-          label: 'کیفیت بالا',
-        },
-        {
-          src: 'https://nodes.alaatv.com/media/969/240p/969007kbnt.mp4',
-          type: 'video/mp4',
-          res: '240p',
-          label: 'کیفیت متوسط',
-          selected: true,
-        },
-      ],
-      samplePoster2: 'https://nodes.alaatv.com/media/thumbnails/769/769001zone.jpg',
-      sampleSources2: [
-        {
-          src: 'https://nodes.alaatv.com/media/769/HD_720p/769001zone.mp4',
-          type: 'video/mp4',
-          res: '720p',
-          label: 'کیفیت عالی',
-        },
-        {
-          src: 'https://nodes.alaatv.com/media/769/hq/769001zone.mp4',
-          type: 'video/mp4',
-          res: '480p',
-          label: 'کیفیت بالا',
-        },
-        {
-          src: 'https://nodes.alaatv.com/media/769/240p/769001zone.mp4',
-          type: 'video/mp4',
-          res: '240p',
-          label: 'کیفیت متوسط',
-          selected: true,
-        },
-      ],
-      samplePoster3: 'https://nodes.alaatv.com/media/thumbnails/1374/1374000asdf.jpg',
-      sampleSources3: [
-        {
-          src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374000asdf.mp4',
-          type: 'video/mp4',
-          res: '720p',
-          label: 'کیفیت عالی',
-        },
-        {
-          src: 'https://nodes.alaatv.com/media/1374/hq/1374000asdf.mp4',
-          type: 'video/mp4',
-          res: '480p',
-          label: 'کیفیت بالا',
-        },
-        {
-          src: 'https://nodes.alaatv.com/media/1374/240p/1374000asdf.mp4',
-          type: 'video/mp4',
-          res: '240p',
-          label: 'کیفیت متوسط',
-          selected: true,
-        },
-      ],
       sources: new PlayerSourceList(),
       poster: '',
     }
@@ -180,6 +118,7 @@ export default {
       return this.localTimePoints.list[0]
     },
     loadFirstTimePont() {
+      this.startPlanTime = Date.now()
       const firstTimePoint = this.getFirstTimePont()
       this.runTimePoint(firstTimePoint)
     },
@@ -203,6 +142,12 @@ export default {
     runTimePoint(timePoint) {
       this.currentTimePoint = timePoint
       this.startTimePointTime = Date.now()
+
+      if (timePoint.legal_time && timePoint.legal_time < this.elapsedTimeOfPlan) {
+        this.loadNextTimePont()
+        return
+      }
+
       this.setWatchingEndTime(this.currentTimePoint.end)
       this.changeSources(timePoint.sources, timePoint.poster)
       if (timePoint.hesTasks() && timePoint.tasks.hasPreShow()) {
@@ -230,6 +175,9 @@ export default {
     },
     doTask(task) {
       this.setCurrentTask(task)
+      if (task.data.legal_time && task.data.legal_time < this.elapsedTimeOfTimePoint) {
+        return
+      }
       switch (task.type) {
         case 'QuestionOfKnowingSubject':
           this.doQuestionOfKnowingSubject(task)

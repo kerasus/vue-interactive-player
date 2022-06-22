@@ -19,6 +19,7 @@ class TimePoint extends Model {
         key: 'end',
         default: 0,
       },
+      { key: 'legal_time' },
       {
         key: 'tasks',
         relatedModel: TaskList,
