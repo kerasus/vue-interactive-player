@@ -14,7 +14,7 @@ export default {
     return {
       timePoints: [
         {
-          id: 0,
+          id: 0, // 00:00
           poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374000asdf.jpg',
           sources: [
             {
@@ -38,7 +38,195 @@ export default {
             },
           ],
           start: 0,
-          end: 2,
+          end: 2 // 01:00
+        },
+        {
+          id: 1,
+          poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374000asdf.jpg',
+          sources: [
+            {
+              src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374000asdf.mp4',
+              type: 'video/mp4',
+              res: '720p',
+              label: 'کیفیت عالی',
+            },
+            {
+              src: 'https://nodes.alaatv.com/media/1374/hq/1374000asdf.mp4',
+              type: 'video/mp4',
+              res: '480p',
+              label: 'کیفیت بالا',
+            },
+            {
+              src: 'https://nodes.alaatv.com/media/1374/240p/1374000asdf.mp4',
+              type: 'video/mp4',
+              res: '240p',
+              label: 'کیفیت متوسط',
+              selected: true,
+            },
+          ],
+          start: 2, // 01:00
+          end: 4, // 05:00
+          tasks: [
+            {
+              id: 0,
+              type: 'QuestionOfKnowingSubject',
+              pre_show: true,
+              data: {
+                statement: 'می خوایم مبحث فیلان رو تدریس کنیم، می خوای ببینی؟',
+                choices: [
+                  {
+                    label: 'بلد نیستم و می خوام ببینم',
+                    value: 2,
+                    task_id: 3
+                  },
+                  {
+                    label: 'بلدم و نمی خوام ببینم',
+                    value: 1,
+                    task_id: 4
+                  },
+                  {
+                    label: 'بلدم و می خوام ببینم',
+                    value: 0,
+                    task_id: 3
+                  },
+                ],
+              },
+            },
+            {
+              id: 3,
+              type: 'gotToTime'
+            },
+            {
+              id: 4,
+              type: 'gotToTimePoint',
+              data: {
+                time_point_id: 2
+              },
+            },
+
+            {
+              id: 1,
+              type: 'StabilizationTest',
+              post_show: true,
+              data: {
+                examTitle:'تست ۱ (چهارگزینه ای)',
+                next_task_id: 2,
+                next_task_auto_play: true,
+                questions: [
+                  {
+                    id: 0,
+                    task_id: 5,
+                    statement: '۱-این متن سوال یک هستش؟',
+                    choices: [
+                      {
+                        id: 0,
+                        label: 'یک متر',
+                        value: false
+                      },
+                      {
+                        id: 1,
+                        label: 'یک دو',
+                        value: false,
+                      },
+                      {
+                        id: 2,
+                        label: 'یک سه',
+                        value: false,
+                      },
+                      {
+                        id: 3,
+                        label: 'یک چهار',
+                        value: true,
+                      },
+                    ],
+                  },
+                ]
+              },
+            },
+            {
+              id: 5,
+              type: 'gotToTime',
+              data: {
+                start: 4, // 05:00
+                end: 6, // 07:00
+              },
+            },
+
+            {
+              id: 2,
+              type: 'StabilizationTest',
+              data: {
+                examTitle:'تست ۲ (چهارگزینه ای)',
+                questions: [
+                  {
+                    id: 0,
+                    task_id: 6,
+                    statement: '۱-اما این یکی متن سوال شماره دو هستش؟',
+                    choices: [
+                      {
+                        id: 0,
+                        label: 'یک متر',
+                        value: false
+                      },
+                      {
+                        id: 1,
+                        label: 'یک دو',
+                        value: false,
+                      },
+                      {
+                        id: 2,
+                        label: 'یک سه',
+                        value: false,
+                      },
+                      {
+                        id: 3,
+                        label: 'یک چهار',
+                        value: true,
+                      },
+                    ],
+                  },
+                ]
+              },
+            },
+            {
+              id: 6,
+              type: 'gotToTime',
+              data: {
+                start: 6, // 07:00
+                end: 8, // 07:00
+              },
+            },
+          ],
+        },
+
+
+
+        {
+          id: 2,
+          poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374000asdf.jpg',
+          sources: [
+            {
+              src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374000asdf.mp4',
+              type: 'video/mp4',
+              res: '720p',
+              label: 'کیفیت عالی',
+            },
+            {
+              src: 'https://nodes.alaatv.com/media/1374/hq/1374000asdf.mp4',
+              type: 'video/mp4',
+              res: '480p',
+              label: 'کیفیت بالا',
+            },
+            {
+              src: 'https://nodes.alaatv.com/media/1374/240p/1374000asdf.mp4',
+              type: 'video/mp4',
+              res: '240p',
+              label: 'کیفیت متوسط',
+              selected: true,
+            },
+          ],
+          start: 2,
+          end: 4,
           tasks: [
             {
               id: 0,
@@ -70,7 +258,7 @@ export default {
               type: 'StabilizationTest',
               post_show: true,
               data: {
-                examTitle:'تست های تسلط',
+                examTitle:'تست ۱ (چهارگزینه ای)',
                 next_task_id: 2,
                 next_task_auto_play: false,
                 questions: [

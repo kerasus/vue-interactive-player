@@ -1,6 +1,6 @@
 <template>
   <div class="exam-panel">
-    <div class="title"> {{ data.data.examTitle ? data.data.examTitle : 'آزمون' }}</div>
+    <div class="title"> {{ task.data.examTitle ? task.data.examTitle : 'آزمون' }}</div>
     <div v-html="currentQuestion.statement" class="statement"/>
     <div class="choices">
       <div v-for="(choice, choiceIndex) in currentQuestion.choices.list"
@@ -22,14 +22,14 @@
     <div class="change-question-buttons-row">
       <button
           class="change-question-button"
-          :class="{'hide': hidePrevButton }"
+          :class="{'hide': !hasPrevQuestion }"
           @click="loadPrevQuestion"
       >
         قبل
       </button>
       <button
           class="change-question-button"
-          :class="{'hide': hideNextButton }"
+          :class="{'hide': !hasNextQuestion }"
           @click="loadNextQuestion"
       >
         بعد
@@ -37,7 +37,7 @@
 
       <button
           class="change-question-button see-report-button"
-          :class="{'hide': !hideNextButton }"
+          :class="{'hide': hasNextQuestion }"
           @click="seeReport"
       >
         دیدن کارنامه
@@ -55,7 +55,7 @@ export default {
   name: 'ExamPanel',
 
   props: {
-    data: {
+    task: {
       type: Task,
       default() {
         return new Task()
@@ -63,22 +63,22 @@ export default {
     },
   },
 
-  watch: {
-    data(newData) {
-      this.initialLoad()
-    }
-  },
-
   data() {
     return {
       currentQuestion: new Question(),
-      examTask: new Task(),
-      hidePrevButton: true,
-      hideNextButton: false
+      examTask: new Task()
     }
   },
 
   computed: {
+    hasNextQuestion () {
+      const currentQuestionIndex = this.getCurrentQuestionIndex()
+      return (currentQuestionIndex + 1) < this.questions.list.length
+    },
+    hasPrevQuestion () {
+      const currentQuestionIndex = this.getCurrentQuestionIndex()
+      return currentQuestionIndex === 0
+    },
     questions() {
       return this.examTask.data.questions
     }
@@ -89,24 +89,15 @@ export default {
   },
 
   methods: {
+
     initialLoad() {
-
       this.loadExamTask()
-
-      if (!this.hasQuestions()) {
-        return
-      }
-
       this.loadFirstQuestion()
     },
 
     loadExamTask() {
-      this.examTask = new Task(this.data)
+      this.examTask = new Task(this.task)
       this.examTask.data.questions = new QuestionList(this.examTask.data.questions)
-    },
-
-    hasQuestions() {
-      return this.questions.list.length > 0
     },
 
     loadFirstQuestion() {
@@ -124,15 +115,6 @@ export default {
         return null
       }
 
-      if (currentQuestionIndex > 0 ) {
-        this.hidePrevButton = false
-      }
-
-      if (currentQuestionIndex === (this.questions.list.length - 2)) {
-        this.hideNextButton = true
-      }
-
-
       const nextQuestion = this.questions.list[currentQuestionIndex + 1]
 
       if (typeof nextQuestion === 'undefined') {
@@ -146,10 +128,6 @@ export default {
       const currentQuestionIndex = this.getCurrentQuestionIndex()
 
       const prevQuestion = this.questions.list[currentQuestionIndex - 1]
-
-      if (currentQuestionIndex === 1 ) {
-        this.hidePrevButton = true
-      }
 
       if (typeof prevQuestion === 'undefined') {
         return null
@@ -189,7 +167,6 @@ export default {
       }
 
       this.loadCurrentQuestion(prevQuestion)
-      this.hideNextButton = false
     },
 
     loadNextQuestion() {
@@ -200,18 +177,11 @@ export default {
       }
 
       this.loadCurrentQuestion(nextQuestion)
-      this.hidePrevButton = false
     },
 
     seeReport () {
-      const data = {
-        examTask: this.examTask,
-        questions: this.questions,
-      }
-
-      this.$emit('examDone', data)
+      this.$emit('examDone', this.examTask)
     }
-
 
   }
 }

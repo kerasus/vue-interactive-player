@@ -202,8 +202,8 @@ export default {
 
   .title {
     text-align: center;
-    font-size: 20px;
-    font-weight: bold;
+    font-size: 20px !important;
+    font-weight: bold !important;
     margin-bottom: 20px;
   }
 
@@ -223,8 +223,8 @@ export default {
 
   .choices-title-column {
     .question-number {
-      font-weight: bold;
-      font-size: 18px;
+      font-weight: bold !important;
+      font-size: 18px !important;
     }
 
     .selected-answer {

@@ -1,7 +1,7 @@
 <template>
   <div class="StabilizationTest">
-    <exam-panel v-show="questionPanelVisibility" :data="data" @examDone="showReport"/>
-    <report-panel v-show="reportVisibility" :start-timer="reportVisibility" :title="data.data.examTitle" :questions="questions" @showVideoAnswers="showVideoAnswers" />
+    <exam-panel v-show="questionPanelVisibility" ref="questionPanel" :task="examTask" @examDone="showReport"/>
+    <report-panel v-show="reportVisibility" :start-timer="reportVisibility" :title="examTask.data.examTitle" :questions="questions" @showVideoAnswers="showVideoAnswers" />
   </div>
 </template>
 
@@ -12,7 +12,7 @@ import ReportPanel from './ReportPanel'
 import ExamPanel from './ExamPanel'
 
 export default {
-  name: 'StabilizationTest',
+  name: 'Exam',
   props: {
     data: {
       type: Task,
@@ -26,27 +26,67 @@ export default {
     ReportPanel,
     ExamPanel
   },
+
+  watch: {
+    data() {
+      this.initialLoad()
+    }
+  },
   data () {
     return {
       reportVisibility: false,
       questionPanelVisibility: true,
-      questions: new QuestionList(),
       examTask: new Task()
-
     }
   },
-  created() {
-    this.showQuestionPanel()
+  mounted() {
+    this.initialLoad()
   },
+
+  computed: {
+    questions() {
+      let questions = new QuestionList()
+      if (this.examTask.data?.questions) {
+        questions = this.examTask.data.questions
+      }
+      return questions
+    },
+  },
+
   methods: {
+    initialLoad() {
+      this.showQuestionPanel()
+
+      this.loadExamTask()
+
+      if (!this.hasQuestions()) {
+        return
+      }
+
+      this.$nextTick(() => {
+        this.$refs.questionPanel.initialLoad()
+      })
+    },
+
+    loadExamTask() {
+      this.examTask = new Task(this.data)
+      // ممکنه دیتای تسک کلید questions نداشته باشه
+      this.examTask.data.questions = new QuestionList(this.data.data.questions)
+    },
+
+    hasQuestions() {
+      console.log('q', this.questions)
+      return this.questions && this.questions.list.length > 0
+    },
+
+
     showQuestionPanel () {
       this.reportVisibility = false
       this.questionPanelVisibility = true
     },
 
     showReport (data) {
-      this.questions = data.questions
-      this.examTask = data.examTask
+      this.examTask = data
       this.questionPanelVisibility = false
       this.reportVisibility = true
     },
@@ -54,7 +94,6 @@ export default {
     showVideoAnswers (taskIds) {
       const data = {
         examTask: this.examTask,
-        questions: this.questions,
         taskIds: taskIds
       }
 

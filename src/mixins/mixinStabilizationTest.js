@@ -22,7 +22,7 @@ const mixinStabilizationTest = {
     doActionOfStabilizationTest(data) {
       const taskIds = data.taskIds
       const examTask = data.examTask
-      // const questions = data.questions
+      // const questions = data.examTask.data.questions
       this.hideOverPlayer()
       this.doTaskSequence(taskIds, examTask.data.next_task_id)
     },
