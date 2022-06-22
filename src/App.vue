@@ -38,7 +38,8 @@ export default {
             },
           ],
           start: 0,
-          end: 2 // 01:00
+          end: 2, // 01:00
+          legal_time: 0,
         },
         {
           id: 1,
@@ -98,7 +99,7 @@ export default {
             },
             {
               id: 4,
-              type: 'gotToTimePoint',
+              type: 'goToTimePoint',
               data: {
                 time_point_id: 2
               },
@@ -198,9 +199,6 @@ export default {
             },
           ],
         },
-
-
-
         {
           id: 2,
           poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374000asdf.jpg',
@@ -225,47 +223,49 @@ export default {
               selected: true,
             },
           ],
-          start: 2,
-          end: 4,
+          start: 0, // 00:00
+          end: 2, // 01:00
+          legal_time: 0,
           tasks: [
             {
               id: 0,
               type: 'QuestionOfKnowingSubject',
               pre_show: true,
               data: {
-                statement: 'می خوایم مبحث فیلان رو تدریس کنیم، می خوای ببینی؟',
+                statement: 'می خوایم مبحث فیلان رو تثبیت کنیم، می خوای ببینی؟',
+                legal_time: 0,
                 choices: [
                   {
                     label: 'بلد نیستم و می خوام ببینم',
                     value: 2,
-                    task_id: 3
+                    task_id: 1
                   },
                   {
                     label: 'بلدم و نمی خوام ببینم',
                     value: 1,
-                    task_id: 4
+                    task_id: 2
                   },
                   {
                     label: 'بلدم و می خوام ببینم',
                     value: 0,
-                    task_id: 3
+                    task_id: 1
                   },
                 ],
               },
             },
             {
               id: 1,
-              type: 'StabilizationTest',
-              post_show: true,
+              type: 'QuestionOfKnowingSubject',
+              pre_show: true,
               data: {
-                examTitle:'تست ۱ (چهارگزینه ای)',
+                examTitle:'تست های تسلط',
                 next_task_id: 2,
                 next_task_auto_play: false,
                 questions: [
                   {
                     id: 0,
-                    task_id: 5,
-                    statement: '۱-رزمنده ای گلوله ای با سرعت فیلان به طرف هدف شلیک می کند و ۶s پس از شلیک صدای انفجار را می شنود. گلر سرعت ۳۴۰ باشد، فاصله شخص از هدف چند متر است؟',
+                    task_id: 3,
+                    statement: '۱-از اینجا تا اونجا چند متره؟',
                     choices: [
                       {
                         id: 0,
@@ -274,557 +274,272 @@ export default {
                       },
                       {
                         id: 1,
-                        label: 'یک دو',
+                        label: 'دو متر',
                         value: false,
                       },
                       {
                         id: 2,
-                        label: 'یک سه',
+                        label: 'سه متر',
                         value: false,
                       },
                       {
                         id: 3,
-                        label: 'یک چهار',
+                        label: 'چهار متر',
                         value: true,
                       },
                     ],
                   },
                   {
                     id: 1,
-                    task_id: 6,
-                    statement: '۲-شخصی بین دو رشته کوه موازی گلوله ای را شلیک می کند و دو پزواک صوت با اختلاف ۵ ثانیه به وی می رسد. اگر سرعت صوت ۳۴۰ باشد اختلاف فاصله شخص از دو رشته کوه چند متر است؟',
+                    task_id: 4,
+                    statement: '۲-آلو کیلو چند؟',
                     choices: [
                       {
                         id: 0,
-                        label: 'ده متر',
+                        label: '۱تومن',
                         value: false
                       },
                       {
                         id: 1,
-                        label: 'دوازده دو',
+                        label: 'دو تومن',
                         value: false,
                       },
                       {
                         id: 2,
-                        label: 'شانزده سه',
+                        label: 'سه تومن',
                         value: false,
                       },
                       {
                         id: 3,
-                        label: 'پانزده چهار',
+                        label: 'چهار تومن',
                         value: true,
                       },
                     ],
                   },
                   {
                     id: 2,
-                    task_id: 7,
-                    statement: '۳-قایقی اگر در جهت آب پارو بزند، فاصله بین دو نقطه را در t ثانیه و اگر در خلاف جهت جریان آب پارو بزند، فاثله بین همان دو نقطه را در 5s طی می کند. سرعت قایق چقدر است؟',
+                    task_id: 5,
+                    statement: '۲-سن پسر علی؟',
                     choices: [
                       {
                         id: 0,
-                        label: 'یک متر بر ثانیه',
-                        value: false,
+                        label: '10',
+                        value: false
                       },
                       {
                         id: 1,
-                        label: 'دوازده متر بر ثانیه',
+                        label: 'دوازده',
                         value: false,
                       },
                       {
                         id: 2,
-                        label: 'شانزده متر بر ثانیه',
+                        label: 'شانزده ',
                         value: false,
                       },
                       {
                         id: 3,
-                        label: 'پانزده متر بر ثانیه',
+                        label: 'پانزده',
                         value: true,
                       },
                     ],
-                  },
-                  {
-                    id: 3,
-                    task_id: 8,
-                    statement: '۴-رودخانه ای به عرض ۱۲۰ متر دارای جریان آب با سرعت ۳ می باشد. قایقی می خواهد با سرعت ثابت ۵ به نقطه مقابل در طرف دیگر برسد. حداقل زمان ممکن چقدر است؟',
-                    choices: [
-                      {
-                        id: 0,
-                        label: 'یک ثانیه',
-                        value: false,
-                      },
-                      {
-                        id: 1,
-                        label: 'دوازده ثانیه',
-                        value: false,
-                      },
-                      {
-                        id: 2,
-                        label: 'شانزده ثانیه',
-                        value: false,
-                      },
-                      {
-                        id: 3,
-                        label: 'پانزده ثانیه',
-                        value: true,
-                      },
-                    ],
-                  },
-                  {
-                    id: 4,
-                    task_id: 9,
-                    statement: '۵-رودخانه ای به عرض ۱۲۰ متر دارای جریان آب با سرعت ۳ می باشد. قایقی می خواهد با سرعت ثابت ۵ به طرف دیگر رودخانه برود. حداقل زمان ممکن چقدر است؟',
-                    choices: [
-                      {
-                        id: 0,
-                        label: 'شانزده ثانیه',
-                        value: false,
-                      },
-                      {
-                        id: 1,
-                        label: 'دوازده ثانیه',
-                        value: false,
-                      },
-                      {
-                        id: 2,
-                        label: 'یک ثانیه',
-                        value: false,
-                      },
-                      {
-                        id: 3,
-                        label: 'پانزده ثانیه',
-                        value: true,
-                      },
-                    ],
-                  },
+                  }
                 ]
               },
             },
+
             {
               id: 2,
-              type: 'StabilizationTest',
+              type: 'goToTimePoint',
               data: {
-                examTitle:'تست های تسلط',
-                legal_time: 50,
-                next_task_id: 10,
-                next_task_auto_play: false,
-                questions: [
-                  {
-                    id: 0,
-                    task_id: 5,
-                    statement: '۱-رزمنده ای گلوله ای با سرعت فیلان به طرف هدف شلیک می کند و ۶s پس از شلیک صدای انفجار را می شنود. گلر سرعت ۳۴۰ باشد، فاصله شخص از هدف چند متر است؟',
-                    choices: [
-                      {
-                        label: 'یک متر',
-                        value: false
-                      },
-                      {
-                        label: 'یک دو',
-                        value: false,
-                      },
-                      {
-                        label: 'یک سه',
-                        value: false,
-                      },
-                      {
-                        label: 'یک چهار',
-                        value: true,
-                      },
-                    ],
-                  },
-                  {
-                    id: 1,
-                    task_id: 6,
-                    statement: '۲-شخصی بین دو رشته کوه موازی گلوله ای را شلیک می کند و دو پزواک صوت با اختلاف ۵ ثانیه به وی می رسد. اگر سرعت صوت ۳۴۰ باشد اختلاف فاصله شخص از دو رشته کوه چند متر است؟',
-                    choices: [
-                      {
-                        label: 'ده متر',
-                        value: false
-                      },
-                      {
-                        label: 'دوازده دو',
-                        value: false,
-                      },
-                      {
-                        label: 'شانزده سه',
-                        value: false,
-                      },
-                      {
-                        label: 'پانزده چهار',
-                        value: true,
-                      },
-                    ],
-                  },
-                  {
-                    id: 2,
-                    task_id: 7,
-                    statement: '۳-قایقی اگر در جهت آب پارو بزند، فاصله بین دو نقطه را در t ثانیه و اگر در خلاف جهت جریان آب پارو بزند، فاثله بین همان دو نقطه را در 5s طی می کند. سرعت قایق چقدر است؟',
-                    choices: [
-                      {
-                        label: 'یک متر بر ثانیه',
-                        value: false,
-                      },
-                      {
-                        label: 'دوازده متر بر ثانیه',
-                        value: false,
-                      },
-                      {
-                        label: 'شانزده متر بر ثانیه',
-                        value: false,
-                      },
-                      {
-                        label: 'پانزده متر بر ثانیه',
-                        value: true,
-                      },
-                    ],
-                  },
-                ]
+                time_point_id: 3
               },
             },
+
             {
               id: 3,
-              type: 'gotToTime'
+              type: 'goToTime',
             },
             {
               id: 4,
-              type: 'gotToTimePoint',
-              data: {
-                time_point_id: 1
-              },
+              type: 'goToTime',
+              start: 2, //05:00
+              end: 4, //10:00
             },
-
             {
               id: 5,
-              type: 'gotToTime',
-              data: {
-                poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
-                sources: [
-                  {
-                    src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374008uhvf.mp4',
-                    type: 'video/mp4',
-                    res: '720p',
-                    label: 'کیفیت عالی',
-                  },
-                  {
-                    src: 'https://nodes.alaatv.com/media/1374/hq/1374008uhvf.mp4',
-                    type: 'video/mp4',
-                    res: '480p',
-                    label: 'کیفیت بالا',
-                  },
-                  {
-                    src: 'https://nodes.alaatv.com/media/1374/240p/1374008uhvf.mp4',
-                    type: 'video/mp4',
-                    res: '240p',
-                    label: 'کیفیت متوسط',
-                    selected: true,
-                  },
-                ],
-                start: 79,
-                end: 380,
-              },
-            },
-            {
-              id: 6,
-              type: 'gotToTime',
-              data: {
-                poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
-                sources: [
-                  {
-                    src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374008uhvf.mp4',
-                    type: 'video/mp4',
-                    res: '720p',
-                    label: 'کیفیت عالی',
-                  },
-                  {
-                    src: 'https://nodes.alaatv.com/media/1374/hq/1374008uhvf.mp4',
-                    type: 'video/mp4',
-                    res: '480p',
-                    label: 'کیفیت بالا',
-                  },
-                  {
-                    src: 'https://nodes.alaatv.com/media/1374/240p/1374008uhvf.mp4',
-                    type: 'video/mp4',
-                    res: '240p',
-                    label: 'کیفیت متوسط',
-                    selected: true,
-                  },
-                ],
-                start: 380,
-                end: 982,
-              },
-            },
-            {
-              id: 7,
-              type: 'gotToTime',
-              data: {
-                poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
-                sources: [
-                  {
-                    src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374008uhvf.mp4',
-                    type: 'video/mp4',
-                    res: '720p',
-                    label: 'کیفیت عالی',
-                  },
-                  {
-                    src: 'https://nodes.alaatv.com/media/1374/hq/1374008uhvf.mp4',
-                    type: 'video/mp4',
-                    res: '480p',
-                    label: 'کیفیت بالا',
-                  },
-                  {
-                    src: 'https://nodes.alaatv.com/media/1374/240p/1374008uhvf.mp4',
-                    type: 'video/mp4',
-                    res: '240p',
-                    label: 'کیفیت متوسط',
-                    selected: true,
-                  },
-                ],
-                start: 982,
-                end: 1231,
-              },
-            },
-            {
-              id: 8,
-              type: 'gotToTime',
-              data: {
-                poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
-                sources: [
-                  {
-                    src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374008uhvf.mp4',
-                    type: 'video/mp4',
-                    res: '720p',
-                    label: 'کیفیت عالی',
-                  },
-                  {
-                    src: 'https://nodes.alaatv.com/media/1374/hq/1374008uhvf.mp4',
-                    type: 'video/mp4',
-                    res: '480p',
-                    label: 'کیفیت بالا',
-                  },
-                  {
-                    src: 'https://nodes.alaatv.com/media/1374/240p/1374008uhvf.mp4',
-                    type: 'video/mp4',
-                    res: '240p',
-                    label: 'کیفیت متوسط',
-                    selected: true,
-                  },
-                ],
-                start: 1231,
-                end: 1435,
-              },
-            },
-            {
-              id: 9,
-              type: 'gotToTime',
-              data: {
-                poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
-                sources: [
-                  {
-                    src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374008uhvf.mp4',
-                    type: 'video/mp4',
-                    res: '720p',
-                    label: 'کیفیت عالی',
-                  },
-                  {
-                    src: 'https://nodes.alaatv.com/media/1374/hq/1374008uhvf.mp4',
-                    type: 'video/mp4',
-                    res: '480p',
-                    label: 'کیفیت بالا',
-                  },
-                  {
-                    src: 'https://nodes.alaatv.com/media/1374/240p/1374008uhvf.mp4',
-                    type: 'video/mp4',
-                    res: '240p',
-                    label: 'کیفیت متوسط',
-                    selected: true,
-                  },
-                ],
-                start: 1435,
-                end: 1627,
-              },
+              type: 'goToTime',
+              start: 4, //10:00
+              end: 6,  //14:00
             },
 
-            {
-              id: 10,
-              type: 'gotToTimePoint',
-              data: {
-                time_point_id: 1
-              },
-            },
           ],
         },
         {
-          id: 1,
-          poster: 'https://nodes.alaatv.com/media/thumbnails/769/769001zone.jpg',
+          id: 3,
+          poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374000asdf.jpg',
           sources: [
             {
-              src: 'https://nodes.alaatv.com/media/769/HD_720p/769001zone.mp4',
+              src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374000asdf.mp4',
               type: 'video/mp4',
               res: '720p',
               label: 'کیفیت عالی',
             },
             {
-              src: 'https://nodes.alaatv.com/media/769/hq/769001zone.mp4',
+              src: 'https://nodes.alaatv.com/media/1374/hq/1374000asdf.mp4',
               type: 'video/mp4',
               res: '480p',
               label: 'کیفیت بالا',
             },
             {
-              src: 'https://nodes.alaatv.com/media/769/240p/769001zone.mp4',
+              src: 'https://nodes.alaatv.com/media/1374/240p/1374000asdf.mp4',
               type: 'video/mp4',
               res: '240p',
               label: 'کیفیت متوسط',
               selected: true,
             },
           ],
-          start: 0,
-          end: 2,
+          start: 0, // 00:00
+          end: 2, // 2:00
+          legal_time: 0,
           tasks: [
             {
               id: 0,
               type: 'QuestionOfKnowingSubject',
               pre_show: true,
               data: {
-                statement: 'می خوایم مبحث فیلان رو تدریس کنیم، می خوای ببینی؟',
+                statement: 'می خوایم بریم تستای ویژه، می خوای ببینی؟',
                 choices: [
                   {
-                    label: 'بلدم و می خوام ببینم',
-                    value: 0,
-                    task_id: 3
+                    label: 'بلد نیستم و می خوام ببینم',
+                    value: 2,
+                    task_id: 1
                   },
                   {
                     label: 'بلدم و نمی خوام ببینم',
                     value: 1,
-                    task_id: 4
+                    task_id: 2
                   },
                   {
-                    label: 'بلد نیستم و می خوام ببینم',
-                    value: 2,
-                    task_id: 3
+                    label: 'بلدم و می خوام ببینم',
+                    value: 0,
+                    task_id: 1
                   },
                 ],
               },
             },
             {
               id: 1,
-              type: 'StabilizationTest',
-              post_show: true,
+              type: 'QuestionOfKnowingSubject',
+              pre_show: true,
               data: {
-                examTitle:'تست های تسلط',
+                examTitle:'تست های ویژه',
                 next_task_id: 2,
                 next_task_auto_play: false,
                 questions: [
                   {
                     id: 0,
-                    task_id: 5,
-                    statement: '۱-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    task_id: 2,
+                    statement: '۱-از اینجا تا اونجا چند متره؟',
                     choices: [
                       {
-                        label: 'گزینه های یکپارچه',
+                        id: 0,
+                        label: 'یک متر',
                         value: false
                       },
                       {
-                        label: 'گزینه های درهم',
+                        id: 1,
+                        label: 'دو متر',
                         value: false,
                       },
                       {
-                        label: 'گزینه های متفرقه',
+                        id: 2,
+                        label: 'سه متر',
                         value: false,
                       },
                       {
-                        label: 'گزینه درست',
+                        id: 3,
+                        label: 'چهار متر',
                         value: true,
                       },
                     ],
                   },
                   {
                     id: 1,
-                    task_id: 6,
-                    statement: '۲-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    task_id: 3,
+                    statement: '۲-آلو کیلو چند؟',
                     choices: [
                       {
-                        label: 'گزینه های یکپارچه',
+                        id: 0,
+                        label: '۱تومن',
+                        value: false
+                      },
+                      {
+                        id: 1,
+                        label: 'دو تومن',
                         value: false,
                       },
                       {
-                        label: 'گزینه های درهم',
+                        id: 2,
+                        label: 'سه تومن',
                         value: false,
                       },
                       {
-                        label: 'گزینه های متفرقه',
-                        value: false,
-                      },
-                      {
-                        label: 'گزینه درست',
+                        id: 3,
+                        label: 'چهار تومن',
                         value: true,
                       },
                     ],
                   },
                   {
                     id: 2,
-                    task_id: 7,
-                    statement: '۳-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    task_id: 4,
+                    statement: '۳-سن پسر علی؟',
                     choices: [
                       {
-                        label: 'گزینه های یکپارچه',
+                        id: 0,
+                        label: 'ده',
+                        value: false
+                      },
+                      {
+                        id: 1,
+                        label: 'دوازده',
                         value: false,
                       },
                       {
-                        label: 'گزینه های درهم',
+                        id: 2,
+                        label: 'شانزده ',
                         value: false,
                       },
                       {
-                        label: 'گزینه های متفرقه',
-                        value: false,
-                      },
-                      {
-                        label: 'گزینه درست',
+                        id: 3,
+                        label: 'پانزده',
                         value: true,
                       },
                     ],
                   },
                   {
                     id: 3,
-                    task_id: 8,
-                    statement: '۴-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+                    task_id: 5,
+                    statement: '۴-سن پدر علی؟',
                     choices: [
                       {
-                        label: 'گزینه های یکپارچه',
+                        id: 0,
+                        label: 'پنجاه',
+                        value: false
+                      },
+                      {
+                        id: 1,
+                        label: 'چهل',
                         value: false,
                       },
                       {
-                        label: 'گزینه های درهم',
+                        id: 2,
+                        label: 'شصت ',
                         value: false,
                       },
                       {
-                        label: 'گزینه های متفرقه',
-                        value: false,
-                      },
-                      {
-                        label: 'گزینه درست',
-                        value: true,
-                      },
-                    ],
-                  },
-                  {
-                    id: 4,
-                    task_id: 9,
-                    statement: '۵-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
-                    choices: [
-                      {
-                        label: 'گزینه های یکپارچه',
-                        value: false,
-                      },
-                      {
-                        label: 'گزینه های درهم',
-                        value: false,
-                      },
-                      {
-                        label: 'گزینه های متفرقه',
-                        value: false,
-                      },
-                      {
-                        label: 'گزینه درست',
+                        id: 3,
+                        label: 'هفتاد',
                         value: true,
                       },
                     ],
@@ -834,147 +549,806 @@ export default {
             },
             {
               id: 2,
-              type: 'StabilizationTest',
-              data: {
-                examTitle:'تست های تسلط',
-                legal_time: 10,
-                next_task_id: 10,
-                next_task_auto_play: false,
-                questions: [
-                  {
-                    id: 0,
-                    task_id: 5,
-                    statement: '۱-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
-                    choices: [
-                      {
-                        label: 'گزینه های یکپارچه',
-                        value: false
-                      },
-                      {
-                        label: 'گزینه های درهم',
-                        value: false,
-                      },
-                      {
-                        label: 'گزینه های متفرقه',
-                        value: false,
-                      },
-                      {
-                        label: 'گزینه درست',
-                        value: true,
-                      },
-                    ],
-                  },
-                  {
-                    id: 1,
-                    task_id: 6,
-                    statement: '۲-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
-                    choices: [
-                      {
-                        label: 'گزینه های یکپارچه',
-                        value: false,
-                      },
-                      {
-                        label: 'گزینه های درهم',
-                        value: false,
-                      },
-                      {
-                        label: 'گزینه های متفرقه',
-                        value: false,
-                      },
-                      {
-                        label: 'گزینه درست',
-                        value: true,
-                      },
-                    ],
-                  },
-                  {
-                    id: 2,
-                    task_id: 7,
-                    statement: '۳-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
-                    choices: [
-                      {
-                        label: 'گزینه های یکپارچه',
-                        value: false,
-                      },
-                      {
-                        label: 'گزینه های درهم',
-                        value: false,
-                      },
-                      {
-                        label: 'گزینه های متفرقه',
-                        value: false,
-                      },
-                      {
-                        label: 'گزینه درست',
-                        value: true,
-                      },
-                    ],
-                  },
-                ]
-              },
+              type: 'goToTime',
             },
             {
               id: 3,
-              type: 'gotToTime'
+              type: 'goToTime',
+              start: 2, //2:00
+              end: 4, //3:00
             },
             {
               id: 4,
-              type: 'gotToTimePoint',
-              data: {
-                time_point_id: 1
-              },
+              type: 'goToTime',
+              start: 4, //3:00
+              end: 6,  //7:00
             },
-
             {
               id: 5,
-              type: 'gotToTime',
-              data: {
-                start: 50,
-                end: 52,
-              },
-            },
-            {
-              id: 6,
-              type: 'gotToTime',
-              data: {
-                start: 62,
-                end: 64,
-              },
-            },
-            {
-              id: 7,
-              type: 'gotToTime',
-              data: {
-                start: 94,
-                end: 96,
-              },
-            },
-            {
-              id: 8,
-              type: 'gotToTime',
-              data: {
-                start: 102,
-                end: 104,
-              },
-            },
-            {
-              id: 9,
-              type: 'gotToTime',
-              data: {
-                start: 120,
-                end: 122,
-              },
+              type: 'goToTime',
+              start: 6, //7:00
+              end: 8,  //10:00
             },
 
-            {
-              id: 10,
-              type: 'gotToTimePoint',
-              data: {
-                time_point_id: 1
-              },
-            },
           ],
         },
+
+
+        // {
+        //   id: 30,
+        //   poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374000asdf.jpg',
+        //   sources: [
+        //     {
+        //       src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374000asdf.mp4',
+        //       type: 'video/mp4',
+        //       res: '720p',
+        //       label: 'کیفیت عالی',
+        //     },
+        //     {
+        //       src: 'https://nodes.alaatv.com/media/1374/hq/1374000asdf.mp4',
+        //       type: 'video/mp4',
+        //       res: '480p',
+        //       label: 'کیفیت بالا',
+        //     },
+        //     {
+        //       src: 'https://nodes.alaatv.com/media/1374/240p/1374000asdf.mp4',
+        //       type: 'video/mp4',
+        //       res: '240p',
+        //       label: 'کیفیت متوسط',
+        //       selected: true,
+        //     },
+        //   ],
+        //   start: 2,
+        //   end: 4,
+        //   legal_time: 2640,
+        //   tasks: [
+        //     {
+        //       id: 0,
+        //       type: 'QuestionOfKnowingSubject',
+        //       pre_show: true,
+        //       data: {
+        //         statement: 'می خوایم مبحث فیلان رو تدریس کنیم، می خوای ببینی؟',
+        //         choices: [
+        //           {
+        //             label: 'بلد نیستم و می خوام ببینم',
+        //             value: 2,
+        //             task_id: 3
+        //           },
+        //           {
+        //             label: 'بلدم و نمی خوام ببینم',
+        //             value: 1,
+        //             task_id: 4
+        //           },
+        //           {
+        //             label: 'بلدم و می خوام ببینم',
+        //             value: 0,
+        //             task_id: 3
+        //           },
+        //         ],
+        //       },
+        //     },
+        //     {
+        //       id: 1,
+        //       type: 'StabilizationTest',
+        //       post_show: true,
+        //       data: {
+        //         examTitle:'تست ۱ (چهارگزینه ای)',
+        //         next_task_id: 2,
+        //         next_task_auto_play: false,
+        //         questions: [
+        //           {
+        //             id: 0,
+        //             task_id: 5,
+        //             statement: '۱-رزمنده ای گلوله ای با سرعت فیلان به طرف هدف شلیک می کند و ۶s پس از شلیک صدای انفجار را می شنود. گلر سرعت ۳۴۰ باشد، فاصله شخص از هدف چند متر است؟',
+        //             choices: [
+        //               {
+        //                 id: 0,
+        //                 label: 'یک متر',
+        //                 value: false
+        //               },
+        //               {
+        //                 id: 1,
+        //                 label: 'یک دو',
+        //                 value: false,
+        //               },
+        //               {
+        //                 id: 2,
+        //                 label: 'یک سه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 id: 3,
+        //                 label: 'یک چهار',
+        //                 value: true,
+        //               },
+        //             ],
+        //           },
+        //           {
+        //             id: 1,
+        //             task_id: 6,
+        //             statement: '۲-شخصی بین دو رشته کوه موازی گلوله ای را شلیک می کند و دو پزواک صوت با اختلاف ۵ ثانیه به وی می رسد. اگر سرعت صوت ۳۴۰ باشد اختلاف فاصله شخص از دو رشته کوه چند متر است؟',
+        //             choices: [
+        //               {
+        //                 id: 0,
+        //                 label: 'ده متر',
+        //                 value: false
+        //               },
+        //               {
+        //                 id: 1,
+        //                 label: 'دوازده دو',
+        //                 value: false,
+        //               },
+        //               {
+        //                 id: 2,
+        //                 label: 'شانزده سه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 id: 3,
+        //                 label: 'پانزده چهار',
+        //                 value: true,
+        //               },
+        //             ],
+        //           },
+        //           {
+        //             id: 2,
+        //             task_id: 7,
+        //             statement: '۳-قایقی اگر در جهت آب پارو بزند، فاصله بین دو نقطه را در t ثانیه و اگر در خلاف جهت جریان آب پارو بزند، فاثله بین همان دو نقطه را در 5s طی می کند. سرعت قایق چقدر است؟',
+        //             choices: [
+        //               {
+        //                 id: 0,
+        //                 label: 'یک متر بر ثانیه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 id: 1,
+        //                 label: 'دوازده متر بر ثانیه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 id: 2,
+        //                 label: 'شانزده متر بر ثانیه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 id: 3,
+        //                 label: 'پانزده متر بر ثانیه',
+        //                 value: true,
+        //               },
+        //             ],
+        //           },
+        //           {
+        //             id: 3,
+        //             task_id: 8,
+        //             statement: '۴-رودخانه ای به عرض ۱۲۰ متر دارای جریان آب با سرعت ۳ می باشد. قایقی می خواهد با سرعت ثابت ۵ به نقطه مقابل در طرف دیگر برسد. حداقل زمان ممکن چقدر است؟',
+        //             choices: [
+        //               {
+        //                 id: 0,
+        //                 label: 'یک ثانیه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 id: 1,
+        //                 label: 'دوازده ثانیه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 id: 2,
+        //                 label: 'شانزده ثانیه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 id: 3,
+        //                 label: 'پانزده ثانیه',
+        //                 value: true,
+        //               },
+        //             ],
+        //           },
+        //           {
+        //             id: 4,
+        //             task_id: 9,
+        //             statement: '۵-رودخانه ای به عرض ۱۲۰ متر دارای جریان آب با سرعت ۳ می باشد. قایقی می خواهد با سرعت ثابت ۵ به طرف دیگر رودخانه برود. حداقل زمان ممکن چقدر است؟',
+        //             choices: [
+        //               {
+        //                 id: 0,
+        //                 label: 'شانزده ثانیه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 id: 1,
+        //                 label: 'دوازده ثانیه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 id: 2,
+        //                 label: 'یک ثانیه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 id: 3,
+        //                 label: 'پانزده ثانیه',
+        //                 value: true,
+        //               },
+        //             ],
+        //           },
+        //         ]
+        //       },
+        //     },
+        //     {
+        //       id: 2,
+        //       type: 'StabilizationTest',
+        //       data: {
+        //         examTitle:'تست های تسلط',
+        //         legal_time: 50,
+        //         next_task_id: 10,
+        //         next_task_auto_play: false,
+        //         questions: [
+        //           {
+        //             id: 0,
+        //             task_id: 5,
+        //             statement: '۱-رزمنده ای گلوله ای با سرعت فیلان به طرف هدف شلیک می کند و ۶s پس از شلیک صدای انفجار را می شنود. گلر سرعت ۳۴۰ باشد، فاصله شخص از هدف چند متر است؟',
+        //             choices: [
+        //               {
+        //                 label: 'یک متر',
+        //                 value: false
+        //               },
+        //               {
+        //                 label: 'یک دو',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'یک سه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'یک چهار',
+        //                 value: true,
+        //               },
+        //             ],
+        //           },
+        //           {
+        //             id: 1,
+        //             task_id: 6,
+        //             statement: '۲-شخصی بین دو رشته کوه موازی گلوله ای را شلیک می کند و دو پزواک صوت با اختلاف ۵ ثانیه به وی می رسد. اگر سرعت صوت ۳۴۰ باشد اختلاف فاصله شخص از دو رشته کوه چند متر است؟',
+        //             choices: [
+        //               {
+        //                 label: 'ده متر',
+        //                 value: false
+        //               },
+        //               {
+        //                 label: 'دوازده دو',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'شانزده سه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'پانزده چهار',
+        //                 value: true,
+        //               },
+        //             ],
+        //           },
+        //           {
+        //             id: 2,
+        //             task_id: 7,
+        //             statement: '۳-قایقی اگر در جهت آب پارو بزند، فاصله بین دو نقطه را در t ثانیه و اگر در خلاف جهت جریان آب پارو بزند، فاثله بین همان دو نقطه را در 5s طی می کند. سرعت قایق چقدر است؟',
+        //             choices: [
+        //               {
+        //                 label: 'یک متر بر ثانیه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'دوازده متر بر ثانیه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'شانزده متر بر ثانیه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'پانزده متر بر ثانیه',
+        //                 value: true,
+        //               },
+        //             ],
+        //           },
+        //         ]
+        //       },
+        //     },
+        //     {
+        //       id: 3,
+        //       type: 'gotToTime'
+        //     },
+        //     {
+        //       id: 4,
+        //       type: 'goToTimePoint',
+        //       data: {
+        //         time_point_id: 1
+        //       },
+        //     },
+        //
+        //     {
+        //       id: 5,
+        //       type: 'gotToTime',
+        //       data: {
+        //         poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
+        //         sources: [
+        //           {
+        //             src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374008uhvf.mp4',
+        //             type: 'video/mp4',
+        //             res: '720p',
+        //             label: 'کیفیت عالی',
+        //           },
+        //           {
+        //             src: 'https://nodes.alaatv.com/media/1374/hq/1374008uhvf.mp4',
+        //             type: 'video/mp4',
+        //             res: '480p',
+        //             label: 'کیفیت بالا',
+        //           },
+        //           {
+        //             src: 'https://nodes.alaatv.com/media/1374/240p/1374008uhvf.mp4',
+        //             type: 'video/mp4',
+        //             res: '240p',
+        //             label: 'کیفیت متوسط',
+        //             selected: true,
+        //           },
+        //         ],
+        //         start: 79,
+        //         end: 380,
+        //       },
+        //     },
+        //     {
+        //       id: 6,
+        //       type: 'gotToTime',
+        //       data: {
+        //         poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
+        //         sources: [
+        //           {
+        //             src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374008uhvf.mp4',
+        //             type: 'video/mp4',
+        //             res: '720p',
+        //             label: 'کیفیت عالی',
+        //           },
+        //           {
+        //             src: 'https://nodes.alaatv.com/media/1374/hq/1374008uhvf.mp4',
+        //             type: 'video/mp4',
+        //             res: '480p',
+        //             label: 'کیفیت بالا',
+        //           },
+        //           {
+        //             src: 'https://nodes.alaatv.com/media/1374/240p/1374008uhvf.mp4',
+        //             type: 'video/mp4',
+        //             res: '240p',
+        //             label: 'کیفیت متوسط',
+        //             selected: true,
+        //           },
+        //         ],
+        //         start: 380,
+        //         end: 982,
+        //       },
+        //     },
+        //     {
+        //       id: 7,
+        //       type: 'gotToTime',
+        //       data: {
+        //         poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
+        //         sources: [
+        //           {
+        //             src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374008uhvf.mp4',
+        //             type: 'video/mp4',
+        //             res: '720p',
+        //             label: 'کیفیت عالی',
+        //           },
+        //           {
+        //             src: 'https://nodes.alaatv.com/media/1374/hq/1374008uhvf.mp4',
+        //             type: 'video/mp4',
+        //             res: '480p',
+        //             label: 'کیفیت بالا',
+        //           },
+        //           {
+        //             src: 'https://nodes.alaatv.com/media/1374/240p/1374008uhvf.mp4',
+        //             type: 'video/mp4',
+        //             res: '240p',
+        //             label: 'کیفیت متوسط',
+        //             selected: true,
+        //           },
+        //         ],
+        //         start: 982,
+        //         end: 1231,
+        //       },
+        //     },
+        //     {
+        //       id: 8,
+        //       type: 'gotToTime',
+        //       data: {
+        //         poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
+        //         sources: [
+        //           {
+        //             src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374008uhvf.mp4',
+        //             type: 'video/mp4',
+        //             res: '720p',
+        //             label: 'کیفیت عالی',
+        //           },
+        //           {
+        //             src: 'https://nodes.alaatv.com/media/1374/hq/1374008uhvf.mp4',
+        //             type: 'video/mp4',
+        //             res: '480p',
+        //             label: 'کیفیت بالا',
+        //           },
+        //           {
+        //             src: 'https://nodes.alaatv.com/media/1374/240p/1374008uhvf.mp4',
+        //             type: 'video/mp4',
+        //             res: '240p',
+        //             label: 'کیفیت متوسط',
+        //             selected: true,
+        //           },
+        //         ],
+        //         start: 1231,
+        //         end: 1435,
+        //       },
+        //     },
+        //     {
+        //       id: 9,
+        //       type: 'gotToTime',
+        //       data: {
+        //         poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
+        //         sources: [
+        //           {
+        //             src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374008uhvf.mp4',
+        //             type: 'video/mp4',
+        //             res: '720p',
+        //             label: 'کیفیت عالی',
+        //           },
+        //           {
+        //             src: 'https://nodes.alaatv.com/media/1374/hq/1374008uhvf.mp4',
+        //             type: 'video/mp4',
+        //             res: '480p',
+        //             label: 'کیفیت بالا',
+        //           },
+        //           {
+        //             src: 'https://nodes.alaatv.com/media/1374/240p/1374008uhvf.mp4',
+        //             type: 'video/mp4',
+        //             res: '240p',
+        //             label: 'کیفیت متوسط',
+        //             selected: true,
+        //           },
+        //         ],
+        //         start: 1435,
+        //         end: 1627,
+        //       },
+        //     },
+        //
+        //     {
+        //       id: 10,
+        //       type: 'goToTimePoint',
+        //       data: {
+        //         time_point_id: 1
+        //       },
+        //     },
+        //   ],
+        // },
+        // {
+        //   id: 1,
+        //   poster: 'https://nodes.alaatv.com/media/thumbnails/769/769001zone.jpg',
+        //   sources: [
+        //     {
+        //       src: 'https://nodes.alaatv.com/media/769/HD_720p/769001zone.mp4',
+        //       type: 'video/mp4',
+        //       res: '720p',
+        //       label: 'کیفیت عالی',
+        //     },
+        //     {
+        //       src: 'https://nodes.alaatv.com/media/769/hq/769001zone.mp4',
+        //       type: 'video/mp4',
+        //       res: '480p',
+        //       label: 'کیفیت بالا',
+        //     },
+        //     {
+        //       src: 'https://nodes.alaatv.com/media/769/240p/769001zone.mp4',
+        //       type: 'video/mp4',
+        //       res: '240p',
+        //       label: 'کیفیت متوسط',
+        //       selected: true,
+        //     },
+        //   ],
+        //   start: 0,
+        //   end: 2,
+        //   tasks: [
+        //     {
+        //       id: 0,
+        //       type: 'QuestionOfKnowingSubject',
+        //       pre_show: true,
+        //       data: {
+        //         statement: 'می خوایم مبحث فیلان رو تدریس کنیم، می خوای ببینی؟',
+        //         choices: [
+        //           {
+        //             label: 'بلدم و می خوام ببینم',
+        //             value: 0,
+        //             task_id: 3
+        //           },
+        //           {
+        //             label: 'بلدم و نمی خوام ببینم',
+        //             value: 1,
+        //             task_id: 4
+        //           },
+        //           {
+        //             label: 'بلد نیستم و می خوام ببینم',
+        //             value: 2,
+        //             task_id: 3
+        //           },
+        //         ],
+        //       },
+        //     },
+        //     {
+        //       id: 1,
+        //       type: 'StabilizationTest',
+        //       post_show: true,
+        //       data: {
+        //         examTitle:'تست های تسلط',
+        //         next_task_id: 2,
+        //         next_task_auto_play: false,
+        //         questions: [
+        //           {
+        //             id: 0,
+        //             task_id: 5,
+        //             statement: '۱-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+        //             choices: [
+        //               {
+        //                 label: 'گزینه های یکپارچه',
+        //                 value: false
+        //               },
+        //               {
+        //                 label: 'گزینه های درهم',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه های متفرقه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه درست',
+        //                 value: true,
+        //               },
+        //             ],
+        //           },
+        //           {
+        //             id: 1,
+        //             task_id: 6,
+        //             statement: '۲-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+        //             choices: [
+        //               {
+        //                 label: 'گزینه های یکپارچه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه های درهم',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه های متفرقه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه درست',
+        //                 value: true,
+        //               },
+        //             ],
+        //           },
+        //           {
+        //             id: 2,
+        //             task_id: 7,
+        //             statement: '۳-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+        //             choices: [
+        //               {
+        //                 label: 'گزینه های یکپارچه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه های درهم',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه های متفرقه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه درست',
+        //                 value: true,
+        //               },
+        //             ],
+        //           },
+        //           {
+        //             id: 3,
+        //             task_id: 8,
+        //             statement: '۴-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+        //             choices: [
+        //               {
+        //                 label: 'گزینه های یکپارچه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه های درهم',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه های متفرقه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه درست',
+        //                 value: true,
+        //               },
+        //             ],
+        //           },
+        //           {
+        //             id: 4,
+        //             task_id: 9,
+        //             statement: '۵-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+        //             choices: [
+        //               {
+        //                 label: 'گزینه های یکپارچه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه های درهم',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه های متفرقه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه درست',
+        //                 value: true,
+        //               },
+        //             ],
+        //           },
+        //         ]
+        //       },
+        //     },
+        //     {
+        //       id: 2,
+        //       type: 'StabilizationTest',
+        //       data: {
+        //         examTitle:'تست های تسلط',
+        //         legal_time: 10,
+        //         next_task_id: 10,
+        //         next_task_auto_play: false,
+        //         questions: [
+        //           {
+        //             id: 0,
+        //             task_id: 5,
+        //             statement: '۱-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+        //             choices: [
+        //               {
+        //                 label: 'گزینه های یکپارچه',
+        //                 value: false
+        //               },
+        //               {
+        //                 label: 'گزینه های درهم',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه های متفرقه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه درست',
+        //                 value: true,
+        //               },
+        //             ],
+        //           },
+        //           {
+        //             id: 1,
+        //             task_id: 6,
+        //             statement: '۲-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+        //             choices: [
+        //               {
+        //                 label: 'گزینه های یکپارچه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه های درهم',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه های متفرقه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه درست',
+        //                 value: true,
+        //               },
+        //             ],
+        //           },
+        //           {
+        //             id: 2,
+        //             task_id: 7,
+        //             statement: '۳-به عنوان یک سوال ساده، جواب این سوال ساده کدام گزینه هست؟',
+        //             choices: [
+        //               {
+        //                 label: 'گزینه های یکپارچه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه های درهم',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه های متفرقه',
+        //                 value: false,
+        //               },
+        //               {
+        //                 label: 'گزینه درست',
+        //                 value: true,
+        //               },
+        //             ],
+        //           },
+        //         ]
+        //       },
+        //     },
+        //     {
+        //       id: 3,
+        //       type: 'gotToTime'
+        //     },
+        //     {
+        //       id: 4,
+        //       type: 'goToTimePoint',
+        //       data: {
+        //         time_point_id: 1
+        //       },
+        //     },
+        //
+        //     {
+        //       id: 5,
+        //       type: 'gotToTime',
+        //       data: {
+        //         start: 50,
+        //         end: 52,
+        //       },
+        //     },
+        //     {
+        //       id: 6,
+        //       type: 'gotToTime',
+        //       data: {
+        //         start: 62,
+        //         end: 64,
+        //       },
+        //     },
+        //     {
+        //       id: 7,
+        //       type: 'gotToTime',
+        //       data: {
+        //         start: 94,
+        //         end: 96,
+        //       },
+        //     },
+        //     {
+        //       id: 8,
+        //       type: 'gotToTime',
+        //       data: {
+        //         start: 102,
+        //         end: 104,
+        //       },
+        //     },
+        //     {
+        //       id: 9,
+        //       type: 'gotToTime',
+        //       data: {
+        //         start: 120,
+        //         end: 122,
+        //       },
+        //     },
+        //
+        //     {
+        //       id: 10,
+        //       type: 'goToTimePoint',
+        //       data: {
+        //         time_point_id: 1
+        //       },
+        //     },
+        //   ],
+        // },
       ],
     }
   }
