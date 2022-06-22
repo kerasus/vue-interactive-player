@@ -7,7 +7,8 @@
     <video ref="videoPlayer" class="video-js vjs-default-skin" controls preload="none">
       <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
     </video>
-    <div class="over-player-wrapper" :class="{'show': overPlayer, 'hide': !overPlayer}">
+
+    <div class="over-player-wrapper" ref="overPlayer" :class="{'show': overPlayer, 'hide': !overPlayer}">
       <slot name="overPlayer" />
     </div>
   </div>
@@ -81,7 +82,6 @@ export default {
     hasSources (){
       return this.sources.list.length > 0
     },
-
     fullscreen() {
       return this.isFullscreen()
     },
@@ -119,8 +119,15 @@ export default {
 
   mounted() {
     this.initPlayer()
+    this.moveOverPlayerElementIntoVideoPlayerElements()
   },
   methods: {
+    moveOverPlayerElementIntoVideoPlayerElements () {
+      const div = document.createElement('div')
+      div.classList = 'overPlayerElement'
+      div.appendChild(this.$refs.overPlayer)
+      this.$refs.videoPlayerWrapper.querySelector('.video-js').appendChild(div)
+    },
     updatePlayerHeight () {
       const playerWidth = this.$refs.videoPlayerWrapper.clientWidth
       this.playerHeight = (playerWidth * 9) / 16 + 'px'
@@ -212,6 +219,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
+    color: initial;
     &.show {
       display: block;
       background: rgba(0,0,0,0.5);
