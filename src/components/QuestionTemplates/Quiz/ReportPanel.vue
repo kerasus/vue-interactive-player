@@ -14,7 +14,8 @@
     >
       <div class="choices-title-column">
         <span class="question-number" v-text="(index + 1) + '. '" />
-        <span class="selected-answer" v-text="'گزینه ی ' + question.choices.getSelectedNumber()" />
+        <span v-if="question.choices.getSelectedNumber()" class="selected-answer" v-text="'گزینه ی ' + question.choices.getSelectedNumber()" />
+        <span v-else class="selected-answer" v-text="'پاسخ نداده '" />
         <span class="answer-icon">
           <i v-if="question.choices.hasTrueSelected()" name="mdi-check"/>
           <i v-else name="mdi-close"/>
