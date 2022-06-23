@@ -1,13 +1,13 @@
 import { TaskList } from '../models/Task'
 
-const mixinStabilizationTest = {
+const mixinExam = {
   data() {
     return {
       taskSequence: new TaskList(),
     }
   },
   methods: {
-    doStabilizationTest(task) {
+    doExam(task) {
       this.pause()
       task.done = true
       this.overPlayData = task
@@ -16,7 +16,7 @@ const mixinStabilizationTest = {
       this.showOverPlayer()
     },
 
-    doActionOfStabilizationTest(data) {
+    doActionOfExam(data) {
       console.log('data', data)
       const taskIds = data.taskIds
       const examTask = data.examTask
@@ -27,4 +27,4 @@ const mixinStabilizationTest = {
   }
 }
 
-export default mixinStabilizationTest
+export default mixinExam

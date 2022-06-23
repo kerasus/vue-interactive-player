@@ -106,7 +106,7 @@ export default {
 
             {
               id: 1,
-              type: 'StabilizationTest',
+              type: 'Exam',
               post_show: true,
               data: {
                 examTitle:'تست ۱ (چهارگزینه ای)',
@@ -154,7 +154,7 @@ export default {
 
             {
               id: 2,
-              type: 'StabilizationTest',
+              type: 'Exam',
               data: {
                 examTitle:'تست ۲ (چهارگزینه ای)',
                 questions: [
@@ -252,7 +252,7 @@ export default {
             },
             {
               id: 21,
-              type: 'StabilizationTest',
+              type: 'Exam',
               data: {
                 examTitle:'تست های تسلط',
                 next_task_id: 22,
@@ -425,7 +425,7 @@ export default {
             },
             {
               id: 31,
-              type: 'StabilizationTest',
+              type: 'Exam',
               pre_show: true,
               data: {
                 examTitle:'تست های ویژه',

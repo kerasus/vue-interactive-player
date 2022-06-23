@@ -1,5 +1,5 @@
 <template>
-  <div class="StabilizationTest">
+  <div class="Exam">
     <question-panel v-show="questionPanelVisibility" ref="questionPanel" :title="data.data.examTitle" :questions="questions" @examDone="showReport"/>
     <report-panel v-show="reportVisibility" :start-timer="reportVisibility" :title="data.data.examTitle" :questions="questions" @showVideoAnswers="showVideoAnswers" />
   </div>
@@ -102,7 +102,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.StabilizationTest {
+.Exam {
   padding: 30px;
   .title{
     text-align: center;

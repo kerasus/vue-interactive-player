@@ -22,12 +22,12 @@ import OverPlayer from './components/OverPlayer'
 import {Task, TaskList} from './models/Task'
 import { TimePointList, TimePoint } from './models/TimePoint'
 import { PlayerSourceList } from './models/PlayerSource'
-import { mixinQuestionOfKnowingSubject, mixinStabilizationTest, mixinGoToTime, mixinGoToTimePoint, mixinPlayer, mixinOverPlayer } from './mixins/Mixins'
+import { mixinQuestionOfKnowingSubject, mixinExam, mixinGoToTime, mixinGoToTimePoint, mixinPlayer, mixinOverPlayer } from './mixins/Mixins'
 
 export default {
   name: 'InteractivePlayer',
   components: { Player, OverPlayer },
-  mixins: [mixinQuestionOfKnowingSubject, mixinGoToTime, mixinGoToTimePoint, mixinPlayer, mixinOverPlayer, mixinStabilizationTest],
+  mixins: [mixinQuestionOfKnowingSubject, mixinGoToTime, mixinGoToTimePoint, mixinPlayer, mixinOverPlayer, mixinExam],
   props: {
     timePoints: {
       type: Array,
@@ -160,8 +160,8 @@ export default {
         case 'QuestionOfKnowingSubject':
           this.doActionOfQuestionOfKnowingSubject(actionData)
           break
-        case 'StabilizationTest':
-          this.doActionOfStabilizationTest(actionData)
+        case 'Exam':
+          this.doActionOfExam(actionData)
           break
         case 'SpecialTest':
           this.doSpecialTest(task.data)
@@ -188,8 +188,8 @@ export default {
         case 'gotToTimePoint':
           this.doGoToTimePoint(task)
           break
-        case 'StabilizationTest':
-          this.doStabilizationTest(task)
+        case 'Exam':
+          this.doExam(task)
           break
         case 'ShowTimePint':
           this.doSpecialTest(task.data)
