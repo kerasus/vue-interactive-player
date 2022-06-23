@@ -11,12 +11,13 @@ const mixinStabilizationTest = {
       this.pause()
       task.done = true
       this.overPlayData = task
-      this.overPlayComponent = 'stabilization-test'
+      this.overPlayComponent = 'exam'
       this.changeSources(this.currentTimePoint.sources, this.currentTimePoint.poster)
       this.showOverPlayer()
     },
 
     doActionOfStabilizationTest(data) {
+      console.log('data', data)
       const taskIds = data.taskIds
       const examTask = data.examTask
       // const questions = data.examTask.data.questions

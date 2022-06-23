@@ -1,6 +1,6 @@
 <template>
-  <div class="exam-panel">
-    <div class="title"> {{ task.data.examTitle ? task.data.examTitle : 'آزمون' }}</div>
+  <div class="exam-panel" v-if="examQuestions && examQuestions.list && examQuestions.list.length">
+    <div class="title"> {{ title }}</div>
     <div v-html="currentQuestion.statement" class="statement"/>
     <div class="choices">
       <div v-for="(choice, choiceIndex) in currentQuestion.choices.list"
@@ -48,44 +48,43 @@
 </template>
 
 <script>
-import {Task} from '../../../models/Task'
-import {Question, QuestionList} from '../../../models/Question'
+
+import { Question, QuestionList } from '../../../models/Question'
 
 export default {
   name: 'QuestionPanel',
 
   props: {
-    task: {
-      type: Task,
+    questions: {
+      type: QuestionList,
       default() {
-        return new Task()
+        return new QuestionList()
       },
     },
+    title: {
+      type: String,
+      default() {
+        return 'آزمون'
+      }
+    }
   },
 
   data() {
     return {
       currentQuestion: new Question(),
-      examTask: new Task()
+      examQuestions: new QuestionList()
     }
   },
 
   computed: {
     hasNextQuestion () {
       const currentQuestionIndex = this.getCurrentQuestionIndex()
-      return (currentQuestionIndex + 1) < this.questions.list.length
+      return (currentQuestionIndex + 1) < this.examQuestions.list.length
     },
     hasPrevQuestion () {
       const currentQuestionIndex = this.getCurrentQuestionIndex()
       return currentQuestionIndex === 0
-    },
-    questions() {
-      let questions = new QuestionList()
-      if (this.examTask.data?.questions) {
-        questions = this.examTask.data.questions
-      }
-      return questions
-    },
+    }
   },
 
   mounted() {
@@ -95,13 +94,16 @@ export default {
   methods: {
 
     initialLoad() {
-      this.loadExamTask()
-      this.loadFirstQuestion()
+      if (this.questions){
+        this.loadExamQuestions()
+        this.loadFirstQuestion()
+      }
+
     },
 
-    loadExamTask() {
-      this.examTask = new Task(this.task)
-      this.examTask.data.questions = new QuestionList(this.examTask.data.questions)
+    loadExamQuestions() {
+      this.examQuestions = new QuestionList(this.questions)
+      console.log('this.examQuestions', this.examQuestions)
     },
 
     loadFirstQuestion() {
@@ -110,7 +112,7 @@ export default {
     },
 
     getCurrentQuestionIndex() {
-      return this.questions.getIndex('id', this.currentQuestion.id)
+      return this.examQuestions.getIndex('id', this.currentQuestion.id)
     },
 
     getNextQuestion() {
@@ -119,7 +121,7 @@ export default {
         return null
       }
 
-      const nextQuestion = this.questions.list[currentQuestionIndex + 1]
+      const nextQuestion = this.examQuestions.list[currentQuestionIndex + 1]
 
       if (typeof nextQuestion === 'undefined') {
         return null
@@ -131,7 +133,7 @@ export default {
     getPrevQuestion() {
       const currentQuestionIndex = this.getCurrentQuestionIndex()
 
-      const prevQuestion = this.questions.list[currentQuestionIndex - 1]
+      const prevQuestion = this.examQuestions.list[currentQuestionIndex - 1]
 
       if (typeof prevQuestion === 'undefined') {
         return null
@@ -146,7 +148,7 @@ export default {
         return null
       }
 
-      return this.questions.list[currentQuestionIndex]
+      return this.examQuestions.list[currentQuestionIndex]
     },
 
     loadCurrentQuestion(question) {
@@ -154,7 +156,7 @@ export default {
     },
 
     getFirstQuestion() {
-      return this.questions.list[0]
+      return this.examQuestions.list[0]
     },
 
     answer(choice) {
@@ -184,7 +186,7 @@ export default {
     },
 
     seeReport () {
-      this.$emit('examDone', this.examTask)
+      this.$emit('examDone', this.examQuestions)
     }
 
   }

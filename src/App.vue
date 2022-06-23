@@ -39,7 +39,6 @@ export default {
           ],
           start: 0,
           end: 2, // 01:00
-          legal_time: 0,
         },
         {
           id: 1,
@@ -225,7 +224,6 @@ export default {
           ],
           start: 0, // 00:00
           end: 2, // 01:00
-          legal_time: 0,
           tasks: [
             {
               id: 20,
@@ -233,7 +231,6 @@ export default {
               pre_show: true,
               data: {
                 statement: 'می خوایم مبحث فیلان رو تثبیت کنیم، می خوای بزنی؟',
-                legal_time: 0,
                 choices: [
                   {
                     label: 'بلد نیستم و می خوام ببینم',
@@ -258,6 +255,7 @@ export default {
               type: 'StabilizationTest',
               data: {
                 examTitle:'تست های تسلط',
+                next_task_id: 22,
                 questions: [
                   {
                     id: 0,
@@ -355,6 +353,8 @@ export default {
             {
               id: 23,
               type: 'goToTime',
+              start: 0, //05:00
+              end: 2, //10:00
             },
             {
               id: 24,
@@ -397,7 +397,6 @@ export default {
           ],
           start: 0, // 00:00
           end: 2, // 2:00
-          legal_time: 0,
           tasks: [
             {
               id: 30,
