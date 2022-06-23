@@ -80,11 +80,15 @@ export default {
       return currentQuestionIndex === 0
     },
     questions() {
-      return this.examTask.data.questions
-    }
+      let questions = new QuestionList()
+      if (this.examTask.data?.questions) {
+        questions = this.examTask.data.questions
+      }
+      return questions
+    },
   },
 
-  created() {
+  mounted() {
     this.initialLoad()
   },
 

@@ -1,7 +1,7 @@
 <template>
   <div class="StabilizationTest">
     <question-panel v-show="questionPanelVisibility" ref="questionPanel" :task="examTask" @examDone="showReport"/>
-    <report-panel v-show="reportVisibility" :start-timer="reportVisibility" :title="examTask.data.examTitle" :questions="questions" @showVideoAnswers="showVideoAnswers" />
+    <report-panel v-show="reportVisibility" :start-timer="reportVisibility" :title="data.data.examTitle" :questions="questions" @showVideoAnswers="showVideoAnswers" />
   </div>
 </template>
 
@@ -70,6 +70,7 @@ export default {
 
     loadExamTask() {
       this.examTask = new Task(this.data)
+      console.log(this.examTask)
       // ممکنه دیتای تسک کلید questions نداشته باشه
       this.examTask.data.questions = new QuestionList(this.data.data.questions)
     },

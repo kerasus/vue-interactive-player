@@ -201,22 +201,22 @@ export default {
         },
         {
           id: 2,
-          poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374000asdf.jpg',
+          poster: 'https://nodes.alaatv.com/media/thumbnails/769/769001zone.jpg',
           sources: [
             {
-              src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374000asdf.mp4',
+              src: 'https://nodes.alaatv.com/media/769/HD_720p/769001zone.mp4',
               type: 'video/mp4',
               res: '720p',
               label: 'کیفیت عالی',
             },
             {
-              src: 'https://nodes.alaatv.com/media/1374/hq/1374000asdf.mp4',
+              src: 'https://nodes.alaatv.com/media/769/hq/769001zone.mp4',
               type: 'video/mp4',
               res: '480p',
               label: 'کیفیت بالا',
             },
             {
-              src: 'https://nodes.alaatv.com/media/1374/240p/1374000asdf.mp4',
+              src: 'https://nodes.alaatv.com/media/769/240p/769001zone.mp4',
               type: 'video/mp4',
               res: '240p',
               label: 'کیفیت متوسط',
@@ -228,43 +228,40 @@ export default {
           legal_time: 0,
           tasks: [
             {
-              id: 0,
+              id: 20,
               type: 'QuestionOfKnowingSubject',
               pre_show: true,
               data: {
-                statement: 'می خوایم مبحث فیلان رو تثبیت کنیم، می خوای ببینی؟',
+                statement: 'می خوایم مبحث فیلان رو تثبیت کنیم، می خوای بزنی؟',
                 legal_time: 0,
                 choices: [
                   {
                     label: 'بلد نیستم و می خوام ببینم',
                     value: 2,
-                    task_id: 1
+                    task_id: 21
                   },
                   {
                     label: 'بلدم و نمی خوام ببینم',
                     value: 1,
-                    task_id: 2
+                    task_id: 22
                   },
                   {
                     label: 'بلدم و می خوام ببینم',
                     value: 0,
-                    task_id: 1
+                    task_id: 21
                   },
                 ],
               },
             },
             {
-              id: 1,
-              type: 'QuestionOfKnowingSubject',
-              pre_show: true,
+              id: 21,
+              type: 'StabilizationTest',
               data: {
                 examTitle:'تست های تسلط',
-                next_task_id: 2,
-                next_task_auto_play: false,
                 questions: [
                   {
                     id: 0,
-                    task_id: 3,
+                    task_id: 23,
                     statement: '۱-از اینجا تا اونجا چند متره؟',
                     choices: [
                       {
@@ -291,7 +288,7 @@ export default {
                   },
                   {
                     id: 1,
-                    task_id: 4,
+                    task_id: 24,
                     statement: '۲-آلو کیلو چند؟',
                     choices: [
                       {
@@ -318,7 +315,7 @@ export default {
                   },
                   {
                     id: 2,
-                    task_id: 5,
+                    task_id: 25,
                     statement: '۲-سن پسر علی؟',
                     choices: [
                       {
@@ -348,7 +345,7 @@ export default {
             },
 
             {
-              id: 2,
+              id: 22,
               type: 'goToTimePoint',
               data: {
                 time_point_id: 3
@@ -356,17 +353,17 @@ export default {
             },
 
             {
-              id: 3,
+              id: 23,
               type: 'goToTime',
             },
             {
-              id: 4,
+              id: 24,
               type: 'goToTime',
               start: 2, //05:00
               end: 4, //10:00
             },
             {
-              id: 5,
+              id: 25,
               type: 'goToTime',
               start: 4, //10:00
               end: 6,  //14:00
@@ -376,22 +373,22 @@ export default {
         },
         {
           id: 3,
-          poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374000asdf.jpg',
+          poster: 'https://nodes.alaatv.com/media/thumbnails/969/969007kbnt.jpg',
           sources: [
             {
-              src: 'https://nodes.alaatv.com/media/1374/HD_720p/1374000asdf.mp4',
+              src: 'https://nodes.alaatv.com/media/969/HD_720p/969007kbnt.mp4',
               type: 'video/mp4',
               res: '720p',
               label: 'کیفیت عالی',
             },
             {
-              src: 'https://nodes.alaatv.com/media/1374/hq/1374000asdf.mp4',
+              src: 'https://nodes.alaatv.com/media/969/hq/969007kbnt.mp4',
               type: 'video/mp4',
               res: '480p',
               label: 'کیفیت بالا',
             },
             {
-              src: 'https://nodes.alaatv.com/media/1374/240p/1374000asdf.mp4',
+              src: 'https://nodes.alaatv.com/media/969/240p/969007kbnt.mp4',
               type: 'video/mp4',
               res: '240p',
               label: 'کیفیت متوسط',
@@ -403,37 +400,37 @@ export default {
           legal_time: 0,
           tasks: [
             {
-              id: 0,
+              id: 30,
               type: 'QuestionOfKnowingSubject',
               pre_show: true,
               data: {
-                statement: 'می خوایم بریم تستای ویژه، می خوای ببینی؟',
+                statement: 'می خوایم بریم تستای ویژه، می خوای بزنی؟',
                 choices: [
                   {
                     label: 'بلد نیستم و می خوام ببینم',
                     value: 2,
-                    task_id: 1
+                    task_id: 31
                   },
                   {
                     label: 'بلدم و نمی خوام ببینم',
                     value: 1,
-                    task_id: 2
+                    task_id: 32
                   },
                   {
                     label: 'بلدم و می خوام ببینم',
                     value: 0,
-                    task_id: 1
+                    task_id: 31
                   },
                 ],
               },
             },
             {
-              id: 1,
-              type: 'QuestionOfKnowingSubject',
+              id: 31,
+              type: 'StabilizationTest',
               pre_show: true,
               data: {
                 examTitle:'تست های ویژه',
-                next_task_id: 2,
+                next_task_id: 32,
                 next_task_auto_play: false,
                 questions: [
                   {
@@ -548,23 +545,23 @@ export default {
               },
             },
             {
-              id: 2,
+              id: 32,
               type: 'goToTime',
             },
             {
-              id: 3,
+              id: 33,
               type: 'goToTime',
               start: 2, //2:00
               end: 4, //3:00
             },
             {
-              id: 4,
+              id: 34,
               type: 'goToTime',
               start: 4, //3:00
               end: 6,  //7:00
             },
             {
-              id: 5,
+              id: 35,
               type: 'goToTime',
               start: 6, //7:00
               end: 8,  //10:00

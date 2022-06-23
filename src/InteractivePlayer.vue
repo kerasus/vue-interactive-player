@@ -175,7 +175,7 @@ export default {
     },
     doTask(task) {
       this.setCurrentTask(task)
-      if (task.data.legal_time && task.data.legal_time < this.elapsedTimeOfTimePoint) {
+      if (task.data && task.data.legal_time && task.data.legal_time < this.elapsedTimeOfTimePoint) {
         return
       }
       switch (task.type) {
