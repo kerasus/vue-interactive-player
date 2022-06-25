@@ -103,7 +103,6 @@ export default {
 
     loadExamQuestions() {
       this.examQuestions = new QuestionList(this.questions)
-      console.log('this.examQuestions', this.examQuestions)
     },
 
     loadFirstQuestion() {

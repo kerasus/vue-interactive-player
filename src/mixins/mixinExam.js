@@ -17,7 +17,6 @@ const mixinExam = {
     },
 
     doActionOfExam(data) {
-      console.log('data', data)
       const taskIds = data.taskIds
       const examTask = data.examTask
       // const questions = data.examTask.data.questions

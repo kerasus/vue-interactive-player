@@ -72,7 +72,6 @@ export default {
     },
 
     hasQuestions() {
-      console.log('q', this.questions)
       return this.questions && this.questions.list.length > 0
     },
 
