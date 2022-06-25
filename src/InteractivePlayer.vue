@@ -182,10 +182,10 @@ export default {
         case 'QuestionOfKnowingSubject':
           this.doQuestionOfKnowingSubject(task)
           break
-        case 'gotToTime':
+        case 'goToTime':
           this.doGoToTime(task)
           break
-        case 'gotToTimePoint':
+        case 'goToTimePoint':
           this.doGoToTimePoint(task)
           break
         case 'Exam':
@@ -199,6 +199,7 @@ export default {
       }
     },
     doTaskSequence (taskIds, taskAfterSequenceId) {
+
       const firstTaskIdOfSequence = taskIds[0]
       if (typeof firstTaskIdOfSequence === 'undefined') {
         this.loadNextTimePont()
@@ -212,15 +213,16 @@ export default {
       this.doTask(firstTask)
     },
     loadTaskSequence (taskIds, taskAfterSequenceId) {
+
       taskIds.forEach( (taskId, taskIdIndex) => {
         const taskIndex = this.currentTimePoint.tasks.getIndex('id', taskId)
         if (taskIndex === -1) {
           // ToDo:go to ?
           return
         }
-
         const nextTaskId = taskIds[taskIdIndex + 1]
         if (typeof nextTaskId === 'undefined') {
+
           this.setNextTaskId(this.currentTimePoint.tasks.list[taskIndex], taskAfterSequenceId)
           return
         }
@@ -234,13 +236,15 @@ export default {
       })
     },
     setNextTaskId (task, nextTaskId, autoPlay) {
-      if (typeof task.data === 'undefined') {
+      if (typeof task.data === 'undefined' || !task.data) {
         task.data = {}
       }
       if (typeof autoPlay === 'undefined') {
         autoPlay = true
       }
+
       task.data.next_task_id = nextTaskId
+
       task.data.next_task_auto_play = autoPlay
     },
     setWatchingEndTime (endTime) {
