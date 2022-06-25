@@ -1,6 +1,6 @@
 <template>
   <div class="exam-panel">
-    <div class="title"> {{ data.data.examTitle ? data.data.examTitle : 'آزمون' }}</div>
+    <div class="title"> {{ task.data.examTitle ? task.data.examTitle : 'آزمون' }}</div>
     <div v-html="currentQuestion.statement" class="statement"/>
     <div class="choices">
       <div v-for="(choice, choiceIndex) in currentQuestion.choices.list"
@@ -18,6 +18,32 @@
         </span>
       </div>
     </div>
+
+    <div class="change-question-buttons-row">
+      <button
+          class="change-question-button"
+          :class="{'hide': !hasPrevQuestion }"
+          @click="loadPrevQuestion"
+      >
+        قبل
+      </button>
+      <button
+          class="change-question-button"
+          :class="{'hide': !hasNextQuestion }"
+          @click="loadNextQuestion"
+      >
+        بعد
+      </button>
+
+      <button
+          class="change-question-button see-report-button"
+          :class="{'hide': hasNextQuestion }"
+          @click="seeReport"
+      >
+        دیدن کارنامه
+      </button>
+    </div>
+
   </div>
 </template>
 
@@ -26,21 +52,15 @@ import {Task} from '../../../models/Task'
 import {Question, QuestionList} from '../../../models/Question'
 
 export default {
-  name: 'ExamPanel',
+  name: 'QuestionPanel',
 
   props: {
-    data: {
+    task: {
       type: Task,
       default() {
         return new Task()
       },
     },
-  },
-
-  watch: {
-    data(newData) {
-      this.initialLoad()
-    }
   },
 
   data() {
@@ -51,34 +71,37 @@ export default {
   },
 
   computed: {
+    hasNextQuestion () {
+      const currentQuestionIndex = this.getCurrentQuestionIndex()
+      return (currentQuestionIndex + 1) < this.questions.list.length
+    },
+    hasPrevQuestion () {
+      const currentQuestionIndex = this.getCurrentQuestionIndex()
+      return currentQuestionIndex === 0
+    },
     questions() {
-      return this.examTask.data.questions
-    }
+      let questions = new QuestionList()
+      if (this.examTask.data?.questions) {
+        questions = this.examTask.data.questions
+      }
+      return questions
+    },
   },
 
-  created() {
+  mounted() {
     this.initialLoad()
   },
 
   methods: {
+
     initialLoad() {
-
       this.loadExamTask()
-
-      if (!this.hasQuestions()) {
-        return
-      }
-
       this.loadFirstQuestion()
     },
 
     loadExamTask() {
-      this.examTask = new Task(this.data)
+      this.examTask = new Task(this.task)
       this.examTask.data.questions = new QuestionList(this.examTask.data.questions)
-    },
-
-    hasQuestions() {
-      return this.questions.list.length > 0
     },
 
     loadFirstQuestion() {
@@ -105,6 +128,18 @@ export default {
       return nextQuestion
     },
 
+    getPrevQuestion() {
+      const currentQuestionIndex = this.getCurrentQuestionIndex()
+
+      const prevQuestion = this.questions.list[currentQuestionIndex - 1]
+
+      if (typeof prevQuestion === 'undefined') {
+        return null
+      }
+
+      return prevQuestion
+    },
+
     getThisQuestion() {
       const currentQuestionIndex = this.getCurrentQuestionIndex()
       if (currentQuestionIndex < 0) {
@@ -126,23 +161,32 @@ export default {
       const thisQuestion = this.getThisQuestion()
       thisQuestion.choices.clearSelected()
       choice.selected = true
-      this.loadNextQuestion()
+    },
+
+    loadPrevQuestion() {
+      const prevQuestion = this.getPrevQuestion()
+
+      if (!prevQuestion) {
+        return
+      }
+
+      this.loadCurrentQuestion(prevQuestion)
     },
 
     loadNextQuestion() {
       const nextQuestion = this.getNextQuestion()
 
       if (!nextQuestion) {
-        const data = {
-          examTask: this.examTask,
-          questions: this.questions,
-        }
-
-        this.$emit('examDone', data)
         return
       }
+
       this.loadCurrentQuestion(nextQuestion)
     },
+
+    seeReport () {
+      this.$emit('examDone', this.examTask)
+    }
+
   }
 }
 </script>
@@ -175,8 +219,6 @@ export default {
       cursor: pointer;
       display: flex;
       flex-direction: row;
-      justify-content: center;
-      align-items: center;
       align-content: center;
       margin: 10px 0;
 
@@ -184,6 +226,28 @@ export default {
         color: black;
         padding: 10px;
         width: 80%;
+      }
+    }
+  }
+
+  .change-question-buttons-row {
+    display: flex;
+    justify-content: center;
+
+    .change-question-button {
+      width: 100px;
+      height: 30px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 30px 10px;
+
+      &.hide {
+        display: none;
+      }
+
+      &.see-report-button {
+        color: green;
       }
     }
   }
