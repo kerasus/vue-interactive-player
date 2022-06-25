@@ -74,6 +74,7 @@ export default
               type: 'QuestionOfKnowingSubject',
               pre_show: true,
               data: {
+                legal_time: 4,
                 statement: 'می خوایم مبحث فیلان رو تدریس کنیم، می خوای ببینی؟',
                 choices: [
                   {
@@ -195,11 +196,12 @@ export default
               type: 'goToTime',
               data: {
                 start: 6, // 07:00
-                end: 8, // 07:00
+                end: 8, // 15:00
               },
             },
           ],
         },
+          // 12
 
         {
           id: 2,
@@ -226,33 +228,8 @@ export default
             },
           ],
           start: 0, // 00:00
-          end: 10, // 01:00
+          end: 2, // 01:00
           tasks: [
-            // {
-            //   id: 20,
-            //   type: 'QuestionOfKnowingSubject',
-            //   pre_show: true,
-            //   data: {
-            //     statement: 'می خوایم مبحث فیلان رو تثبیت کنیم، می خوای بزنی؟',
-            //     choices: [
-            //       {
-            //         label: 'بلد نیستم و می خوام ببینم',
-            //         value: 2,
-            //         task_id: 21
-            //       },
-            //       {
-            //         label: 'بلدم و نمی خوام ببینم',
-            //         value: 1,
-            //         task_id: 22
-            //       },
-            //       {
-            //         label: 'بلدم و می خوام ببینم',
-            //         value: 0,
-            //         task_id: 21
-            //       },
-            //     ],
-            //   },
-            // },
             {
               id: 21,
               type: 'Exam',
@@ -358,29 +335,31 @@ export default
               id: 23,
               type: 'goToTime',
               data: {
-                start: 10, //05:00
-                end: 20, //10:00
+                start: 2, //05:00
+                end: 4, //10:00
               }
             },
             {
               id: 24,
               type: 'goToTime',
               data: {
-                start: 20, //05:00
-                end: 30, //10:00
+                start: 4, //05:00
+                end: 6, //10:00
               }
             },
             {
               id: 25,
               type: 'goToTime',
               data: {
-                start: 30, //10:00
-                end: 40,  //14:00
+                start: 6, //10:00
+                end: 8,  //14:00
               }
             },
 
           ],
         },
+
+          //41
 
         {
           id: 3,
@@ -408,6 +387,7 @@ export default
           ],
           start: 0, // 00:00
           end: 2, // 2:00
+          legal_time: 50,
           tasks: [
             // {
             //   id: 30,
@@ -578,8 +558,8 @@ export default
               id: 35,
               type: 'goToTime',
              data: {
-               start: 100, //7:00
-               end: 110,  //10:00
+               start: 8, //7:00
+               end: 10,  //10:00
              }
             },
             {
