@@ -79,11 +79,11 @@ export default {
   computed: {
     hasNextQuestion () {
       const currentQuestionIndex = this.getCurrentQuestionIndex()
-      return (currentQuestionIndex + 1) < this.examQuestions.list.length
+      return ((currentQuestionIndex + 1) < this.examQuestions.list.length)
     },
     hasPrevQuestion () {
       const currentQuestionIndex = this.getCurrentQuestionIndex()
-      return currentQuestionIndex === 0
+      return (currentQuestionIndex > 0)
     }
   },
 
