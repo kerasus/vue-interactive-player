@@ -27,6 +27,17 @@ class TimePoint extends Model {
     ])
   }
 
+  getNextTask (currentTask) {
+    const taskId = currentTask?.data?.next_task_id
+    const taskAutoPlay = currentTask?.data?.next_task_auto_play
+    if (typeof taskId !== 'undefined' && taskId !== null && taskAutoPlay) {
+      return this.tasks.getItem('id', taskId)
+    }
+
+    return null
+  }
+
+
   hesTasks () {
     return this.tasks.list.length > 0
   }

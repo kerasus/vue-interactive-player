@@ -73,6 +73,8 @@ export default
               id: 0,
               type: 'QuestionOfKnowingSubject',
               pre_show: true,
+              before_do: () => { console.log('QuestionOfKnowingSubject before_do') },
+              before_action: () => { console.log('QuestionOfKnowingSubject before_action') },
               data: {
                 legal_time: 4,
                 statement: 'می خوایم مبحث فیلان رو تدریس کنیم، می خوای ببینی؟',
@@ -1326,6 +1328,6 @@ export default
         // },
       ],
     }
-  }
+  },
 }
 </script>

@@ -91,40 +91,52 @@ export default {
     getElapsedTimeOfTimePoint () {
       return (Date.now() - this.startTimePointTime) / 1000
     },
+
     getElapsedTimeOfPlan () {
       return (Date.now() - this.startPlanTime) / 1000
     },
+
     finish () {
       this.hideOverPlayer()
       this.pause()
     },
-    getNextTaskOfCurrentTask () {
-      const taskId = this.currentTask?.data?.next_task_id
-      const taskAutoPlay = this.currentTask?.data?.next_task_auto_play
-      if (typeof taskId !== 'undefined' && taskId !== null && taskAutoPlay) {
-      // if (typeof taskId !== 'undefined' && taskId !== null) {
-        return this.getTaskOfTimePoint(taskId)
-      }
 
-      return null
+    getNextTaskOfCurrentTask () {
+
+      return this.currentTimePoint.getNextTask(this.currentTask)
+
+      // const taskId = this.currentTask?.data?.next_task_id
+      // const taskAutoPlay = this.currentTask?.data?.next_task_auto_play
+      // if (typeof taskId !== 'undefined' && taskId !== null && taskAutoPlay) {
+      // // if (typeof taskId !== 'undefined' && taskId !== null) {
+      //   return this.getTaskOfTimePoint(taskId)
+      // }
+      //
+      // return null
     },
+
     getTaskOfTimePoint (taskId) {
       return this.currentTimePoint.tasks.getItem('id', taskId)
     },
+
     onAction (data) {
       this.doTaskAction(this.currentTask, data)
     },
+
     setCurrentTask (task) {
       this.currentTask = task
     },
+
     getFirstTimePont() {
       return this.localTimePoints.list[0]
     },
+
     loadFirstTimePont() {
       this.startPlanTime = Date.now()
       const firstTimePoint = this.getFirstTimePont()
       this.runTimePoint(firstTimePoint)
     },
+
     getNextTimePont() {
       const currentTimePointIndex = this.localTimePoints.getIndex('id', this.currentTimePoint.id)
       const nextTimePoint = this.localTimePoints.list[currentTimePointIndex+1]
@@ -134,6 +146,7 @@ export default {
 
       return nextTimePoint
     },
+
     loadNextTimePont() {
       const nextTimePoint = this.getNextTimePont()
       if (!nextTimePoint) {
@@ -142,6 +155,7 @@ export default {
       }
       this.runTimePoint(nextTimePoint)
     },
+
     runTimePoint(timePoint) {
       this.currentTimePoint = timePoint
       this.startTimePointTime = Date.now()
@@ -158,6 +172,7 @@ export default {
         this.doTask(preShowTask)
       }
     },
+
     doTaskAction(task, actionData) {
       switch (task.type) {
         case 'QuestionOfKnowingSubject':
@@ -166,19 +181,15 @@ export default {
         case 'Exam':
           this.doActionOfExam(actionData)
           break
-        case 'SpecialTest':
-          this.doSpecialTest(task.data)
-          break
-        case 'ShowTimePint':
-          this.doSpecialTest(task.data)
-          break
         default:
           break
       }
     },
+
     doTask(task) {
       this.setCurrentTask(task)
-      if (task.data && task.data.legal_time && task.data.legal_time < this.getElapsedTimeOfTimePoint()) {
+      this.currentTask.setChecked()
+      if (!this.currentTask.canDoBasedOnLegalTime(this.getElapsedTimeOfTimePoint())) {
         return
       }
       switch (task.type) {
@@ -194,13 +205,11 @@ export default {
         case 'Exam':
           this.doExam(task)
           break
-        case 'ShowTimePint':
-          this.doSpecialTest(task.data)
-          break
         default:
           break
       }
     },
+
     doTaskSequence (taskIds, taskAfterSequenceId) {
 
       const firstTaskIdOfSequence = taskIds[0]
@@ -215,17 +224,17 @@ export default {
 
       this.doTask(firstTask)
     },
-    loadTaskSequence (taskIds, taskAfterSequenceId) {
 
+    loadTaskSequence (taskIds, taskAfterSequenceId) {
       taskIds.forEach( (taskId, taskIdIndex) => {
         const taskIndex = this.currentTimePoint.tasks.getIndex('id', taskId)
         if (taskIndex === -1) {
           // ToDo:go to ?
           return
         }
+
         const nextTaskId = taskIds[taskIdIndex + 1]
         if (typeof nextTaskId === 'undefined') {
-
           this.setNextTaskId(this.currentTimePoint.tasks.list[taskIndex], taskAfterSequenceId)
           return
         }
@@ -238,6 +247,7 @@ export default {
         this.setNextTaskId(this.currentTimePoint.tasks.list[taskIndex], this.currentTimePoint.tasks.list[nextTaskIndex].id)
       })
     },
+
     setNextTaskId (task, nextTaskId, autoPlay) {
       if (typeof task.data === 'undefined' || !task.data) {
         task.data = {}
@@ -250,6 +260,7 @@ export default {
 
       task.data.next_task_auto_play = autoPlay
     },
+
     setWatchingEndTime (endTime) {
       this.watchingEndTime = endTime
     }

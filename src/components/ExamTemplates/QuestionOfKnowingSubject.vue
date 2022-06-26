@@ -1,5 +1,5 @@
 <template>
-  <div class="QuestionOfKnowingSubject">
+  <div class="QuestionOfKnowingSubject" v-if="question">
     <div class="title"> آلایی جان</div>
     <div v-html="question.statement" class="statement" />
     <div class="choices">
@@ -14,31 +14,47 @@
 </template>
 
 <script>
-import { Question } from '../../models/Question'
+import {Question, QuestionList} from '../../models/Question'
+import {Task} from '../../models/Task'
 
 export default {
   name: 'QuestionOfKnowingSubject',
   props: {
     data: {
-      type: Object,
+      type: Task,
       default() {
-        return new Question()
+        return new Task()
       },
     },
   },
+  computed: {
+    question () {
+      return this.task.data
+    }
+  },
   data () {
     return {
-      question: new Question()
+      task: new Task(),
     }
   },
 
-  created() {
-    this.question = new Question(this.data)
+  mounted() {
+    this.loadTask()
   },
 
   methods: {
+    loadTask() {
+      this.task = new Task(this.data)
+      this.loadTaskQuestion()
+    },
+    loadTaskQuestion() {
+      this.task.data = new Question(this.task.data)
+    },
     answered(choice) {
-      this.$emit('action', choice)
+      this.$emit('action', {
+        task: this.task,
+        choice
+      })
     },
   },
 }
