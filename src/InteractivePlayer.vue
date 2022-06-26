@@ -65,9 +65,6 @@ export default {
   computed: {
     elapsedTimeOfTimePoint () {
       return (Date.now() - this.startTimePointTime) / 1000
-    },
-    elapsedTimeOfPlan () {
-      return (Date.now() - this.startPlanTime) / 1000
     }
   },
   data() {
@@ -91,6 +88,12 @@ export default {
     this.loadFirstTimePont()
   },
   methods: {
+    getElapsedTimeOfTimePoint () {
+      return (Date.now() - this.startTimePointTime) / 1000
+    },
+    getElapsedTimeOfPlan () {
+      return (Date.now() - this.startPlanTime) / 1000
+    },
     finish () {
       this.hideOverPlayer()
       this.pause()
@@ -143,7 +146,7 @@ export default {
       this.currentTimePoint = timePoint
       this.startTimePointTime = Date.now()
 
-      if (timePoint.legal_time && timePoint.legal_time < this.elapsedTimeOfPlan) {
+      if (timePoint.legal_time && timePoint.legal_time < this.getElapsedTimeOfPlan()) {
         this.loadNextTimePont()
         return
       }
@@ -175,7 +178,7 @@ export default {
     },
     doTask(task) {
       this.setCurrentTask(task)
-      if (task.data && task.data.legal_time && task.data.legal_time < this.elapsedTimeOfTimePoint) {
+      if (task.data && task.data.legal_time && task.data.legal_time < this.getElapsedTimeOfTimePoint()) {
         return
       }
       switch (task.type) {

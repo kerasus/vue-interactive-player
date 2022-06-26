@@ -389,31 +389,6 @@ export default
           end: 2, // 2:00
           legal_time: 50,
           tasks: [
-            // {
-            //   id: 30,
-            //   type: 'QuestionOfKnowingSubject',
-            //   pre_show: true,
-            //   data: {
-            //     statement: 'می خوایم بریم تستای ویژه، می خوای بزنی؟',
-            //     choices: [
-            //       {
-            //         label: 'بلد نیستم و می خوام ببینم',
-            //         value: 2,
-            //         task_id: 31
-            //       },
-            //       {
-            //         label: 'بلدم و نمی خوام ببینم',
-            //         value: 1,
-            //         task_id: 32
-            //       },
-            //       {
-            //         label: 'بلدم و می خوام ببینم',
-            //         value: 0,
-            //         task_id: 31
-            //       },
-            //     ],
-            //   },
-            // },
             {
               id: 31,
               type: 'Exam',
