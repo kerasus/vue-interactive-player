@@ -37,8 +37,16 @@ class TimePoint extends Model {
     return null
   }
 
+  isOnTheLegalTime (elapsedTimeOfPlan) {
+    return (
+        typeof this.legal_time === 'undefined' ||
+        this.legal_time === null ||
+        isNaN(this.legal_time) ||
+        this.legal_time >= elapsedTimeOfPlan
+    )
+  }
 
-  hesTasks () {
+  hasTasks () {
     return this.tasks.list.length > 0
   }
 }
@@ -47,5 +55,16 @@ class TimePointList extends Collection {
   model() {
     return TimePoint
   }
+
+  getNextTimePont (currentTimePoint) {
+    const currentTimePointIndex = this.getIndex('id', currentTimePoint.id)
+    const nextTimePoint = this.list[currentTimePointIndex + 1 ]
+    if (typeof nextTimePoint === 'undefined') {
+      return null
+    }
+
+    return nextTimePoint
+  }
+
 }
 export { TimePoint, TimePointList }
