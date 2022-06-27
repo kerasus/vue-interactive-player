@@ -22,12 +22,12 @@ import OverPlayer from './components/OverPlayer'
 import {Task, TaskList} from './models/Task'
 import { TimePointList, TimePoint } from './models/TimePoint'
 import { PlayerSourceList } from './models/PlayerSource'
-import { mixinQuestionOfKnowingSubject, mixinStabilizationTest, mixinGoToTime, mixinGoToTimePoint, mixinPlayer, mixinOverPlayer } from './mixins/Mixins'
+import { mixinQuestionOfKnowingSubject, mixinExam, mixinGoToTime, mixinGoToTimePoint, mixinPlayer, mixinOverPlayer } from './mixins/Mixins'
 
 export default {
   name: 'InteractivePlayer',
   components: { Player, OverPlayer },
-  mixins: [mixinQuestionOfKnowingSubject, mixinGoToTime, mixinGoToTimePoint, mixinPlayer, mixinOverPlayer, mixinStabilizationTest],
+  mixins: [mixinQuestionOfKnowingSubject, mixinGoToTime, mixinGoToTimePoint, mixinPlayer, mixinOverPlayer, mixinExam],
   props: {
     timePoints: {
       type: Array,
@@ -65,9 +65,6 @@ export default {
   computed: {
     elapsedTimeOfTimePoint () {
       return (Date.now() - this.startTimePointTime) / 1000
-    },
-    elapsedTimeOfPlan () {
-      return (Date.now() - this.startPlanTime) / 1000
     }
   },
   data() {
@@ -91,37 +88,55 @@ export default {
     this.loadFirstTimePont()
   },
   methods: {
+    getElapsedTimeOfTimePoint () {
+      return (Date.now() - this.startTimePointTime) / 1000
+    },
+
+    getElapsedTimeOfPlan () {
+      return (Date.now() - this.startPlanTime) / 1000
+    },
+
     finish () {
       this.hideOverPlayer()
       this.pause()
     },
-    getNextTaskOfCurrentTask () {
-      const taskId = this.currentTask?.data?.next_task_id
-      const taskAutoPlay = this.currentTask?.data?.next_task_auto_play
-      if (typeof taskId !== 'undefined' && taskId !== null && taskAutoPlay) {
-      // if (typeof taskId !== 'undefined' && taskId !== null) {
-        return this.getTaskOfTimePoint(taskId)
-      }
 
-      return null
+    getNextTaskOfCurrentTask () {
+
+      return this.currentTimePoint.getNextTask(this.currentTask)
+
+      // const taskId = this.currentTask?.data?.next_task_id
+      // const taskAutoPlay = this.currentTask?.data?.next_task_auto_play
+      // if (typeof taskId !== 'undefined' && taskId !== null && taskAutoPlay) {
+      // // if (typeof taskId !== 'undefined' && taskId !== null) {
+      //   return this.getTaskOfTimePoint(taskId)
+      // }
+      //
+      // return null
     },
+
     getTaskOfTimePoint (taskId) {
       return this.currentTimePoint.tasks.getItem('id', taskId)
     },
+
     onAction (data) {
       this.doTaskAction(this.currentTask, data)
     },
+
     setCurrentTask (task) {
       this.currentTask = task
     },
+
     getFirstTimePont() {
       return this.localTimePoints.list[0]
     },
+
     loadFirstTimePont() {
       this.startPlanTime = Date.now()
       const firstTimePoint = this.getFirstTimePont()
       this.runTimePoint(firstTimePoint)
     },
+
     getNextTimePont() {
       const currentTimePointIndex = this.localTimePoints.getIndex('id', this.currentTimePoint.id)
       const nextTimePoint = this.localTimePoints.list[currentTimePointIndex+1]
@@ -131,6 +146,7 @@ export default {
 
       return nextTimePoint
     },
+
     loadNextTimePont() {
       const nextTimePoint = this.getNextTimePont()
       if (!nextTimePoint) {
@@ -139,11 +155,12 @@ export default {
       }
       this.runTimePoint(nextTimePoint)
     },
+
     runTimePoint(timePoint) {
       this.currentTimePoint = timePoint
       this.startTimePointTime = Date.now()
 
-      if (timePoint.legal_time && timePoint.legal_time < this.elapsedTimeOfPlan) {
+      if (timePoint.legal_time && timePoint.legal_time < this.getElapsedTimeOfPlan()) {
         this.loadNextTimePont()
         return
       }
@@ -155,50 +172,46 @@ export default {
         this.doTask(preShowTask)
       }
     },
+
     doTaskAction(task, actionData) {
       switch (task.type) {
         case 'QuestionOfKnowingSubject':
           this.doActionOfQuestionOfKnowingSubject(actionData)
           break
-        case 'StabilizationTest':
-          this.doActionOfStabilizationTest(actionData)
-          break
-        case 'SpecialTest':
-          this.doSpecialTest(task.data)
-          break
-        case 'ShowTimePint':
-          this.doSpecialTest(task.data)
+        case 'Exam':
+          this.doActionOfExam(actionData)
           break
         default:
           break
       }
     },
+
     doTask(task) {
       this.setCurrentTask(task)
-      if (task.data && task.data.legal_time && task.data.legal_time < this.elapsedTimeOfTimePoint) {
+      this.currentTask.setChecked()
+      if (!this.currentTask.canDoBasedOnLegalTime(this.getElapsedTimeOfTimePoint())) {
         return
       }
       switch (task.type) {
         case 'QuestionOfKnowingSubject':
           this.doQuestionOfKnowingSubject(task)
           break
-        case 'gotToTime':
+        case 'goToTime':
           this.doGoToTime(task)
           break
-        case 'gotToTimePoint':
+        case 'goToTimePoint':
           this.doGoToTimePoint(task)
           break
-        case 'StabilizationTest':
-          this.doStabilizationTest(task)
-          break
-        case 'ShowTimePint':
-          this.doSpecialTest(task.data)
+        case 'Exam':
+          this.doExam(task)
           break
         default:
           break
       }
     },
+
     doTaskSequence (taskIds, taskAfterSequenceId) {
+
       const firstTaskIdOfSequence = taskIds[0]
       if (typeof firstTaskIdOfSequence === 'undefined') {
         this.loadNextTimePont()
@@ -211,6 +224,7 @@ export default {
 
       this.doTask(firstTask)
     },
+
     loadTaskSequence (taskIds, taskAfterSequenceId) {
       taskIds.forEach( (taskId, taskIdIndex) => {
         const taskIndex = this.currentTimePoint.tasks.getIndex('id', taskId)
@@ -233,16 +247,20 @@ export default {
         this.setNextTaskId(this.currentTimePoint.tasks.list[taskIndex], this.currentTimePoint.tasks.list[nextTaskIndex].id)
       })
     },
+
     setNextTaskId (task, nextTaskId, autoPlay) {
-      if (typeof task.data === 'undefined') {
+      if (typeof task.data === 'undefined' || !task.data) {
         task.data = {}
       }
       if (typeof autoPlay === 'undefined') {
         autoPlay = true
       }
+
       task.data.next_task_id = nextTaskId
+
       task.data.next_task_auto_play = autoPlay
     },
+
     setWatchingEndTime (endTime) {
       this.watchingEndTime = endTime
     }

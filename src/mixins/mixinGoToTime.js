@@ -2,8 +2,11 @@ import {PlayerSourceList} from '../models/PlayerSource'
 
 const mixinGoToTime = {
   methods: {
-    doGoToTime(task) {
-      task.done = true
+    async doGoToTime(task) {
+      if (typeof task.before_do === 'function') {
+        await task.before_do()
+      }
+      task.setDoing()
       const start = (typeof task.data?.start !== 'undefined') ? task.data.start : this.currentTimePoint.start
       const end = (typeof task.data?.end !== 'undefined') ? task.data.end : this.currentTimePoint.end
       const sources = (typeof task.data?.sources !== 'undefined') ? task.data.sources : this.currentTimePoint.sources
