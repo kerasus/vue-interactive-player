@@ -6,7 +6,20 @@ class Task extends Model {
       { key: 'id' },
       { key: 'type' }, // question of knowing subject
       { key: 'data' },
-      { key: 'done' },
+      {
+        key: 'checked',
+        default: false
+      },
+      {
+        key: 'done',
+        default: false
+      },
+      {
+        key: 'doing',
+        default: false
+      },
+      {key: 'before_do'},
+      {key: 'before_action'},
       {
         key: 'pre_show',
         default: false
@@ -16,6 +29,26 @@ class Task extends Model {
         default: false
       },
     ])
+  }
+
+  setChecked () {
+    this.checked = true
+    this.doing = false
+    this.done = false
+  }
+
+  setDoing () {
+    this.doing = true
+    this.done = false
+  }
+
+  setDone () {
+    this.doing = false
+    this.done = true
+  }
+
+  canDoBasedOnLegalTime (elapsedTimeOfTimePoint) {
+    return (!this.data || !this.data.legal_time || this.data.legal_time >= elapsedTimeOfTimePoint)
   }
 }
 

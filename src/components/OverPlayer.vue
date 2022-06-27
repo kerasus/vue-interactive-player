@@ -8,12 +8,12 @@
 
 <script>
 
-import QuestionOfKnowingSubject from './QuestionTemplates/QuestionOfKnowingSubject.vue'
-import StabilizationTest from './QuestionTemplates/Quiz/Exam.vue'
+import QuestionOfKnowingSubject from './ExamTemplates/QuestionOfKnowingSubject.vue'
+import Exam from './ExamTemplates/Exam/Exam.vue'
 
 export default {
   name: 'OverPlayer',
-  components: { QuestionOfKnowingSubject, StabilizationTest },
+  components: { QuestionOfKnowingSubject, Exam },
   props: {
     overPlayComponent: {
       type: String,

@@ -1,6 +1,10 @@
 const mixinGoToTimePoint = {
   methods: {
-    doGoToTimePoint(task) {
+    async doGoToTimePoint(task) {
+      if (typeof task.before_do === 'function') {
+        await task.before_do()
+      }
+      task.setDoing()
       const newTimePointId = task.data.time_point_id
       if (typeof newTimePointId === 'undefined' || newTimePointId === null) {
         this.loadNextTimePont()

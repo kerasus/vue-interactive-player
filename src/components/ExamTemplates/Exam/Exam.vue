@@ -1,6 +1,6 @@
 <template>
-  <div class="StabilizationTest">
-    <question-panel v-show="questionPanelVisibility" ref="questionPanel" :task="examTask" @examDone="showReport"/>
+  <div class="Exam">
+    <question-panel v-show="questionPanelVisibility" ref="questionPanel" :title="data.data.examTitle" :questions="questions" @examDone="showReport"/>
     <report-panel v-show="reportVisibility" :start-timer="reportVisibility" :title="data.data.examTitle" :questions="questions" @showVideoAnswers="showVideoAnswers" />
   </div>
 </template>
@@ -21,12 +21,10 @@ export default {
       },
     },
   },
-
   components: {
     ReportPanel,
     QuestionPanel
   },
-
   watch: {
     data() {
       this.initialLoad()
@@ -42,7 +40,6 @@ export default {
   mounted() {
     this.initialLoad()
   },
-
   computed: {
     questions() {
       let questions = new QuestionList()
@@ -55,9 +52,9 @@ export default {
 
   methods: {
     initialLoad() {
-      this.showQuestionPanel()
-
       this.loadExamTask()
+
+      this.showQuestionPanel()
 
       if (!this.hasQuestions()) {
         return
@@ -70,13 +67,11 @@ export default {
 
     loadExamTask() {
       this.examTask = new Task(this.data)
-      console.log(this.examTask)
       // ممکنه دیتای تسک کلید questions نداشته باشه
       this.examTask.data.questions = new QuestionList(this.data.data.questions)
     },
 
     hasQuestions() {
-      console.log('q', this.questions)
       return this.questions && this.questions.list.length > 0
     },
 
@@ -87,7 +82,7 @@ export default {
     },
 
     showReport (data) {
-      this.examTask = data
+      this.examTask.data.questions = data
       this.questionPanelVisibility = false
       this.reportVisibility = true
     },
@@ -106,7 +101,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.StabilizationTest {
+.Exam {
   padding: 30px;
   .title{
     text-align: center;

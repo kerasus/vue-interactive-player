@@ -7,7 +7,8 @@
 <script>
 import InteractivePlayer from './InteractivePlayer.vue'
 
-export default {
+export default
+{
   name: 'App',
   components: { InteractivePlayer },
   data() {
@@ -39,8 +40,8 @@ export default {
           ],
           start: 0,
           end: 2, // 01:00
-          legal_time: 0,
         },
+
         {
           id: 1,
           poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374000asdf.jpg',
@@ -72,7 +73,10 @@ export default {
               id: 0,
               type: 'QuestionOfKnowingSubject',
               pre_show: true,
+              before_do: () => { console.log('QuestionOfKnowingSubject before_do') },
+              before_action: () => { console.log('QuestionOfKnowingSubject before_action') },
               data: {
+                legal_time: 4,
                 statement: 'می خوایم مبحث فیلان رو تدریس کنیم، می خوای ببینی؟',
                 choices: [
                   {
@@ -95,7 +99,7 @@ export default {
             },
             {
               id: 3,
-              type: 'gotToTime'
+              type: 'goToTime'
             },
             {
               id: 4,
@@ -107,7 +111,7 @@ export default {
 
             {
               id: 1,
-              type: 'StabilizationTest',
+              type: 'Exam',
               post_show: true,
               data: {
                 examTitle:'تست ۱ (چهارگزینه ای)',
@@ -146,7 +150,7 @@ export default {
             },
             {
               id: 5,
-              type: 'gotToTime',
+              type: 'goToTime',
               data: {
                 start: 4, // 05:00
                 end: 6, // 07:00
@@ -155,7 +159,7 @@ export default {
 
             {
               id: 2,
-              type: 'StabilizationTest',
+              type: 'Exam',
               data: {
                 examTitle:'تست ۲ (چهارگزینه ای)',
                 questions: [
@@ -191,14 +195,16 @@ export default {
             },
             {
               id: 6,
-              type: 'gotToTime',
+              type: 'goToTime',
               data: {
                 start: 6, // 07:00
-                end: 8, // 07:00
+                end: 8, // 15:00
               },
             },
           ],
         },
+          // 12
+
         {
           id: 2,
           poster: 'https://nodes.alaatv.com/media/thumbnails/769/769001zone.jpg',
@@ -225,39 +231,14 @@ export default {
           ],
           start: 0, // 00:00
           end: 2, // 01:00
-          legal_time: 0,
           tasks: [
             {
-              id: 20,
-              type: 'QuestionOfKnowingSubject',
+              id: 21,
+              type: 'Exam',
               pre_show: true,
               data: {
-                statement: 'می خوایم مبحث فیلان رو تثبیت کنیم، می خوای بزنی؟',
-                legal_time: 0,
-                choices: [
-                  {
-                    label: 'بلد نیستم و می خوام ببینم',
-                    value: 2,
-                    task_id: 21
-                  },
-                  {
-                    label: 'بلدم و نمی خوام ببینم',
-                    value: 1,
-                    task_id: 22
-                  },
-                  {
-                    label: 'بلدم و می خوام ببینم',
-                    value: 0,
-                    task_id: 21
-                  },
-                ],
-              },
-            },
-            {
-              id: 21,
-              type: 'StabilizationTest',
-              data: {
                 examTitle:'تست های تسلط',
+                next_task_id: 22,
                 questions: [
                   {
                     id: 0,
@@ -355,22 +336,33 @@ export default {
             {
               id: 23,
               type: 'goToTime',
+              data: {
+                start: 2, //05:00
+                end: 4, //10:00
+              }
             },
             {
               id: 24,
               type: 'goToTime',
-              start: 2, //05:00
-              end: 4, //10:00
+              data: {
+                start: 4, //05:00
+                end: 6, //10:00
+              }
             },
             {
               id: 25,
               type: 'goToTime',
-              start: 4, //10:00
-              end: 6,  //14:00
+              data: {
+                start: 6, //10:00
+                end: 8,  //14:00
+              }
             },
 
           ],
         },
+
+          //41
+
         {
           id: 3,
           poster: 'https://nodes.alaatv.com/media/thumbnails/969/969007kbnt.jpg',
@@ -397,45 +389,20 @@ export default {
           ],
           start: 0, // 00:00
           end: 2, // 2:00
-          legal_time: 0,
+          legal_time: 50,
           tasks: [
             {
-              id: 30,
-              type: 'QuestionOfKnowingSubject',
-              pre_show: true,
-              data: {
-                statement: 'می خوایم بریم تستای ویژه، می خوای بزنی؟',
-                choices: [
-                  {
-                    label: 'بلد نیستم و می خوام ببینم',
-                    value: 2,
-                    task_id: 31
-                  },
-                  {
-                    label: 'بلدم و نمی خوام ببینم',
-                    value: 1,
-                    task_id: 32
-                  },
-                  {
-                    label: 'بلدم و می خوام ببینم',
-                    value: 0,
-                    task_id: 31
-                  },
-                ],
-              },
-            },
-            {
               id: 31,
-              type: 'StabilizationTest',
+              type: 'Exam',
               pre_show: true,
               data: {
                 examTitle:'تست های ویژه',
-                next_task_id: 32,
+                next_task_id: 36,
                 next_task_auto_play: false,
                 questions: [
                   {
                     id: 0,
-                    task_id: 2,
+                    task_id: 32,
                     statement: '۱-از اینجا تا اونجا چند متره؟',
                     choices: [
                       {
@@ -462,7 +429,7 @@ export default {
                   },
                   {
                     id: 1,
-                    task_id: 3,
+                    task_id: 33,
                     statement: '۲-آلو کیلو چند؟',
                     choices: [
                       {
@@ -489,7 +456,7 @@ export default {
                   },
                   {
                     id: 2,
-                    task_id: 4,
+                    task_id: 34,
                     statement: '۳-سن پسر علی؟',
                     choices: [
                       {
@@ -516,7 +483,7 @@ export default {
                   },
                   {
                     id: 3,
-                    task_id: 5,
+                    task_id: 35,
                     statement: '۴-سن پدر علی؟',
                     choices: [
                       {
@@ -551,20 +518,33 @@ export default {
             {
               id: 33,
               type: 'goToTime',
-              start: 2, //2:00
-              end: 4, //3:00
+             data: {
+               start: 2, //2:00
+               end: 4, //3:00
+             }
             },
             {
               id: 34,
               type: 'goToTime',
-              start: 4, //3:00
-              end: 6,  //7:00
+             data: {
+               start: 4, //3:00
+               end: 6,  //7:00
+             }
             },
             {
               id: 35,
               type: 'goToTime',
-              start: 6, //7:00
-              end: 8,  //10:00
+             data: {
+               start: 8, //7:00
+               end: 10,  //10:00
+             }
+            },
+            {
+              id: 36,
+              type: 'goToTimePoint',
+              data: {
+                time_point_id: null
+              },
             },
 
           ],
@@ -626,7 +606,7 @@ export default {
         //     },
         //     {
         //       id: 1,
-        //       type: 'StabilizationTest',
+        //       type: 'Exam',
         //       post_show: true,
         //       data: {
         //         examTitle:'تست ۱ (چهارگزینه ای)',
@@ -773,7 +753,7 @@ export default {
         //     },
         //     {
         //       id: 2,
-        //       type: 'StabilizationTest',
+        //       type: 'Exam',
         //       data: {
         //         examTitle:'تست های تسلط',
         //         legal_time: 50,
@@ -854,7 +834,7 @@ export default {
         //     },
         //     {
         //       id: 3,
-        //       type: 'gotToTime'
+        //       type: 'goToTime'
         //     },
         //     {
         //       id: 4,
@@ -866,7 +846,7 @@ export default {
         //
         //     {
         //       id: 5,
-        //       type: 'gotToTime',
+        //       type: 'goToTime',
         //       data: {
         //         poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
         //         sources: [
@@ -896,7 +876,7 @@ export default {
         //     },
         //     {
         //       id: 6,
-        //       type: 'gotToTime',
+        //       type: 'goToTime',
         //       data: {
         //         poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
         //         sources: [
@@ -926,7 +906,7 @@ export default {
         //     },
         //     {
         //       id: 7,
-        //       type: 'gotToTime',
+        //       type: 'goToTime',
         //       data: {
         //         poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
         //         sources: [
@@ -956,7 +936,7 @@ export default {
         //     },
         //     {
         //       id: 8,
-        //       type: 'gotToTime',
+        //       type: 'goToTime',
         //       data: {
         //         poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
         //         sources: [
@@ -986,7 +966,7 @@ export default {
         //     },
         //     {
         //       id: 9,
-        //       type: 'gotToTime',
+        //       type: 'goToTime',
         //       data: {
         //         poster: 'https://nodes.alaatv.com/media/thumbnails/1374/1374008uhvf.jpg',
         //         sources: [
@@ -1078,7 +1058,7 @@ export default {
         //     },
         //     {
         //       id: 1,
-        //       type: 'StabilizationTest',
+        //       type: 'Exam',
         //       post_show: true,
         //       data: {
         //         examTitle:'تست های تسلط',
@@ -1205,7 +1185,7 @@ export default {
         //     },
         //     {
         //       id: 2,
-        //       type: 'StabilizationTest',
+        //       type: 'Exam',
         //       data: {
         //         examTitle:'تست های تسلط',
         //         legal_time: 10,
@@ -1286,7 +1266,7 @@ export default {
         //     },
         //     {
         //       id: 3,
-        //       type: 'gotToTime'
+        //       type: 'goToTime'
         //     },
         //     {
         //       id: 4,
@@ -1298,7 +1278,7 @@ export default {
         //
         //     {
         //       id: 5,
-        //       type: 'gotToTime',
+        //       type: 'goToTime',
         //       data: {
         //         start: 50,
         //         end: 52,
@@ -1306,7 +1286,7 @@ export default {
         //     },
         //     {
         //       id: 6,
-        //       type: 'gotToTime',
+        //       type: 'goToTime',
         //       data: {
         //         start: 62,
         //         end: 64,
@@ -1314,7 +1294,7 @@ export default {
         //     },
         //     {
         //       id: 7,
-        //       type: 'gotToTime',
+        //       type: 'goToTime',
         //       data: {
         //         start: 94,
         //         end: 96,
@@ -1322,7 +1302,7 @@ export default {
         //     },
         //     {
         //       id: 8,
-        //       type: 'gotToTime',
+        //       type: 'goToTime',
         //       data: {
         //         start: 102,
         //         end: 104,
@@ -1330,7 +1310,7 @@ export default {
         //     },
         //     {
         //       id: 9,
-        //       type: 'gotToTime',
+        //       type: 'goToTime',
         //       data: {
         //         start: 120,
         //         end: 122,
@@ -1348,6 +1328,6 @@ export default {
         // },
       ],
     }
-  }
+  },
 }
 </script>

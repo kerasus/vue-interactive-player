@@ -35,17 +35,20 @@
           class="change-task"
           :class="{
              'correct-answer': question.choices.hasTrueSelected() && !question.haveToSee,
-             'wrong-answer': !question.choices.hasTrueSelected(),
-             'change-opinion': question.choices.hasTrueSelected()&& question.haveToSee}"
+             'wrong-answer': !question.choices.hasTrueSelected() && question.haveToSee,
+             'change-opinion': (question.choices.hasTrueSelected()&& question.haveToSee)|| (!question.choices.hasTrueSelected()&& !question.haveToSee)}"
           @click="toggleHaveToSee(question)"
         >
-          <span v-if="question.choices.hasTrueSelected() && !question.haveToSee">میخوام ببینم</span>
+          <span v-if="question.choices.hasTrueSelected() && !question.haveToSee">
+            میخوام ببینم
+          </span>
+
           <span v-if="!question.choices.hasTrueSelected() && question.haveToSee">
             نه سوتی دادم
           </span>
+
           <span
-              v-if="question.choices.hasTrueSelected() && question.haveToSee"
-              class="change-opinion"
+              v-if="(question.choices.hasTrueSelected()&& question.haveToSee)|| (!question.choices.hasTrueSelected()&& !question.haveToSee)"
           >
             بیخیال نمیبینم
           </span>
@@ -180,12 +183,8 @@ export default {
     },
 
     toggleHaveToSee (question) {
-      if (!question.choices.hasTrueSelected()) {
-        return
-      }
       this.refreshList()
       question.haveToSee = !question.haveToSee
-      // this.opinionChange[index] = !question.haveToSee
 
     }
   }

@@ -19,7 +19,7 @@ const mixinPlayer = {
       this.$refs.interactivePlayer.play()
     },
     pause() {
-      this.$refs.interactivePlayer.pause()
+      this.$refs.interactivePlayer? this.$refs.interactivePlayer.pause(): null
     },
     focus() {
       this.$refs.interactivePlayer.focus()
