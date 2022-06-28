@@ -89,7 +89,8 @@ export default {
 
     showVideoAnswers (taskIds) {
       const data = {
-        examTask: this.examTask,
+        questions: this.questions,// edited questions
+        examTask: this.data, // pass by reference
         taskIds: taskIds
       }
 

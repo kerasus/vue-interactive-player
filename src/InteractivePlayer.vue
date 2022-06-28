@@ -27,7 +27,9 @@ import { mixinQuestionOfKnowingSubject, mixinExam, mixinGoToTime, mixinGoToTimeP
 export default {
   name: 'InteractivePlayer',
   components: { Player, OverPlayer },
+
   mixins: [mixinQuestionOfKnowingSubject, mixinGoToTime, mixinGoToTimePoint, mixinPlayer, mixinOverPlayer, mixinExam],
+
   props: {
     timePoints: {
       type: Array,
@@ -36,6 +38,7 @@ export default {
       },
     },
   },
+
   watch: {
     playerCurrentTime (newValue) {
       if (this.watchingEndTime > newValue) {
@@ -62,11 +65,13 @@ export default {
       this.loadNextTimePont()
     }
   },
+
   computed: {
     elapsedTimeOfTimePoint () {
       return (Date.now() - this.startTimePointTime) / 1000
     }
   },
+
   data() {
     return {
       startPlanTime: 0,
@@ -83,23 +88,70 @@ export default {
       poster: '',
     }
   },
+
   created() {
-    this.localTimePoints = new TimePointList(this.timePoints)
-    this.loadFirstTimePont()
+    this.initPage()
   },
+
   methods: {
-    getElapsedTimeOfTimePoint () {
-      return (Date.now() - this.startTimePointTime) / 1000
+    initPage () {
+      this.localTimePoints = new TimePointList(this.timePoints)
+      this.loadFirstTimePont()
+    },
+
+    loadFirstTimePont() {
+      this.startPlanTime = Date.now()
+      const firstTimePoint = this.getFirstTimePont()
+      this.runTimePoint(firstTimePoint)
+    },
+
+    getFirstTimePont() {
+      return this.localTimePoints.list[0]
+    },
+
+    runTimePoint(timePoint) {
+      this.currentTimePoint = timePoint
+      this.startTimePointTime = Date.now()
+      const elapsedTimeOfPlan = this.getElapsedTimeOfPlan()
+      if (!this.currentTimePoint.isOnTheLegalTime(elapsedTimeOfPlan)) {
+        this.loadNextTimePont()
+        return
+      }
+
+      this.setWatchingEndTime(this.currentTimePoint.end)
+      this.changeSources(timePoint.sources, timePoint.poster)
+      if (timePoint.hasTasks() && timePoint.tasks.hasPreShow()) {
+        const preShowTask = timePoint.tasks.getPreShow()
+        this.doTask(preShowTask)
+      }
     },
 
     getElapsedTimeOfPlan () {
       return (Date.now() - this.startPlanTime) / 1000
     },
 
+    loadNextTimePont() {
+      const nextTimePoint = this.localTimePoints.getNextTimePont(this.currentTimePoint)
+      if (!nextTimePoint) {
+        this.finish()
+        return
+      }
+      this.runTimePoint(nextTimePoint)
+    },
+
     finish () {
       this.hideOverPlayer()
       this.pause()
     },
+
+    setWatchingEndTime (endTime) {
+      this.watchingEndTime = endTime
+    },
+
+    getElapsedTimeOfTimePoint () {
+      return (Date.now() - this.startTimePointTime) / 1000
+    },
+
 
     getNextTaskOfCurrentTask () {
 
@@ -127,51 +179,8 @@ export default {
       this.currentTask = task
     },
 
-    getFirstTimePont() {
-      return this.localTimePoints.list[0]
-    },
 
-    loadFirstTimePont() {
-      this.startPlanTime = Date.now()
-      const firstTimePoint = this.getFirstTimePont()
-      this.runTimePoint(firstTimePoint)
-    },
 
-    getNextTimePont() {
-      const currentTimePointIndex = this.localTimePoints.getIndex('id', this.currentTimePoint.id)
-      const nextTimePoint = this.localTimePoints.list[currentTimePointIndex+1]
-      if (typeof nextTimePoint === 'undefined') {
-        return null
-      }
-
-      return nextTimePoint
-    },
-
-    loadNextTimePont() {
-      const nextTimePoint = this.getNextTimePont()
-      if (!nextTimePoint) {
-        this.finish()
-        return
-      }
-      this.runTimePoint(nextTimePoint)
-    },
-
-    runTimePoint(timePoint) {
-      this.currentTimePoint = timePoint
-      this.startTimePointTime = Date.now()
-
-      if (timePoint.legal_time && timePoint.legal_time < this.getElapsedTimeOfPlan()) {
-        this.loadNextTimePont()
-        return
-      }
-
-      this.setWatchingEndTime(this.currentTimePoint.end)
-      this.changeSources(timePoint.sources, timePoint.poster)
-      if (timePoint.hesTasks() && timePoint.tasks.hasPreShow()) {
-        const preShowTask = timePoint.tasks.getPreShow()
-        this.doTask(preShowTask)
-      }
-    },
 
     doTaskAction(task, actionData) {
       switch (task.type) {
@@ -187,7 +196,9 @@ export default {
     },
 
     doTask(task) {
+      // console.trace('doTask: ', task)
       this.setCurrentTask(task)
+
       this.currentTask.setChecked()
       if (!this.currentTask.canDoBasedOnLegalTime(this.getElapsedTimeOfTimePoint())) {
         return
@@ -212,15 +223,19 @@ export default {
 
     doTaskSequence (taskIds, taskAfterSequenceId) {
 
-      const firstTaskIdOfSequence = taskIds[0]
-      if (typeof firstTaskIdOfSequence === 'undefined') {
-        this.loadNextTimePont()
-        return
+      let newTask = taskIds[0]
+      if (typeof newTask === 'undefined') {
+        if (typeof taskAfterSequenceId === 'undefined' || taskAfterSequenceId === null) {
+          this.loadNextTimePont()
+          return
+        }
+
+        newTask = taskAfterSequenceId
       }
 
       this.loadTaskSequence(taskIds, taskAfterSequenceId)
 
-      const firstTask = this.currentTimePoint.tasks.getItem('id', firstTaskIdOfSequence)
+      const firstTask = this.currentTimePoint.tasks.getItem('id', newTask)
 
       this.doTask(firstTask)
     },
@@ -259,10 +274,6 @@ export default {
       task.data.next_task_id = nextTaskId
 
       task.data.next_task_auto_play = autoPlay
-    },
-
-    setWatchingEndTime (endTime) {
-      this.watchingEndTime = endTime
     }
   },
 }

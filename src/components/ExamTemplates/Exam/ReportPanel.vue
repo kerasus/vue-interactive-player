@@ -94,6 +94,7 @@ export default {
   data () {
     return {
       timestampKey: Date.now(),
+      playTimeout: null,
       timeForWait: 0
     }
   },
@@ -135,6 +136,7 @@ export default {
 
   methods: {
     actionOfReport () {
+      this.clearTimeout()
       this.$emit('showVideoAnswers', this.taskIds)
     },
 
@@ -166,8 +168,14 @@ export default {
       this.timeForWait = this.questions.list.length * 3
     },
 
+    clearTimeout () {
+      if (this.playTimeout) {
+        clearTimeout(this.playTimeout)
+      }
+    },
+
     secondsDownCounter () {
-        setTimeout(() => {
+        this.playTimeout = setTimeout(() => {
           this.timeForWait--
           if(this.timeForWait > 0) {
             this.secondsDownCounter()
